@@ -2,7 +2,17 @@ function Navbar (){
 
     return (
         <>
-            <h1>Hi there!</h1>
+            <div>
+                <div className="logo"></div>
+            </div>
+
+            <div>
+                 <input type="text" className="text" />
+            </div>
+
+            <div>
+                logo
+            </div>
         </>
 
     )
