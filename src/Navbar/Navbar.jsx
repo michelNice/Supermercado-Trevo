@@ -15,13 +15,13 @@ function Navbar() {
       <div className="main__header">
         {/* Logo */}
         <div className="logo">
-          <img src="/logo.png" alt="Arco-Mix Logo" />
+          <img src="" alt="Arco-Mix Logo" />
         </div>
 
         
         <div className="search__bar">
           <input type="text" placeholder="O que você precisa?" />
-          <button>🔍</button>
+          <button></button>
         </div>
 
        
@@ -36,7 +36,7 @@ function Navbar() {
               Olá, faça seu login <strong>ou cadastre-se</strong>
             </span>
           </div>
-          <div className="cart">🛒</div>
+          <div className="cart"></div>
         </div>
       </div>
       <nav className="main__nav">
