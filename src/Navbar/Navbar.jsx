@@ -1,60 +1,39 @@
+import React from "react";
+import "./Navbar.css"
+import { FaSearch, FaUser, FaShoppingCart, FaStore } from "react-icons/fa";
+
 function Navbar() {
-  return (
-    <header>
-      
-      <div className="promo__bar">
-        <span>
-          Compre acima de R$199 e ganhe R$10 com cupom PRIMEIRACOMPRA10
-        </span>
-        <span className="right">
-          Receba em casa ou retire na loja
-        </span>
+
+  return(
+    <header className="header">
+        <div className="promo__bar">
+        <span>Compre acima de R$199 e ganhe R$10 com cupom PRIMEIRACOMPRA10</span>
+        <span>Receba em casa ou retire na loja</span>
+        <span>Sua primeira compra com desconto</span>
       </div>
 
-      
-      <div className="main__header">
-        {/* Logo */}
-        <div className="logo">
-          <img src="" alt="Arco-Mix Logo" />
-        </div>
+     <div className="navbar">
+           
+           <div className="seach__box">
+             <input type="text" placeholder="O que você precisa?" />
+             <FaSearch className="icon" />
+      </div>
 
-        
-        <div className="search__bar">
-          <input type="text" placeholder="O que você precisa?" />
-          <button></button>
-        </div>
-
-       
-        <div className="header__actions">
-          <div className="store__info">
-            <span>Retirar na loja:</span>
-            <strong>Avenida Zequinha Barreto...</strong>
+      <div className="actions">
+          <div className="store">
+            <FaStore /> <span>Retirar na loja:<br/>Rua Eliza Cabral de Souza, 78</span>
           </div>
-
           <div className="login">
-            <span>
-              Olá, faça seu login <strong>ou cadastre-se</strong>
-            </span>
+            <FaUser /> <span>Olá, faça seu login<br/>ou cadastre-se</span>
           </div>
-          <div className="cart"></div>
+          <div className="cart">
+            <FaShoppingCart />
+          </div>
         </div>
-      </div>
-      <nav className="main__nav">
-        <ul>
-          <li>
-            <strong>Departamentos</strong> ⌄
-          </li>
-          <li>Mais Vendidos</li>
-          <li>Ofertas</li>
-          <li>Combos</li>
-          <li>Coleções</li>
-          <li>Dicas e Receitas</li>
-          <li>Faça seu Cartão</li>
-          <li>Acesse o App</li>
-        </ul>
-      </nav>
+     </div>
     </header>
   );
 }
+
 
 export default Navbar;
