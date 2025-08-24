@@ -1,7 +1,7 @@
 :root{
     --promo-bar: #ff0000;
     --promo-bar-color:#ffff00;
-
+    --nav--color:#1d4f91;
 }
 
 *{
@@ -27,7 +27,7 @@ body{
     }
 
     .navbar{
-        background: #ff0000;
+        background:var(--nav--color);
         display: flex;
         justify-content:space-between;
     }

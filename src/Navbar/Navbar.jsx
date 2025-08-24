@@ -13,6 +13,10 @@ function Navbar() {
       </div>
 
      <div className="navbar">
+
+      <div className="logo">
+            logo
+      </div>
            
            <div className="seach__box">
              <input type="text" placeholder="O que você precisa?" />
