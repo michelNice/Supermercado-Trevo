@@ -30,3 +30,41 @@ body{
         justify-content:space-between;
     }
 }
+
+
+
+
+
+.header {
+  width: 100%;
+}
+
+.promo__bar {
+  background: yellow; /* fundo igual da sua imagem */
+  color: red;         /* cor do texto */
+  overflow: hidden;
+  white-space: nowrap;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.promo__content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 50s linear infinite;
+}
+
+.promo__content span {
+  margin: 0 50px; /* espaço entre frases */
+  font-weight: bold;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

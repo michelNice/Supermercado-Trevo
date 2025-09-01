@@ -7,9 +7,11 @@ function Navbar() {
   return(
     <header className="header">
         <div className="promo__bar">
-        <span>Compre acima de R$199 e ganhe R$10 com cupom PRIMEIRACOMPRA10</span>
-        <span>Receba em casa ou retire na loja</span>
-        <span>Sua primeira compra com desconto</span>
+         <div className="promo__content">
+          <span>Compre acima de R$199 e ganhe R$10 com cupom PRIMEIRACOMPRA10</span>
+          <span>Receba em casa ou retire na loja</span>
+          <span>Sua primeira compra com desconto</span>
+        </div>
       </div>
 
      <div className="navbar">
