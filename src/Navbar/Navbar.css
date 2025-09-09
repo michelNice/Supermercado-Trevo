@@ -32,42 +32,4 @@ body {
   justify-content: space-between;
 }
 
-.header {
-  width: 100%;
-}
-
-.promo__bar {
-  background: yellow;
-  color: red;
-  overflow: hidden;
-  white-space: nowrap;
-  height: 40px;
-  display: flex;
-  align-items: center;
-}
-
-.promo__track {
-  display: flex;
-  width: max-content;
-  animation: marquee 15s linear infinite;
-}
-
-.promo__content {
-  display: flex;
-}
-
-.promo__content span {
-  margin: 0 50px;
-  font-weight: bold;
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
 /*# sourceMappingURL=Navbar.css.map */
