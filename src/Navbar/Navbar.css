@@ -1,35 +1,102 @@
-:root {
-  --promo-bar: #ff0000;
-  --promo-bar-color:#ffff00;
-  --nav--color:#1d4f91;
+@charset "UTF-8";
+/*.promo__bar {
+  background: #ffea00;
+  color: #c81414;
+  height: 36px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  white-space: nowrap;
 }
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+.promo__track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 15s linear infinite;
 }
 
-body {
-  font-family: "Poppins", sans-serif;
+.promo__track span {
+  display: inline-block;
+  margin-right: 4rem;
+  font-weight: 700;
+  font-size: 1rem;
 }
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); 
+  }
+}
+
+
 
 .promo__bar {
-  font-family: "Poppins", sans-serif;
+  background: #ffea00;
+  color: #c81414;
+  height: 36px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  white-space: nowrap;
 }
 
-.header .promo__bar {
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-  font-weight: fold;
-  color: var(--promo-bar);
-  background: var(--promo-bar-color);
+.promo__track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
 }
-.header .navbar {
-  background: var(--nav--color);
+
+.promo__track span {
+  display: inline-block;
+  margin-right: 4rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+*/
+.promo__bar {
+  background: yellow; /* fundo */
+  color: red; /* cor do texto */
+  height: 36px; /* altura da faixa */
+  overflow: hidden; /* corta o que sai fora */
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap; /* não quebra linha */
+}
+
+.promo__track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite; /* velocidade da rolagem */
+}
+
+.promo__track span {
+  display: inline-block;
+  margin-right: 4rem; /* espaço entre frases */
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /*# sourceMappingURL=Navbar.css.map */
