@@ -1,93 +1,43 @@
-/*.promo__bar {
-  background: #ffea00;
-  color: #c81414;
-  height: 36px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  position: relative;
-  white-space: nowrap;
+:root{
+  --first-color:#FFFF00;
+  --second-color: #ff0000;
+}
+*{
+  padding:0;
+  margin:0;
+  box-sizing: border-box;
 }
 
-.promo__track {
-  display: inline-block;
-  white-space: nowrap;
-  animation: ticker 15s linear infinite;
+body{
+  font-family: 'Roboto', sans-serif;
 }
 
-.promo__track span {
-  display: inline-block;
-  margin-right: 4rem;
-  font-weight: 700;
-  font-size: 1rem;
+.faviecon{
+  font-size: 6rem;
+  width: 100px;
 }
-
-@keyframes ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%); 
-  }
-}
-
-
-
 .promo__bar {
-  background: #ffea00;
-  color: #c81414;
-  height: 36px;
-  overflow: hidden;
+  background:var(--first-color);       
+  color:var(--second-color);               
+  height: 36px;             
+  overflow: hidden;         
   display: flex;
   align-items: center;
-  position: relative;
   white-space: nowrap;
+      
 }
 
 .promo__track {
   display: inline-block;
   white-space: nowrap;
-  animation: ticker 20s linear infinite;
+  animation: ticker 20s linear infinite; 
 }
 
 .promo__track span {
   display: inline-block;
-  margin-right: 4rem;
+  margin-right: 4rem;   
   font-weight: 700;
-  font-size: 1rem;
-}
-
-@keyframes ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-*/
-
-.promo__bar {
-  background: yellow;       /* fundo */
-  color: red;               /* cor do texto */
-  height: 36px;             /* altura da faixa */
-  overflow: hidden;         /* corta o que sai fora */
-  display: flex;
-  align-items: center;
-  white-space: nowrap;      /* não quebra linha */
-}
-
-.promo__track {
-  display: inline-block;
-  white-space: nowrap;
-  animation: ticker 20s linear infinite; /* velocidade da rolagem */
-}
-
-.promo__track span {
-  display: inline-block;
-  margin-right: 4rem;   /* espaço entre frases */
-  font-weight: 700;
-  font-size: 1rem;
+  font-size:.9rem;
 }
 
 @keyframes ticker {
