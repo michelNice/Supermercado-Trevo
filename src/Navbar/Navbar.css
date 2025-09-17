@@ -1,6 +1,8 @@
 :root {
   --first-color:#FFFF00;
   --second-color: #ff0000;
+  --third-color: #fff;
+  --fourth-color:#014a9d;
 }
 
 * {
@@ -48,6 +50,53 @@ body {
   100% {
     transform: translateX(-50%);
   }
+}
+/******************************/
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fourth-color);
+  padding: 10px;
+  color: var(--third-color);
+}
+.navbar .logo {
+  margin: 0 2rem;
+}
+.navbar .actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 3rem;
+}
+.navbar .actions .store {
+  display: flex;
+  align-items: center;
+}
+.navbar .actions .store .icon {
+  margin: 0 0.5rem;
+  font-size: 1.4rem;
+}
+.navbar .search__box {
+  position: relative;
+  width: 800px;
+}
+.navbar .search__box input {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  outline: none;
+  border-radius: 100px;
+}
+.navbar .search__box .icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--fourth-color);
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: 200;
 }
 
 /*# sourceMappingURL=Navbar.css.map */
