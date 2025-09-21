@@ -1,8 +1,8 @@
 :root {
-  --first-color:#FFFF00;
+  --first-color: #FFFF00;
   --second-color: #ff0000;
   --third-color: #fff;
-  --fourth-color:#014a9d;
+  --fourth-color: #014a9d;
 }
 
 * {
@@ -15,11 +15,7 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-.faviecon {
-  font-size: 6rem;
-  width: 100px;
-}
-
+/* ===== PROMO BAR ===== */
 .promo__bar {
   background: var(--first-color);
   color: var(--second-color);
@@ -51,44 +47,56 @@ body {
     transform: translateX(-50%);
   }
 }
-/******************************/
+/* ===== NAVBAR ===== */
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background: var(--fourth-color);
-  padding: 10px;
+  padding: 12px;
   color: var(--third-color);
+  flex-wrap: wrap;
 }
-.navbar .logo {
-  margin: 0 2rem;
+
+.logo {
+  margin: 0 1rem;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
-.navbar .actions {
+
+.actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0 3rem;
+  gap: 1.5rem;
 }
-.navbar .actions .store {
+
+.actions .store {
   display: flex;
   align-items: center;
+  font-size: 0.9rem;
 }
-.navbar .actions .store .icon {
-  margin: 0 0.5rem;
+
+.actions .icon {
+  margin-right: 0.5rem;
   font-size: 1.4rem;
 }
-.navbar .search__box {
+
+.search__box {
   position: relative;
   width: 800px;
+  margin: 0 2rem;
+  flex-grow: 1;
 }
-.navbar .search__box input {
+
+.search__box input {
   width: 100%;
   padding: 15px;
   border: 0;
   outline: none;
   border-radius: 100px;
 }
-.navbar .search__box .icon {
+
+.search__box .icon {
   position: absolute;
   right: 15px;
   top: 50%;
@@ -96,7 +104,44 @@ body {
   color: var(--fourth-color);
   cursor: pointer;
   font-size: 1.3rem;
-  font-weight: 200;
+}
+
+/* Hamburger - hidden on desktop */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.cart .icon {
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .navbar {
+    justify-content: space-between;
+  }
+  .hamburger {
+    display: block;
+  }
+  .logo {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+  }
+  .cart {
+    margin-left: auto;
+  }
+  .search__box {
+    width: 100%;
+    margin-top: 10px;
+    order: 3; /* goes below navbar items */
+  }
+  .actions {
+    display: none; /* hide store + login on mobile */
+  }
 }
 
 /*# sourceMappingURL=Navbar.css.map */

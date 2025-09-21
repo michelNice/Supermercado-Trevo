@@ -1,11 +1,11 @@
 import React from "react";
 import "./Navbar.css";
-import { FaSearch, FaUser, FaShoppingCart, FaStore } from "react-icons/fa";
+import { FaSearch, FaUser, FaShoppingCart, FaStore, FaBars } from "react-icons/fa";
 
 function Navbar() {
   return (
     <header className="header">
-      {/* Barra promocional */}
+      {/* Promo Bar */}
       <div className="promo__bar">
         <div className="promo__track">
           <span>Compre acima de R$199 e ganhe R$10 com cupom PRIMEIRACOMPRA10</span>
@@ -14,18 +14,24 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Navbar principal */}
+      {/* Navbar */}
       <div className="navbar">
-        {/* Logo */}
-        <div className="logo">Logo</div>
+        {/* Hamburger (mobile only) */}
+        <div className="hamburger">
+          <FaBars />
+        </div>
 
-        {/* Caixa de pesquisa */}
+        {/* Logo */}
+        <div className="logo">Arco-Mix</div>
+
+
+        {/* Search Box */}
         <div className="search__box">
           <input type="text" placeholder="O que você precisa?" />
           <FaSearch className="icon" />
         </div>
 
-        {/* Ações */}
+        {/* Actions (desktop only) */}
         <div className="actions">
           <div className="store">
             <FaStore className="icon" />
@@ -42,10 +48,10 @@ function Navbar() {
               ou cadastra-se
             </span>
           </div>
-
+        
+        </div>
           <div className="cart">
-            <FaShoppingCart className="icon" />
-          </div>
+              <FaShoppingCart className="icon" />
         </div>
       </div>
     </header>
@@ -53,4 +59,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
