@@ -11,6 +11,17 @@
   box-sizing: border-box;
 }
 
+.navbar .row {
+  max-width: 1420px; /* controls tightness */
+  margin: 0 auto; /* centers content */
+  padding: 0 1rem; /* side padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 body {
   font-family: "Roboto", sans-serif;
 }
@@ -56,6 +67,9 @@ body {
   padding: 12px;
   color: var(--third-color);
   flex-wrap: wrap;
+  max-width: 100%;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .logo {
@@ -68,6 +82,14 @@ body {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+}
+.actions .actions__address {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.actions .actions__address2 {
+  font-size: 0.8rem;
+  font-weight: 300;
 }
 
 .actions .store {
@@ -83,7 +105,7 @@ body {
 
 .search__box {
   position: relative;
-  width: 800px;
+  width: 100px;
   margin: 0 2rem;
   flex-grow: 1;
 }
@@ -116,6 +138,7 @@ body {
 .cart .icon {
   font-size: 1.6rem;
   cursor: pointer;
+  margin-left: 2rem;
 }
 
 /* ===== MOBILE ===== */

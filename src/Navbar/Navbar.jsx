@@ -16,42 +16,45 @@ function Navbar() {
 
       {/* Navbar */}
       <div className="navbar">
-        {/* Hamburger (mobile only) */}
-        <div className="hamburger">
-          <FaBars />
-        </div>
-
-        {/* Logo */}
-        <div className="logo">Arco-Mix</div>
-
-
-        {/* Search Box */}
-        <div className="search__box">
-          <input type="text" placeholder="O que você precisa?" />
-          <FaSearch className="icon" />
-        </div>
-
-        {/* Actions (desktop only) */}
-        <div className="actions">
-          <div className="store">
-            <FaStore className="icon" />
-            <span>
-              Retirar na loja: <br />
-              Rua Eliza Cabral de Souza
-            </span>
+        <div className="row">
+          {/* Hamburger (mobile only) */}
+          <div className="hamburger">
+            <FaBars />
           </div>
 
-          <div className="store">
-            <FaUser className="icon" />
-            <span>
-              Olá, faça seu login<br />
-              ou cadastra-se
-            </span>
+          {/* Logo */}
+          <div className="logo">Arco-Mix</div>
+
+          {/* Search Box */}
+          <div className="search__box">
+            <input type="text" placeholder="O que você precisa?" />
+            <FaSearch className="icon" />
           </div>
-        
-        </div>
+
+          {/* Actions (desktop only) */}
+          <div className="actions">
+            <div className="store">
+              <FaStore className="icon" />
+              <span>
+                <div className="actions__address">Retirar na loja: <br /></div>
+                <div className="actions__address">Rua Eliza Cabral de Souza</div>
+              </span>
+            </div>
+
+             <div className="store">
+              <FaUser className="icon" />
+              <span>
+                <div className="actions__address">Olá, faça seu login <br /></div>
+                <div className="actions__address">cadastre-se</div>
+              </span>
+            </div>
+            
+          </div>
+
+          {/* Cart */}
           <div className="cart">
-              <FaShoppingCart className="icon" />
+            <FaShoppingCart className="icon" />
+          </div>
         </div>
       </div>
     </header>
