@@ -1,5 +1,6 @@
 import React from "react";
 import "./Navbar.css";
+import trevo from   "../imgs/bebe2.png"
 import { FaSearch, FaUser, FaShoppingCart, FaStore, FaBars } from "react-icons/fa";
 
 function Navbar() {
@@ -22,9 +23,10 @@ function Navbar() {
             <FaBars />
           </div>
 
-          {/* Logo */}
-          <div className="logo">Arco-Mix</div>
-
+       
+          <div className="logo"> <img src={trevo} alt="" /></div>
+         
+         
           {/* Search Box */}
           <div className="search__box">
             <input type="text" placeholder="O que você precisa?" />

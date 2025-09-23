@@ -30,11 +30,17 @@ body {
 .promo__bar {
   background: var(--first-color);
   color: var(--second-color);
-  height: 36px;
+  height: 32px;
   overflow: hidden;
   display: flex;
   align-items: center;
   white-space: nowrap;
+}
+
+.logo img {
+  max-height: 50px; /* scale image to container height */
+  width: auto;      /* maintain aspect ratio */
+  object-fit: contain;
 }
 
 .promo__track {
@@ -143,6 +149,9 @@ body {
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
+  .navbar .row {
+    padding: 0;
+  }
   .navbar {
     justify-content: space-between;
   }
@@ -156,6 +165,9 @@ body {
   }
   .cart {
     margin-left: auto;
+  }
+  .cart .icon {
+    margin-left: 0rem;
   }
   .search__box {
     width: 100%;
