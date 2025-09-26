@@ -22,10 +22,8 @@ function Navbar() {
           <div className="hamburger">
             <FaBars />
           </div>
-
        
           <div className="logo"> <img src={trevo} alt="" /></div>
-         
          
           {/* Search Box */}
           <div className="search__box">
@@ -38,7 +36,7 @@ function Navbar() {
             <div className="store">
               <FaStore className="icon" />
               <span>
-                <div className="actions__address">Retirar na loja: <br /></div>
+                <div className="actions__address2">Retirar na loja: <br /></div>
                 <div className="actions__address">Rua Eliza Cabral de Souza</div>
               </span>
             </div>
@@ -46,8 +44,8 @@ function Navbar() {
              <div className="store">
               <FaUser className="icon" />
               <span>
-                <div className="actions__address">Olá, faça seu login <br /></div>
-                <div className="actions__address">cadastre-se</div>
+                <div className="actions__address2">Olá, faça seu login <br /></div>
+                <div className="actions__address"> ou cadastre-se</div>
               </span>
             </div>
             
@@ -58,6 +56,9 @@ function Navbar() {
             <FaShoppingCart className="icon" />
           </div>
         </div>
+      </div>
+      <div className="category-bar">
+          h
       </div>
     </header>
   );
