@@ -1,4 +1,3 @@
-@charset "UTF-8";
 :root {
   --first-color:#ffcc00;
   --second-color: #ff0000;
@@ -56,7 +55,6 @@ body {
   align-items: center;
   justify-content: space-between;
   background: var(--fourth-color);
-  padding: 0;
   color: var(--third-color);
   flex-wrap: wrap;
   max-width: 100%;
@@ -167,26 +165,10 @@ body {
   }
   .navbar {
     justify-content: space-between;
-    padding: 10px 14px; /* um pouco de azul em cima e embaixo */
-    background: var(--fourth-color); /* azul */
-    position: relative;
+    padding: 10px;
   }
   .hamburger {
     display: block;
-  }
-  .promo__bar {
-    background: var(--first-color); /* amarelo */
-    color: var(--second-color);
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: 1px solid #ffffff;
-    border-bottom: 1px solid #ffffff;
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    margin: 8px 0; /* deixa espaço azul em cima e embaixo */
   }
   .logo {
     flex: 1;
@@ -197,7 +179,7 @@ body {
     align-items: center; /* centers logo vertically */
   }
   .logo img {
-    margin: 0 auto;
+    margin: 0 auto; /* make sure it stays centered */
     max-height: 70px;
   }
   .cart {

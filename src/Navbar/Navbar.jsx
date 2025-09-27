@@ -6,6 +6,7 @@ import { FaSearch, FaUser, FaShoppingCart, FaStore, FaBars } from "react-icons/f
 function Navbar() {
   return (
     <header className="header">
+      
       {/* Promo Bar */}
       <div className="promo__bar">
         <div className="promo__track">
@@ -57,9 +58,7 @@ function Navbar() {
           </div>
         </div>
       </div>
-      <div className="category-bar">
-          h
-      </div>
+      
     </header>
   );
 }
