@@ -6,7 +6,6 @@ import { FaSearch, FaUser, FaShoppingCart, FaStore, FaBars } from "react-icons/f
 function Navbar() {
   return (
     <header className="header">
-      
       {/* Promo Bar */}
       <div className="promo__bar">
         <div className="promo__track">
@@ -15,7 +14,6 @@ function Navbar() {
           <span>Sua primeira compra com desconto</span>
         </div>
       </div>
-
       {/* Navbar */}
       <div className="navbar">
         <div className="row">
