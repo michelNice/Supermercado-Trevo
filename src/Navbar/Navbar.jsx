@@ -1,7 +1,7 @@
 import React from "react";
 import "./Navbar.css";
 import trevo from   "../imgs/bebe2.png"
-import { FaSearch, FaUser, FaShoppingCart, FaStore, FaBars } from "react-icons/fa";
+import { FaSearch, FaUser, FaShoppingCart, FaStore, FaBars,FaTh } from "react-icons/fa";
 
 function Navbar() {
   return (
@@ -56,6 +56,24 @@ function Navbar() {
         </div>
       </div>
       
+
+        <div className="nav__down">
+      <div className="row">
+        <ul className="main__nav">
+          <li className="flex items-center gap-2">
+            <FaTh /> Departamentos
+          </li>
+          <li><a href="#">Mais Vendidos</a></li>
+          <li><a href="#">Ofertas</a></li>
+          <li><a href="#">Combos</a></li>
+          <li><a href="#">Coleções</a></li>
+          <li><a href="#">Dicas e Receitas</a></li>
+          <li><a href="#">Faça seu Cartão</a></li>
+          <li><a href="#">Acesse o App</a></li>
+        </ul>
+      </div>
+    </div>
+     
     </header>
   );
 }

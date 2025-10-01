@@ -71,6 +71,36 @@ body { font-family: 'Roboto', sans-serif;}
   width: 100%;
 }
 
+.row{
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.nav__down{
+  background: #ff0000;
+  border-top:1px solid var(--third-color);
+
+  .main__nav{
+
+    display: flex;
+  justify-content:space-between;
+  align-items: center;
+  padding: 1rem 0;
+
+  }
+
+  .main__nav li{
+    list-style: none;
+  }
+
+  .main__nav li a{
+    text-decoration: none;
+    color: var(--third-color);
+    
+  }
+}
+
 /* ===== LOGO ===== */
 .logo {
   height: 80px;              
