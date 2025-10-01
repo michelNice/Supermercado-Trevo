@@ -47,7 +47,6 @@ function Navbar() {
                 <div className="actions__address"> ou cadastre-se</div>
               </span>
             </div>
-            
           </div>
 
           {/* Cart */}
