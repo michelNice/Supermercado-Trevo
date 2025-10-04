@@ -1,7 +1,16 @@
 import React from "react";
 import "./Navbar.css";
-import trevo from   "../imgs/bebe2.png"
-import { FaSearch, FaUser, FaShoppingCart, FaStore, FaBars,FaTh } from "react-icons/fa";
+import trevo from "../imgs/bebe2.png";
+
+import {
+  FaSearch,
+  FaUser,
+  FaShoppingCart,
+  FaStore,
+  FaBars,
+  FaTh,
+  FaChevronDown,
+} from "react-icons/fa";
 
 function Navbar() {
   return (
@@ -14,6 +23,7 @@ function Navbar() {
           <span>Sua primeira compra com desconto</span>
         </div>
       </div>
+
       {/* Navbar */}
       <div className="navbar">
         <div className="row">
@@ -21,13 +31,18 @@ function Navbar() {
           <div className="hamburger">
             <FaBars />
           </div>
-       
-          <div className="logo"> <img src={trevo} alt="" /></div>
-         
+
+          <div className="logo">
+            <img src={trevo} alt="Trevo" />
+          </div>
+
           {/* Search Box */}
           <div className="search__box">
             <input type="text" placeholder="O que você precisa?" />
             <FaSearch className="icon" />
+
+           
+
           </div>
 
           {/* Actions (desktop only) */}
@@ -40,7 +55,7 @@ function Navbar() {
               </span>
             </div>
 
-             <div className="store">
+            <div className="store">
               <FaUser className="icon" />
               <span>
                 <div className="actions__address2">Olá, faça seu login <br /></div>
@@ -55,25 +70,27 @@ function Navbar() {
           </div>
         </div>
       </div>
-      
 
-        <div className="nav__down">
-      <div className="row">
-        <ul className="main__nav">
-          <li className="flex items-center gap-2">
-            <FaTh /> Departamentos
-          </li>
-          <li><a href="#">Mais Vendidos</a></li>
-          <li><a href="#">Ofertas</a></li>
-          <li><a href="#">Combos</a></li>
-          <li><a href="#">Coleções</a></li>
-          <li><a href="#">Dicas e Receitas</a></li>
-          <li><a href="#">Faça seu Cartão</a></li>
-          <li><a href="#">Acesse o App</a></li>
-        </ul>
+      {/* Nav Down */}
+      <div className="nav__down">
+        <div className="row">
+          <ul className="main__nav">
+            <li className="departamentos">
+              <FaTh className="fath"/>
+              <span>Departamentos</span>
+              <FaChevronDown className="chevron" />
+            </li>
+            <div className="divider"></div>
+            <li><a href="#">Mais Vendidos</a></li>
+            <li><a href="#">Ofertas</a></li>
+            <li><a href="#">Combos</a></li>
+            <li><a href="#">Coleções</a></li>
+            <li><a href="#">Dicas e Receitas</a></li>
+            <li><a href="#">Faça seu Cartão</a></li>
+            <li><a href="#">Acesse o App</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-     
     </header>
   );
 }

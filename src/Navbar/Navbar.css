@@ -5,6 +5,10 @@
   --fourth-color:#004d26;
 }
 
+body {
+  height: 200vh;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -19,7 +23,7 @@ body {
 .promo__bar {
   background: var(--first-color);
   color: var(--second-color);
-  height: 32px;
+  height: 25px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -59,6 +63,9 @@ body {
   flex-wrap: wrap;
   max-width: 100%;
   margin: 0 auto;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0px;
   width: 100%;
 }
 
@@ -80,21 +87,58 @@ body {
 }
 
 .nav__down {
-  background: #ff0000;
+  background: #e30613;
   border-top: 1px solid var(--third-color);
 }
+
 .nav__down .main__nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
   padding: 1rem 0;
+  margin: 0;
 }
+
 .nav__down .main__nav li {
   list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--third-color);
+  cursor: pointer;
 }
+
 .nav__down .main__nav li a {
   text-decoration: none;
   color: var(--third-color);
+  transition: 0.2s;
+  font-size: 0.9rem;
+}
+
+.nav__down .main__nav li a:hover {
+  opacity: 0.8;
+}
+
+.nav__down .main__nav li.departamentos {
+  font-weight: 700;
+  padding-right: 2rem;
+}
+
+.nav__down .main__nav li .chevron {
+  font-size: 0.8rem;
+}
+
+.nav__down .main__nav li .fath {
+  margin-right: 0.6rem;
+}
+
+.nav__down .main__nav .divider {
+  width: 1px;
+  height: 20px;
+  background: var(--third-color);
+  margin: 0 1rem;
 }
 
 /* ===== LOGO ===== */
@@ -220,5 +264,6 @@ body {
     display: none; /* hide store + login on mobile */
   }
 }
+
 
 /*# sourceMappingURL=Navbar.css.map */

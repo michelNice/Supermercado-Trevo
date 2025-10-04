@@ -1,8 +1,12 @@
 :root {
   --first-color:#ffcc00;
   --second-color: #ff0000;
-  --third-color:  #ffffff;
+  --third-color: #ffffff;
   --fourth-color:#004d26;
+}
+
+body {
+  height: 200vh;
 }
 
 * {
@@ -11,22 +15,21 @@
   box-sizing: border-box;
 }
 
-body { font-family: 'Roboto', sans-serif;}
+body {
+  font-family: "Roboto", sans-serif;
+}
 
 /* ===== PROMO BAR ===== */
-
-
 .promo__bar {
   background: var(--first-color);
   color: var(--second-color);
-  height: 32px;
+  height: 25px;
   overflow: hidden;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  border-top:1px solid #ffffff;
+  border-top: 1px solid #ffffff;
   border-bottom: solid 1px #ffffff;
-
 }
 
 .promo__track {
@@ -39,14 +42,17 @@ body { font-family: 'Roboto', sans-serif;}
   display: inline-block;
   margin-right: 4rem;
   font-weight: 700;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 @keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
-
 /* ===== NAVBAR ===== */
 .navbar {
   display: flex;
@@ -56,7 +62,12 @@ body { font-family: 'Roboto', sans-serif;}
   color: var(--third-color);
   flex-wrap: wrap;
   max-width: 100%;
-  margin: 0 auto;  
+  margin: 0 auto;
+
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0px;
+  
   width: 100%;
 }
 
@@ -71,46 +82,78 @@ body { font-family: 'Roboto', sans-serif;}
   width: 100%;
 }
 
-.row{
+.row {
   max-width: 1420px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-.nav__down{
-  background: #ff0000;
-  border-top:1px solid var(--third-color);
+.nav__down {
+  background: #e30613;
+  border-top: 1px solid var(--third-color);
+  
+}
 
-  .main__nav{
-
-    display: flex;
-  justify-content:space-between;
+.nav__down .main__nav {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
   padding: 1rem 0;
+  margin: 0;
+}
 
-  }
+.nav__down .main__nav li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--third-color);
+  cursor: pointer;
+}
 
-  .main__nav li{
-    list-style: none;
-  }
+.nav__down .main__nav li a {
+  text-decoration: none;
+  color: var(--third-color);
+  transition: 0.2s;
+  font-size: 0.9rem;
+}
 
-  .main__nav li a{
-    text-decoration: none;
-    color: var(--third-color);
-    
-  }
+.nav__down .main__nav li a:hover {
+  opacity: 0.8;
+}
+
+.nav__down .main__nav li.departamentos {
+  font-weight: 700;
+  padding-right: 2rem;
+}
+
+.nav__down .main__nav li .chevron {
+  font-size: 0.8rem;
+}
+
+.nav__down .main__nav li .fath {
+  margin-right: 0.6rem;
+}
+
+.nav__down .main__nav .divider {
+  width: 1px;
+  height: 20px;
+  background: var(--third-color);
+  margin: 0 1rem;
 }
 
 /* ===== LOGO ===== */
 .logo {
-  height: 80px;              
+  height: 80px;
   display: flex;
   align-items: center;
   margin: 0 1rem;
 }
 
 .logo img {
-  max-height: 120px;        
+  max-height: 120px;
   width: auto;
   object-fit: contain;
 }
@@ -155,17 +198,17 @@ body { font-family: 'Roboto', sans-serif;}
 }
 
 .actions .icon {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
   font-size: 1.4rem;
 }
 
 .actions .actions__address {
-  font-size:14px;
+  font-size: 14px;
   font-weight: 600;
 }
 
 .actions .actions__address2 {
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 300;
 }
 
@@ -182,54 +225,48 @@ body { font-family: 'Roboto', sans-serif;}
   cursor: pointer;
 }
 
-.category-bar{
+.category-bar {
   background: red;
 }
-
 
 @media (max-width: 768px) {
   .navbar .row {
     padding: 0;
   }
-
   .navbar {
     justify-content: space-between;
-    padding:10px;
+    padding: 10px;
   }
-
   .hamburger {
     display: block;
   }
-
   .logo {
     flex: 1;
     text-align: center;
     margin: 0;
     display: flex;
     justify-content: center; /* centers logo horizontally */
-    align-items: center;     /* centers logo vertically */
+    align-items: center; /* centers logo vertically */
   }
-
   .logo img {
     margin: 0 auto; /* make sure it stays centered */
-    max-height:70px;
+    max-height: 70px;
   }
-
   .cart {
     margin-left: auto;
   }
-
   .cart .icon {
     margin-left: 0rem;
   }
-
   .search__box {
     width: 100%;
     margin-top: 10px;
     order: 3; /* goes below navbar items */
   }
-
   .actions {
     display: none; /* hide store + login on mobile */
   }
 }
+
+
+/*# sourceMappingURL=Navbar.scss.map */
