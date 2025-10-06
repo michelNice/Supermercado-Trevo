@@ -5,10 +5,6 @@
   --fourth-color:#004d26;
 }
 
-body {
-  height: 200vh;
-}
-
 * {
   padding: 0;
   margin: 0;
@@ -17,6 +13,7 @@ body {
 
 body {
   font-family: "Roboto", sans-serif;
+  height: 200vh;
 }
 
 /* ===== PROMO BAR ===== */

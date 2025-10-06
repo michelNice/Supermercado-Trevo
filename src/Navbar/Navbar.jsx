@@ -1,7 +1,6 @@
 import React from "react";
 import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
-
 import {
   FaSearch,
   FaUser,

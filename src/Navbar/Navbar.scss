@@ -5,9 +5,7 @@
   --fourth-color:#004d26;
 }
 
-body {
-  height: 200vh;
-}
+
 
 * {
   padding: 0;
@@ -63,7 +61,6 @@ body {
   flex-wrap: wrap;
   max-width: 100%;
   margin: 0 auto;
-
     position: sticky;
     position: -webkit-sticky;
     top: 0px;
