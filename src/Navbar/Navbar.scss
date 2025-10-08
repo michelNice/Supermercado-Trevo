@@ -1,11 +1,9 @@
 :root {
-  --first-color:#ffcc00;
-  --second-color: #ff0000;
-  --third-color: #ffffff;
-  --fourth-color:#004d26;
+  --color-primary:#ffcc00;
+  --color-secondary: #ff0000;
+  --color-light: #ffffff;
+  --color-dark:#004d26;
 }
-
-
 
 * {
   padding: 0;
@@ -15,19 +13,53 @@
 
 body {
   font-family: "Roboto", sans-serif;
+  height: 200vh;
+}
+.row {
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* ===== PROMO BAR ===== */
+@mixin flex($justify:center,$align:center,$gap:0){
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  gap:$gap;
+}
+
+
+@mixin container($max-width:1240px,$padding:0 1rem){
+  max-width: $max-width;
+  margin-inline:auto;
+  padding: $padding;
+}
+
+
+@mixin icon($size:1.4rem,$margin:0){
+  font-size:$size;
+  margin: $margin;
+}
+
+@mixin round-button($radius:100px){
+  border-radius: $radius;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/****************************/
+
+/****************************/
 .promo__bar {
-  background: var(--first-color);
-  color: var(--second-color);
+  background: var(--color-primary);
+  color: var(--color-secondary);
   height: 25px;
   overflow: hidden;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  border-top: 1px solid #ffffff;
-  border-bottom: solid 1px #ffffff;
+  border-top: 1px solid var(--color-light);
+  border-bottom: solid 1px var(--color-light);
 }
 
 .promo__track {
@@ -44,27 +76,27 @@ body {
 }
 
 @keyframes ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+
+  0% {transform: translateX(0);}
+
+  100% { transform: translateX(-50%);}
 }
-/* ===== NAVBAR ===== */
+
+/****************************/
+
+/****************************/
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--fourth-color);
-  color: var(--third-color);
+  background: var(--color-dark);
+  color: var(--color-light);
   flex-wrap: wrap;
   max-width: 100%;
   margin: 0 auto;
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0px;
-  
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
   width: 100%;
 }
 
@@ -79,16 +111,13 @@ body {
   width: 100%;
 }
 
-.row {
-  max-width: 1420px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
+/****************************/
+
+/****************************/
 
 .nav__down {
   background: #e30613;
-  border-top: 1px solid var(--third-color);
-  
+  border-top: 1px solid var(--color-light);
 }
 
 .nav__down .main__nav {
@@ -106,13 +135,13 @@ body {
   align-items: center;
   gap: 6px;
   font-weight: 500;
-  color: var(--third-color);
+  color: var(--color-light);
   cursor: pointer;
 }
 
 .nav__down .main__nav li a {
   text-decoration: none;
-  color: var(--third-color);
+  color: var(--color-light);
   transition: 0.2s;
   font-size: 0.9rem;
 }
@@ -223,7 +252,7 @@ body {
 }
 
 .category-bar {
-  background: red;
+  background:var(--second-color);
 }
 
 @media (max-width: 768px) {
@@ -242,11 +271,11 @@ body {
     text-align: center;
     margin: 0;
     display: flex;
-    justify-content: center; /* centers logo horizontally */
-    align-items: center; /* centers logo vertically */
+    justify-content: center; 
+    align-items: center; 
   }
   .logo img {
-    margin: 0 auto; /* make sure it stays centered */
+    margin: 0 auto; 
     max-height: 70px;
   }
   .cart {
@@ -258,12 +287,12 @@ body {
   .search__box {
     width: 100%;
     margin-top: 10px;
-    order: 3; /* goes below navbar items */
+    order: 3; 
   }
   .actions {
-    display: none; /* hide store + login on mobile */
+    display: none; 
   }
 }
 
 
-/*# sourceMappingURL=Navbar.scss.map */
+
