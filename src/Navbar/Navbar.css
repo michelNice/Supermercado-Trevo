@@ -1,10 +1,14 @@
+/****************************/
+/* SETTING UP               */
+/****************************/
 :root {
-  --color-primary:#ffcc00;
+  --color-primary: #ffcc00;
   --color-secondary: #ff0000;
   --color-light: #ffffff;
-  --color-dark:#004d26;
+  --color-dark: #004d26;
 }
 
+/* RESET */
 * {
   padding: 0;
   margin: 0;
@@ -16,24 +20,33 @@ body {
   height: 200vh;
 }
 
+/****************************/
+/* MIXINS               */
+/****************************/
+/****************************/
+/* ROW              */
+/****************************/
 .row {
-  max-width: 1420px;
-  margin: 0 auto;
+  max-width: 84.5rem;
+  margin-inline: auto;
   padding: 0 1rem;
 }
 
 /****************************/
+/* PROMO BAR              */
 /****************************/
 .promo__bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
   background: var(--color-primary);
   color: var(--color-secondary);
   height: 25px;
   overflow: hidden;
-  display: flex;
-  align-items: center;
   white-space: nowrap;
   border-top: 1px solid var(--color-light);
-  border-bottom: solid 1px var(--color-light);
+  border-bottom: 1px solid var(--color-light);
 }
 
 .promo__track {
@@ -58,34 +71,35 @@ body {
   }
 }
 /****************************/
+/* NAVBAR              */
 /****************************/
 .navbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  gap: 0;
   background: var(--color-dark);
   color: var(--color-light);
   flex-wrap: wrap;
-  max-width: 100%;
-  margin: 0 auto;
   position: sticky;
-  position: -webkit-sticky;
   top: 0;
   width: 100%;
 }
 
 .navbar .row {
-  max-width: 1420px;
-  margin: 0 auto;
-  padding: 0 1rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  gap: 0;
+  max-width: 1420px;
+  margin-inline: auto;
+  padding: 0 1rem;
   flex-wrap: wrap;
   width: 100%;
 }
 
 /****************************/
+/*NAV DOWN         */
 /****************************/
 .nav__down {
   background: #e30613;
@@ -94,18 +108,19 @@ body {
 
 .nav__down .main__nav {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   gap: 2rem;
   padding: 1rem 0;
   margin: 0;
 }
 
 .nav__down .main__nav li {
-  list-style: none;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 6px;
+  list-style: none;
   font-weight: 500;
   color: var(--color-light);
   cursor: pointer;
@@ -117,7 +132,6 @@ body {
   transition: 0.2s;
   font-size: 0.9rem;
 }
-
 .nav__down .main__nav li a:hover {
   opacity: 0.8;
 }
@@ -129,6 +143,7 @@ body {
 
 .nav__down .main__nav li .chevron {
   font-size: 0.8rem;
+  margin: 0;
 }
 
 .nav__down .main__nav li .fath {
@@ -138,15 +153,19 @@ body {
 .nav__down .main__nav .divider {
   width: 1px;
   height: 20px;
-  background: var(--third-color);
+  background: var(--color-light);
   margin: 0 1rem;
 }
 
-/* ===== LOGO ===== */
+/****************************/
+/* LOGO              */
+/****************************/
 .logo {
-  height: 80px;
   display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 0;
+  height: 80px;
   margin: 0 1rem;
 }
 
@@ -156,7 +175,9 @@ body {
   object-fit: contain;
 }
 
-/* ===== SEARCH BOX ===== */
+/****************************/
+/* SEACHER              */
+/****************************/
 .search__box {
   position: relative;
   width: 100px;
@@ -170,6 +191,8 @@ body {
   border: 0;
   outline: none;
   border-radius: 100px;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .search__box .icon {
@@ -177,27 +200,32 @@ body {
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--fourth-color);
   cursor: pointer;
   font-size: 1.3rem;
+  margin: 0;
 }
 
-/* ===== ACTIONS ===== */
+/****************************/
+/* ACTIONS              */
+/****************************/
 .actions {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 1.5rem;
 }
 
 .actions .store {
   display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 0;
   font-size: 0.9rem;
 }
 
 .actions .icon {
-  margin-right: 0.5rem;
   font-size: 1.4rem;
+  margin: 0 0.5rem 0 0;
 }
 
 .actions .actions__address {
@@ -212,22 +240,31 @@ body {
 
 .cart .icon {
   font-size: 1.6rem;
+  margin: 0 0 0 2rem;
   cursor: pointer;
-  margin-left: 2rem;
 }
 
-/* ===== HAMBURGER ===== */
+/****************************/
+/* HAMBUGER            */
+/****************************/
 .hamburger {
   display: none;
   font-size: 2rem;
+  margin: 0;
   cursor: pointer;
 }
 
+/****************************/
+/*CATEGORY BAR              */
+/****************************/
 .category-bar {
   background: var(--second-color);
 }
 
-@media (max-width: 768px) {
+/****************************/
+/* RESPONSIVE             */
+/****************************/
+@media (max-width: 48rem) {
   .navbar .row {
     padding: 0;
   }
@@ -240,11 +277,11 @@ body {
   }
   .logo {
     flex: 1;
-    text-align: center;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 0;
   }
   .logo img {
     margin: 0 auto;
@@ -254,7 +291,7 @@ body {
     margin-left: auto;
   }
   .cart .icon {
-    margin-left: 0rem;
+    margin-left: 0;
   }
   .search__box {
     width: 100%;
