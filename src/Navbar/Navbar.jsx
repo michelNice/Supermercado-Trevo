@@ -38,7 +38,7 @@ function Navbar() {
           {/* Search Box */}
           <div className="search__box">
             <input type="text" placeholder="O que você precisa?" />
-            <FaSearch className="icon" />
+            <FaSearch className="icon seacher" />
 
            
 
@@ -90,6 +90,7 @@ function Navbar() {
           </ul>
         </div>
       </div>
+    
     </header>
   );
 }

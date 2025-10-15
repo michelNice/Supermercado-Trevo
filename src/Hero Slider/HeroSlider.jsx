@@ -1,0 +1,41 @@
+import './HeroSlider.css';
+import 'swiper/css'
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import {Swiper, SwiperSlide} from  'swiper/react';
+import { Navigation,Pagination,Autoplay } from 'swiper/modules';
+
+import imgSlider1 from '../Hero Slider/test1.png';
+import imgSlider2 from '../Hero Slider/test2.png';
+import imgSlider3 from '../Hero Slider/test2.png';
+
+
+
+function HeroSlider(){
+
+    return(
+        <>
+        <section className='hero'>
+            <Swiper 
+                modules={[Navigation]}
+                navigation
+                loop={true}
+                className='mySwiper' // <- O ">" fecha a abertura aqui
+            >
+                <SwiperSlide>
+                    <img src={imgSlider1} alt="Slide 1" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src={imgSlider2} alt="Slide 2" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src={imgSlider3} alt="Slide 3" />
+                </SwiperSlide>
+            </Swiper>
+        </section>
+        </>
+
+    );
+}
+
+export default  HeroSlider;

@@ -8,7 +8,6 @@
   --color-dark: #004d26;
 }
 
-/* RESET */
 * {
   padding: 0;
   margin: 0;
@@ -96,6 +95,10 @@ body {
   padding: 0 1rem;
   flex-wrap: wrap;
   width: 100%;
+}
+
+.seacher {
+  color: var(--color-dark);
 }
 
 /****************************/
@@ -296,9 +299,17 @@ body {
   .search__box {
     width: 100%;
     margin-top: 10px;
-    order: 3;
+    order: 2;
+    margin: 0 0rem;
+  }
+  .search__box input {
+    width: 100%;
   }
   .actions {
+    order: 3;
+    padding: 1rem 0;
+  }
+  .actions .store:nth-child(2) {
     display: none;
   }
 }
