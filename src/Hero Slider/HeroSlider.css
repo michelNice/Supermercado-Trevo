@@ -1,0 +1,63 @@
+.custom-pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.custom-pagination .swiper-pagination-bullet {
+    width:35px;
+    height: 4px;
+    border-radius: 10px;
+    background: #ccc;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+.custom-pagination .swiper-pagination-bullet-active {
+  background: red; /* amarelo estilo Arco-Mix */
+  width: 55px; /* um pouco maior para criar movimento */
+}
+
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 5px;
+  height: 5px;
+  background-color: #fff5c2; /* amarelo bem claro */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff0000; /* seta vermelha */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-size: 5px;
+}
+
+/* Remover ícone padrão do Swiper e usar o símbolo “<” e “>” */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 8px;
+  font-weight: bold;
+  width: 5px;
+  height: 5px;
+}
+
+/* Efeito hover — mesma vibe do Arco-Mix */
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: #ffcc00;
+  color: #fff;
+  transform: scale(1.05);
+  
+}
+
+/* Posicionamento */
+.swiper-button-prev {
+  left: 10px;
+}
+
+.swiper-button-next {
+  right: 10px;
+}

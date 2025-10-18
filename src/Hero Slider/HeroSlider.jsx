@@ -10,15 +10,16 @@ import imgSlider2 from '../Hero Slider/test2.png';
 import imgSlider3 from '../Hero Slider/test2.png';
 
 
-
 function HeroSlider(){
 
     return(
         <>
         <section className='hero'>
             <Swiper 
-                modules={[Navigation]}
+                modules={[Navigation,Pagination,Autoplay]}
                 navigation
+                pagination={{clickable:true,el:".custom-pagination"}}
+                autoplay={{delay:4000,disableOnInteraction: false}}
                 loop={true}
                 className='mySwiper' // <- O ">" fecha a abertura aqui
             >
@@ -31,7 +32,15 @@ function HeroSlider(){
                 <SwiperSlide>
                     <img src={imgSlider3} alt="Slide 3" />
                 </SwiperSlide>
+                <SwiperSlide>
+                    <img src={imgSlider3} alt="Slide 3" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src={imgSlider3} alt="Slide 3" />
+                </SwiperSlide>
             </Swiper>
+
+             <div className="custom-pagination mt-2 flex justify-center gap-2"></div>
         </section>
         </>
 
