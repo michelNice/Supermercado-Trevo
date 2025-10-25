@@ -269,6 +269,10 @@ body {
 /* RESPONSIVE             */
 /****************************/
 @media (max-width: 48rem) {
+   .nav__down {
+    display: none;
+  }
+
   .navbar .row {
     padding: 0;
   }
@@ -316,4 +320,4 @@ body {
 }
 
 
-/*# sourceMappingURL=Navbar.scss.map */
+

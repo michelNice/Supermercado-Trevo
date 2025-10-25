@@ -16,7 +16,7 @@
 
 body {
   font-family: "Roboto", sans-serif;
-  height: 150vh;
+
 }
 
 /****************************/
@@ -269,6 +269,9 @@ body {
 /* RESPONSIVE             */
 /****************************/
 @media (max-width: 48rem) {
+  .nav__down {
+    display: none;
+  }
   .navbar .row {
     padding: 0;
   }
@@ -314,6 +317,5 @@ body {
     display: none;
   }
 }
-
 
 /*# sourceMappingURL=Navbar.css.map */

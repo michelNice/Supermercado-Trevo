@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
+import NavMobile from './NavMobile';
 import {
   FaSearch,
   FaUser,
@@ -12,6 +13,8 @@ import {
 } from "react-icons/fa";
 
 function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header className="header">
       {/* Promo Bar */}
@@ -27,7 +30,7 @@ function Navbar() {
       <div className="navbar">
         <div className="row">
           {/* Hamburger (mobile only) */}
-          <div className="hamburger">
+          <div className="hamburger" onClick={() => setMenuOpen(true)}>
             <FaBars />
           </div>
 
@@ -39,9 +42,6 @@ function Navbar() {
           <div className="search__box">
             <input type="text" placeholder="O que você precisa?" />
             <FaSearch className="icon seacher" />
-
-           
-
           </div>
 
           {/* Actions (desktop only) */}
@@ -75,7 +75,7 @@ function Navbar() {
         <div className="row">
           <ul className="main__nav">
             <li className="departamentos">
-              <FaTh className="fath"/>
+              <FaTh className="fath" />
               <span>Departamentos</span>
               <FaChevronDown className="chevron" />
             </li>
@@ -90,7 +90,12 @@ function Navbar() {
           </ul>
         </div>
       </div>
-    
+
+      {/* Menu Mobile */}
+      <NavMobile menuOpen={menuOpen} closeMenu={() => setMenuOpen(false)} />
+
+      {/* Overlay (fecha ao clicar fora) */}
+      {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)}></div>}
     </header>
   );
 }
