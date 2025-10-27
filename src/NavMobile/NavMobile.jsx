@@ -32,17 +32,10 @@ function NavMobile({ menuOpen, closeMenu }) {
             <p>Entre ou cadastre-se</p>
           </div>
         </div>
-
         {/* Logo */}
         <div className="mobile__logo">
           <img src={trevo} alt="Logo Trevo" />
         </div>
-
-        {/* Search */}
-        <div className="mobile__search">
-        
-        </div>
-
         {/* Menu Links */}
         <ul className="mobile__nav">
           <li>

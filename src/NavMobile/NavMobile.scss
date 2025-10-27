@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* =============== MOBILE MENU =============== */
 .mobile__header {
   position: relative;
@@ -37,7 +36,7 @@
   color: #fff;
 }
 
-.mobile_user {
+.mobile_user{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,7 +50,7 @@
 }
 
 .mobile__user span {
-  color: #ee7104;
+  color:#ee7104;
 }
 
 .mobile__user p {
@@ -96,12 +95,14 @@
   align-items: center;
   gap: 10px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
+
+
 
 .mobile__nav li .icon {
   font-size: 1.2rem;
-  color: #ee7104;
+  color:#ee7104;
 }
 
 .mobile__nav li a {
@@ -111,12 +112,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 
 /* Divisor */
 .mobile__divider {
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255,255,255,0.2);
   margin: 15px 0;
 }
 
@@ -135,7 +137,7 @@
 }
 
 .mobile__item .icon {
-  color: #ee7104;
+  color:#ee7104;
   font-size: 1.2rem;
 }
 
@@ -146,35 +148,36 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.6);
   z-index: 998;
 }
 
-.mobile__button {
+.mobile__button{
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
   background: transparent;
 }
 
-.mobile__button button {
+.mobile__button button{
   padding: 14px;
   border-radius: 5px;
   margin: 10px 0;
-  background: transparent;
-  border: 1px solid #ee7104;
-  color: #fff;
+   background: transparent;
+   border: 1px solid #ee7104;
+   color: #fff;
 }
 
-.mobile__button button:nth-child(2) {
+.mobile__button button:nth-child(2){
   background: #ee7104;
+  
 }
 
 /* Texto interno do item (estilo Mix) */
 .mobile__nav li .text {
   display: flex;
   flex-direction: column;
-  margin: 0 1rem;
+  margin:0 1rem;
 }
 
 .mobile__nav li .text span {
@@ -190,5 +193,3 @@
   margin-top: 3px;
   text-transform: lowercase;
 }
-
-/*# sourceMappingURL=NavMobile.css.map */

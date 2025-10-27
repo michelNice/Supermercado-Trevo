@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
-import NavMobile from './NavMobile';
+import NavMobile from '../NavMobile/NavMobile';
 import {
   FaSearch,
   FaUser,
