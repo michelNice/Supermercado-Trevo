@@ -11,7 +11,9 @@ import {
   FaStore,
   FaUser,
   FaShoppingCart,
-  FaArrowLeft
+  FaArrowLeft,
+  FaThLarge,
+  FaEnvelope
 } from "react-icons/fa";
 import trevo from "../imgs/bebe2.png";
 import "./NavMobile.css";
@@ -44,35 +46,85 @@ function NavMobile({ menuOpen, closeMenu }) {
         {/* Menu Links */}
         <ul className="mobile__nav">
           <li>
-            <FaHome className="icon" /> <a href="#">Início</a>
+              <a href="#">
+                  <FaHome className="icon" />
+                  <div className="text">
+                    <span>Início</span>
+                    <p>Acesse nossa loja</p>
+                  </div>
+              </a>
           </li>
           <li>
-            <FaGift className="icon" /> <a href="#">Ofertas</a>
+              <a href="#">
+                  <FaThLarge className="icon" />
+                  <div className="text">
+                      <span>Departamentos</span>
+                      <p>Produtos separados por departamentos</p>
+                  </div>
+              </a>
           </li>
           <li>
-            <FaTag className="icon" /> <a href="#">Combos</a>
+              <a href="#">
+                  <FaGift className="icon" />
+                  <div className="text">
+                       <span>Combos</span>
+                      <p>Combos de produtos</p>
+                  </div>
+              </a>
           </li>
           <li>
-            <FaLeaf className="icon" /> <a href="#">Coleções</a>
+            <a href="#">
+                <FaTag className="icon" />
+                <div className="text">
+                    <span>Ofertas</span>
+                    <p>Descontos imperdíveis para você</p>
+                </div>
+            </a>
           </li>
           <li>
-            <FaUtensils className="icon" /> <a href="#">Dicas e Receitas</a>
+              <a href="#">
+                  <FaLeaf className="icon" />
+                  <div className="text">
+                     <span>Coleções</span>
+                    <p>Produtos veganos, fitness e muito mais</p>
+                  </div>
+              </a>
           </li>
           <li>
-            <FaInfoCircle className="icon" /> <a href="#">Sobre</a>
+              <a href="#">
+                <FaUtensils className="icon"/>
+                <div className="text">
+                  <span>Receitas</span>
+                  <p>Aprenda a fazer as melhores receitas</p>
+                </div>
+              </a>
           </li>
           <li>
-            <FaFileAlt className="icon" /> <a href="#">Faça seu Cartão</a>
+          <a href="#">
+            <FaEnvelope className="icon" />
+            <div className="text">
+              <span>Fale Conosco</span>
+              <p>Entre em contato com nosso time</p>
+            </div>
+          </a>
           </li>
           <li>
-              <FaStore className="icon" /> <a href="#">Retirar na loja</a>
+              <a href="#">
+                  <FaInfoCircle  className="icon"/>
+                  <div className="text">
+                    <span>Institucional</span>
+                    <p>Saiba um pouco mais sobre nós</p>
+                  </div>
+              </a>
           </li>
           <li>
-              <FaUser className="icon" /><a href="#">Minha Conta</a>
-          </li>
-
-          <li>
-              <a href="#"><FaUser className="icon" /><span>Inicio</span><p>Acesse nossa loja</p></a>
+              <a href="#">
+                  <FaFileAlt className="icon" />
+                  <div className="text">
+                          <span>Termos de Uso</span>
+                        <p>Confira nossos termos de uso</p>
+                  </div>
+              </a>
           </li>
           
         </ul>

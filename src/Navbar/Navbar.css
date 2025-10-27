@@ -16,7 +16,10 @@
 
 body {
   font-family: "Roboto", sans-serif;
+}
 
+a {
+  text-decoration: none;
 }
 
 /****************************/
@@ -205,13 +208,20 @@ body {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   margin: 0;
 }
 
 /****************************/
 /* ACTIONS              */
 /****************************/
+.actions .store .arrow {
+  font-size: 0.8rem;
+  margin-left: 6px;
+  transition: transform 0.2s ease;
+  color: var(--color-light);
+}
+
 .actions {
   display: flex;
   justify-content: center;
@@ -225,10 +235,11 @@ body {
   align-items: center;
   gap: 0;
   font-size: 0.9rem;
+  color: var(--color-light);
 }
 
 .actions .icon {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   margin: 0 0.5rem 0 0;
 }
 
@@ -243,9 +254,10 @@ body {
 }
 
 .cart .icon {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   margin: 0 0 0 2rem;
   cursor: pointer;
+  color: var(--color-light);
 }
 
 /****************************/
@@ -253,7 +265,7 @@ body {
 /****************************/
 .hamburger {
   display: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 0;
   cursor: pointer;
 }
@@ -315,6 +327,9 @@ body {
   }
   .actions .store:nth-child(2) {
     display: none;
+  }
+  .arrow {
+    transform: rotate(-90deg);
   }
 }
 

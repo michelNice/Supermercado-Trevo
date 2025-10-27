@@ -98,6 +98,8 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
+
+
 .mobile__nav li .icon {
   font-size: 1.2rem;
   color:#ee7104;
@@ -107,6 +109,10 @@
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 /* Divisor */
@@ -165,4 +171,27 @@
 .mobile__button button:nth-child(2){
   background: #ee7104;
   
+}
+
+
+
+/* Texto interno do item (estilo Mix) */
+.mobile__nav li .text {
+  display: flex;
+  flex-direction: column;
+  margin:0 1rem;
+}
+
+.mobile__nav li .text span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff; /* título branco */
+  text-transform: capitalize;
+}
+
+.mobile__nav li .text p {
+  font-size: 0.85rem;
+  color: #ccc; /* descrição cinza clara */
+  margin-top: 3px;
+  text-transform: lowercase;
 }

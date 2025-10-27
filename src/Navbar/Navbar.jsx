@@ -12,6 +12,8 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
+
+
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -27,16 +29,16 @@ function Navbar() {
       </div>
 
       {/* Navbar */}
-      <div className="navbar">
+      <nav className="navbar">
         <div className="row">
           {/* Hamburger (mobile only) */}
           <div className="hamburger" onClick={() => setMenuOpen(true)}>
             <FaBars />
           </div>
 
-          <div className="logo">
+          <a className="logo" href="/">
             <img src={trevo} alt="Trevo" />
-          </div>
+          </a>
 
           {/* Search Box */}
           <div className="search__box">
@@ -46,29 +48,30 @@ function Navbar() {
 
           {/* Actions (desktop only) */}
           <div className="actions">
-            <div className="store">
-              <FaStore className="icon" />
-              <span>
-                <div className="actions__address2">Retirar na loja: <br /></div>
-                <div className="actions__address">Rua Eliza Cabral de Souza</div>
-              </span>
-            </div>
+            <a className="store" href="/">
+                <FaStore className="icon" />
+                <span>
+                  <div className="actions__address2">Retirar na loja: <br /></div>
+                  <div className="actions__address">Rua Eliza Cabral de Souza</div>
+                </span>
+                <FaChevronDown className="arrow" />
+              </a>
 
-            <div className="store">
+            <a className="store" href="/">
               <FaUser className="icon" />
               <span>
                 <div className="actions__address2">Olá, faça seu login <br /></div>
                 <div className="actions__address"> ou cadastre-se</div>
               </span>
-            </div>
+            </a>
           </div>
 
           {/* Cart */}
-          <div className="cart">
+          <a className="cart" href="#">
             <FaShoppingCart className="icon" />
-          </div>
+          </a>
         </div>
-      </div>
+      </nav>
 
       {/* Nav Down */}
       <div className="nav__down">
