@@ -1,0 +1,55 @@
+.sub__login {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 550px;
+  padding: 0 2rem;
+  width: 450px;
+}
+.sub__login form .sub__text {
+  margin-top: 2rem;
+}
+.sub__login form .sub__text h2 {
+  color: #ee7104;
+  font-size: 2rem;
+}
+.sub__login form {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  box-shadow: 0 6px 18px 1px rgba(16, 24, 40, 0.06);
+}
+.sub__login form .input__box {
+  width: 100%;
+  position: relative;
+  margin: 0.8rem 0;
+}
+.sub__login form .input__box input {
+  width: 100%;
+  padding: 0.7rem 0;
+  border-radius: 5px;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.3s;
+}
+.sub__login form .input__box label {
+  position: absolute;
+  top: 10px;
+  left: 3px;
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+.sub__login form .input__box input:focus + label,
+.sub__login form .input__box input:not(:placeholder-shown) + label {
+  top: 4px;
+  font-size: 12px;
+  color: #0077ff;
+}
+.sub__login form .input__box input:invalid:focus {
+  border-color: #e53935;
+}
+.sub__login form .input__box input:invalid:focus + label {
+  color: #e53935;
+}
+
+/*# sourceMappingURL=Subscription.css.map */
