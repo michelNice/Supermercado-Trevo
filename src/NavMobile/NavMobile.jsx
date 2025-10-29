@@ -18,7 +18,7 @@ import {
 import trevo from "../imgs/bebe2.png";
 import "./NavMobile.css";
 
-function NavMobile({ menuOpen, closeMenu }) {
+function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
   return (
     <header className="mobile__header">
       <div className={`mobile__menu ${menuOpen ? "open" : ""}`}>
@@ -126,7 +126,13 @@ function NavMobile({ menuOpen, closeMenu }) {
         {/* Extra Options */}
         
         <div className="mobile__button">
-            <button>Ja tenho um conta</button>
+             <button
+              onClick={() => {
+                closeMenu();
+                setTimeout(() => onLoginClick(), 300); // pequeno delay
+              }}
+            >Já tenho uma conta
+            </button>
             <button>Ainda nao tenho uma Conta </button>
         </div>
       </div>
