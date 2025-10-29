@@ -1,71 +1,85 @@
+.sub__login {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 550px;
+  padding: 0 2rem;
+  width: 450px;
+ 
 
+  form .sub__text {
+    margin-top: 2rem;
+  }
 
-.sub__login{
+  form .sub__text h2 {
+    color: #ee7104;
+    font-size: 2rem;
+  }
+
+  form {
     display: flex;
-    justify-content: center;
-    align-content: center;
-    height:550px;
-    padding:0 2rem;
-    width: 450px;
-    
-    form .sub__text{
-         margin-top: 2rem;
-        
-    }
+    flex-direction: column;
+    padding: 2rem;
+    box-shadow: 0 6px 18px 1px rgba(16, 24, 40, 0.06);
+     background: yellow;
+    border-radius: 10px;
+   
+  }
 
-    form .sub__text h2{
-        color: #ee7104;
-        font-size: 2rem;
-    }
-    
-    form{
-        
-         display: flex;
-         flex-direction: column;
-         padding: 2rem;
-         box-shadow: 0 6px 18px 1px rgba(16,24,40,0.06);
-        }
-         
+  form .input__box {
+    width: 100%;
+    position: relative;
+    margin: 1.2rem 0;
+  }
 
+  form .input__box input {
+    width: 100%;
+    padding: 1rem 0.5rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
 
-    form .input__box {
-        width: 100%;
-        position:relative;
-        margin: .8rem 0;
-    }
+  form .input__box label {
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: #666;
+    background: #fff;
+    padding: 0 5px;
+    pointer-events: none;
+    opacity: 0.9;
+    transition: all 0.3s ease-in-out; /* smooth floating */
+  }
 
-    form .input__box input{
-        width: 100%;
-        padding:0.7rem 0;
-        border-radius: 5px;
-        outline: none;
-        background: transparent;
-        transition:border-color  0.3s;
-    }
+  /* Floating label animation */
+  form .input__box input:focus + label,
+  form .input__box input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.75rem;
+    color: rgb(0, 255, 60);
+    transform: translateY(-70%);
+    opacity: 1;
+  }
 
-    form  .input__box label{
-        position: absolute;
-        top: 10px;
-        left: 3px;
-        font-size:.8rem;
-        pointer-events: none;
-    }
+  /* Focus effect */
+  form .input__box input:focus {
+    border-color: rgb(0, 255, 60);
+    box-shadow: 0 0 5px rgba(0, 255, 60, 0.3);
+  }
 
-    form .input__box input:focus + label,
-    form .input__box input:not(:placeholder-shown) + label {
-        top: 4px;
-        font-size: 12px;
-        color: #0077ff;
-   }
+  /* Error state */
+  form .input__box input:invalid:focus {
+    border-color: #e53935;
+    box-shadow: 0 0 5px rgba(229, 57, 53, 0.3);
+  }
 
-    form .input__box input:invalid:focus {
-        border-color: #e53935;
-    }
-
-    form .input__box input:invalid:focus + label {
+  form .input__box input:invalid:focus + label {
     color: #e53935;
-    }
-
+  }
 }
-
-    

@@ -5,6 +5,9 @@
   height: 550px;
   padding: 0 2rem;
   width: 450px;
+  /* Floating label animation */
+  /* Focus effect */
+  /* Error state */
 }
 .sub__login form .sub__text {
   margin-top: 2rem;
@@ -18,35 +21,52 @@
   flex-direction: column;
   padding: 2rem;
   box-shadow: 0 6px 18px 1px rgba(16, 24, 40, 0.06);
+  background: yellow;
+  border-radius: 10px;
 }
 .sub__login form .input__box {
   width: 100%;
   position: relative;
-  margin: 0.8rem 0;
+  margin: 1.2rem 0;
 }
 .sub__login form .input__box input {
   width: 100%;
-  padding: 0.7rem 0;
+  padding: 1rem 0.5rem 0.5rem;
+  border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
   background: transparent;
-  transition: border-color 0.3s;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .sub__login form .input__box label {
   position: absolute;
-  top: 10px;
-  left: 3px;
-  font-size: 0.8rem;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: #666;
+  background: #fff;
+  padding: 0 5px;
   pointer-events: none;
+  opacity: 0.9;
+  transition: all 0.3s ease-in-out; /* smooth floating */
 }
 .sub__login form .input__box input:focus + label,
 .sub__login form .input__box input:not(:placeholder-shown) + label {
-  top: 4px;
-  font-size: 12px;
-  color: #0077ff;
+  top: 0;
+  font-size: 0.75rem;
+  color: rgb(0, 255, 60);
+  transform: translateY(-70%);
+  opacity: 1;
+}
+.sub__login form .input__box input:focus {
+  border-color: rgb(0, 255, 60);
+  box-shadow: 0 0 5px rgba(0, 255, 60, 0.3);
 }
 .sub__login form .input__box input:invalid:focus {
   border-color: #e53935;
+  box-shadow: 0 0 5px rgba(229, 57, 53, 0.3);
 }
 .sub__login form .input__box input:invalid:focus + label {
   color: #e53935;
