@@ -1,4 +1,9 @@
-.sub__login {
+.login__wrapper{
+     display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+    .sub__login {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -8,22 +13,26 @@
  
 
   form .sub__text {
-    margin-top: 2rem;
+    margin-top:1rem;
   }
 
   form .sub__text h2 {
     color: #ee7104;
     font-size: 2rem;
+    padding: 1rem 0;
+  }
+
+  form .sub__text p{
+    color: #666;
   }
 
   form {
     display: flex;
     flex-direction: column;
     padding: 2rem;
-    box-shadow: 0 6px 18px 1px rgba(16, 24, 40, 0.06);
-     background: yellow;
+    box-shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
     border-radius: 10px;
-   
+    background: #fff;
   }
 
   form .input__box {
@@ -60,16 +69,16 @@
   /* Floating label animation */
   form .input__box input:focus + label,
   form .input__box input:not(:placeholder-shown) + label {
-    top: 0;
+    top: 0; 
     font-size: 0.75rem;
-    color: rgb(0, 255, 60);
+    color:#e53935;
     transform: translateY(-70%);
     opacity: 1;
   }
 
   /* Focus effect */
   form .input__box input:focus {
-    border-color: rgb(0, 255, 60);
+    border-color:#e53935;
     box-shadow: 0 0 5px rgba(0, 255, 60, 0.3);
   }
 
@@ -80,6 +89,53 @@
   }
 
   form .input__box input:invalid:focus + label {
-    color: #e53935;
+    color:#ee7104;
   }
+
+  form a{
+   
+    color: #ee7104;
+    text-decoration:underline;
+  }
+
+  button{
+     margin: 1rem 0;
+      padding:.8rem;
+     border-radius: 5px;
+     cursor: pointer;
+     transition: 0.3s;
+    
+  }
+
+  .btn__subscription{
+    background:#ee7104;
+    border: 0;
+    color: #fff;
+
+    &:hover{
+        background: #ee7104e0;
+    }
+  }
+
+
+
+  .btn__subscriptionTrans{
+    border: 1px solid #ee7104;
+    background: transparent;
+    color: #ee7104;
+  }
+}
+
+}
+
+
+
+@media(max-width){
+    
+
+        .sub__login{
+
+            width:100% ;
+        }
+    
 }

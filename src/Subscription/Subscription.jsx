@@ -4,38 +4,36 @@ function Subscription (){
     return(
 
      <>
-  <section className="sub__login">
-    <form action="#" method="post">
-      <div className="sub__text">
-        <h2>Seja bem-vindo(a)!</h2>
-        <p>Insira seus dados nos campos abaixo para fazer login</p>
-      </div>
+     <section className="login__wrapper">
+              <div className="sub__login">
+            <form action="#" method="post">
+            <div className="sub__text">
+                <h2>Seja bem-vindo(a)!</h2>
+                <p>Insira seus dados nos campos abaixo para fazer login</p>
+            </div>
 
-      <div className="input__box">
-        <input type="text" id="user" placeholder=" " required />
-        <label htmlFor="user">Email, CPF ou CNPJ*</label>
-      </div>
+            <div className="input__box">
+                <input type="text" id="user" placeholder=" " required />
+                <label htmlFor="user">Email, CPF ou CNPJ*</label>
+            </div>
 
-      <div className="input__box">
-        <input type="password" id="password" placeholder=" " required />
-        <label htmlFor="password">Senha*</label>
-      </div>
+            <div className="input__box">
+                <input type="password" id="password" placeholder=" " required />
+                <label htmlFor="password">Senha*</label>
+            </div>
 
-      <a href="#">Esqueceu sua senha?</a>
+            <a href="#">Esqueceu sua senha?</a>
 
-     <script
-  src="https://www.google.com/recaptcha/api.js"
-  async
-  defer
-></script>
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-      <button type="submit">Entrar</button>
+            <button type="submit" className='btn__subscription'>Entrar</button>
 
-      <p>Ainda não tem uma conta?</p>
+            <p>Ainda não tem uma conta?</p>
 
-      <button type="button">Criar uma conta</button>
-    </form>
-  </section>
+            <button type="button" className='btn__subscriptionTrans'>Criar uma conta</button>
+            </form>
+        </div>
+     </section>
 </>
 
     )

@@ -14,7 +14,7 @@ import {
 
 
 
-function Navbar() {
+function Navbar({onLoginClick}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -57,13 +57,13 @@ function Navbar() {
                 <FaChevronDown className="arrow" />
               </a>
 
-            <a className="store" href="/">
+            <div className="store" onClick={onLoginClick} style={{ cursor: "pointer" }}>
               <FaUser className="icon" />
-              <span>
+               <span >
                 <div className="actions__address2">Olá, faça seu login <br /></div>
                 <div className="actions__address"> ou cadastre-se</div>
               </span>
-            </a>
+            </div>
           </div>
 
           {/* Cart */}

@@ -1,17 +1,20 @@
 import { useState } from 'react'
 import './App.css'
 import Navbar from './Navbar/Navbar'
-//import HeroSlider from './Hero Slider/HeroSlider'
+import HeroSlider from './Hero Slider/HeroSlider'
 import Subscription from './Subscription/Subscription'
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [showSubscription, setShowSubscription] = useState(false)
 
   return (
-      <>
-      <Navbar />
-        {/*<HeroSlider />*/}
-        <Subscription />
-      </>
+    <>
+      {/* Passa a função corretamente */}
+      <Navbar onLoginClick={() => setShowSubscription(true)} />
+
+      {/* Exibe Subscription se true, senão HeroSlider */}
+      {showSubscription ? <Subscription /> : <HeroSlider />}
+    </>
   )
 }
 

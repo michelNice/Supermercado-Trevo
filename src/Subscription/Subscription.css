@@ -1,4 +1,10 @@
-.sub__login {
+.login__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+.login__wrapper .sub__login {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -9,27 +15,31 @@
   /* Focus effect */
   /* Error state */
 }
-.sub__login form .sub__text {
-  margin-top: 2rem;
+.login__wrapper .sub__login form .sub__text {
+  margin-top: 1rem;
 }
-.sub__login form .sub__text h2 {
+.login__wrapper .sub__login form .sub__text h2 {
   color: #ee7104;
   font-size: 2rem;
+  padding: 1rem 0;
 }
-.sub__login form {
+.login__wrapper .sub__login form .sub__text p {
+  color: #666;
+}
+.login__wrapper .sub__login form {
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  box-shadow: 0 6px 18px 1px rgba(16, 24, 40, 0.06);
-  background: yellow;
+  box-shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   border-radius: 10px;
+  background: #fff;
 }
-.sub__login form .input__box {
+.login__wrapper .sub__login form .input__box {
   width: 100%;
   position: relative;
   margin: 1.2rem 0;
 }
-.sub__login form .input__box input {
+.login__wrapper .sub__login form .input__box input {
   width: 100%;
   padding: 1rem 0.5rem 0.5rem;
   border: 1px solid #ccc;
@@ -39,7 +49,7 @@
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.sub__login form .input__box label {
+.login__wrapper .sub__login form .input__box label {
   position: absolute;
   top: 50%;
   left: 8px;
@@ -52,24 +62,54 @@
   opacity: 0.9;
   transition: all 0.3s ease-in-out; /* smooth floating */
 }
-.sub__login form .input__box input:focus + label,
-.sub__login form .input__box input:not(:placeholder-shown) + label {
+.login__wrapper .sub__login form .input__box input:focus + label,
+.login__wrapper .sub__login form .input__box input:not(:placeholder-shown) + label {
   top: 0;
   font-size: 0.75rem;
-  color: rgb(0, 255, 60);
+  color: #e53935;
   transform: translateY(-70%);
   opacity: 1;
 }
-.sub__login form .input__box input:focus {
-  border-color: rgb(0, 255, 60);
+.login__wrapper .sub__login form .input__box input:focus {
+  border-color: #e53935;
   box-shadow: 0 0 5px rgba(0, 255, 60, 0.3);
 }
-.sub__login form .input__box input:invalid:focus {
+.login__wrapper .sub__login form .input__box input:invalid:focus {
   border-color: #e53935;
   box-shadow: 0 0 5px rgba(229, 57, 53, 0.3);
 }
-.sub__login form .input__box input:invalid:focus + label {
-  color: #e53935;
+.login__wrapper .sub__login form .input__box input:invalid:focus + label {
+  color: #ee7104;
+}
+.login__wrapper .sub__login form a {
+  color: #ee7104;
+  text-decoration: underline;
+}
+.login__wrapper .sub__login button {
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.login__wrapper .sub__login .btn__subscription {
+  background: #ee7104;
+  border: 0;
+  color: #fff;
+}
+.login__wrapper .sub__login .btn__subscription:hover {
+  background: rgba(238, 113, 4, 0.8784313725);
+}
+.login__wrapper .sub__login .btn__subscriptionTrans {
+  border: 1px solid #ee7104;
+  background: transparent;
+  color: #ee7104;
+}
+
+@media (max-width) {
+  .sub__login {
+    width: 100%;
+  }
 }
 
 /*# sourceMappingURL=Subscription.css.map */
