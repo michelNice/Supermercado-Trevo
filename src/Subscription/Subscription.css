@@ -109,7 +109,7 @@
 @media (max-width: 79rem) {
   .login__wrapper .sub__login {
     width: 100%;
-    padding: 0 1rem;
+    padding: 0 0rem;
   }
 }
 
