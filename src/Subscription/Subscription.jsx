@@ -25,6 +25,8 @@ function Subscription (){
             <a href="#">Esqueceu sua senha?</a>
 
             <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+            <div class="g-recaptcha" data-sitekey="6LfuffwrAAAAAPz2OKRB-Tmn3NEtjmgAdoont_sF"></div>
+
 
             <button type="submit" className='btn__subscription'>Entrar</button>
 

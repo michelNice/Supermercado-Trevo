@@ -2,13 +2,13 @@
      display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem 0;
+  margin: 1rem 0;
     .sub__login {
   display: flex;
   justify-content: center;
   align-content: center;
-  height: 550px;
-  padding: 0 2rem;
+  height: 600px;
+  padding: 0 1.5rem;
   width: 450px;
  
 
@@ -19,11 +19,12 @@
   form .sub__text h2 {
     color: #ee7104;
     font-size: 2rem;
-    padding: 1rem 0;
+   
   }
 
   form .sub__text p{
     color: #666;
+    padding:0.6rem 0;
   }
 
   form {
@@ -38,7 +39,7 @@
   form .input__box {
     width: 100%;
     position: relative;
-    margin: 1.2rem 0;
+    margin: 0.8rem 0;
   }
 
   form .input__box input {
@@ -92,6 +93,10 @@
     color:#ee7104;
   }
 
+  form .g-recaptcha{
+    padding: 1rem;
+  }
+
   form a{
    
     color: #ee7104;
@@ -133,13 +138,19 @@
 @media(max-width:79rem){
     
       .login__wrapper{
-
+        
         .sub__login{
 
             width:100% ;
 
-            padding: 0 0rem;
+            padding: 1rem;
+
+            height: 620px;
         }
+
+         form .sub__text {
+         margin-top:0rem;
+  }
       }
         
     
