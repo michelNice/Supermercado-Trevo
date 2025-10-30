@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
-import NavMobile from '../NavMobile/NavMobile';
+import NavMobile from "../NavMobile/NavMobile";
 import {
   FaSearch,
   FaUser,
@@ -12,9 +12,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
-
-
-function Navbar({onLoginClick}) {
+function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -49,17 +47,17 @@ function Navbar({onLoginClick}) {
           {/* Actions (desktop only) */}
           <div className="actions">
             <a className="store" href="/">
-                <FaStore className="icon" />
-                <span>
-                  <div className="actions__address2">Retirar na loja: <br /></div>
-                  <div className="actions__address">Rua Eliza Cabral de Souza</div>
-                </span>
-                <FaChevronDown className="arrow" />
-              </a>
+              <FaStore className="icon" />
+              <span>
+                <div className="actions__address2">Retirar na loja: <br /></div>
+                <div className="actions__address">Rua Eliza Cabral de Souza</div>
+              </span>
+              <FaChevronDown className="arrow" />
+            </a>
 
             <div className="store" onClick={onLoginClick} style={{ cursor: "pointer" }}>
               <FaUser className="icon" />
-               <span >
+              <span>
                 <div className="actions__address2">Olá, faça seu login <br /></div>
                 <div className="actions__address"> ou cadastre-se</div>
               </span>
@@ -95,7 +93,11 @@ function Navbar({onLoginClick}) {
       </div>
 
       {/* Menu Mobile */}
-      <NavMobile menuOpen={menuOpen} closeMenu={() => setMenuOpen(false)} />
+      <NavMobile
+        menuOpen={menuOpen}
+        closeMenu={() => setMenuOpen(false)}
+        onLoginClick={onLoginClick} // <-- aqui está a correção
+      />
 
       {/* Overlay (fecha ao clicar fora) */}
       {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)}></div>}

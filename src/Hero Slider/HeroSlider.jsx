@@ -4,12 +4,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import {Swiper, SwiperSlide} from  'swiper/react';
 import { Navigation,Pagination,Autoplay } from 'swiper/modules';
-
 import imgSlider1 from '../Hero Slider/imgSlider1.jpg';
 import imgSlider2 from '../Hero Slider/imgSlider2.png';
 import imgSlider3 from '../Hero Slider/imgSlider3.jpg';
 import imgSlider4 from '../Hero Slider/imgSlider4.jpg';
-
 
 function HeroSlider(){
 

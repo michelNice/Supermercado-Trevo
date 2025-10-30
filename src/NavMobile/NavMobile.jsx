@@ -129,7 +129,7 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
              <button
               onClick={() => {
                 closeMenu();
-                setTimeout(() => onLoginClick(), 300); // pequeno delay
+                setTimeout(() => onLoginClick()); // pequeno delay
               }}
             >Já tenho uma conta
             </button>
