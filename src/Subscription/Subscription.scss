@@ -70,6 +70,25 @@
     transition: all 0.3s ease-in-out; /* smooth floating */
   }
 
+  form .input__box i{
+    position:absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); 
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    &:hover{
+
+       color: #ee7104;
+    }
+  }
+
+  form .input__box input {
+  padding-right: 2.5rem;
+}
+  
+
   /* Floating label animation */
   form .input__box input:focus + label,
   form .input__box input:not(:placeholder-shown) + label {

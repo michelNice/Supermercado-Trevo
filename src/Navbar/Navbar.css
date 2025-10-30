@@ -212,6 +212,10 @@ a {
   align-items: center;
   font-size: 0.9rem;
   color: var(--color-light);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.actions .store:hover {
+  color: rgba(255, 255, 255, 0.8745098039);
 }
 .actions .store .icon {
   font-size: 1.6rem;

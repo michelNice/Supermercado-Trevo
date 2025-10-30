@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import './Subscription.css'
-function Subscription (){
 
+
+function Subscription (){
+ const [showPassword,setShowPassword] = useState(false)
     return(
 
      <>
@@ -18,8 +21,11 @@ function Subscription (){
             </div>
 
             <div className="input__box">
-                <input type="password" id="password" placeholder=" " required />
+                <input type={showPassword ? 'text' : 'password'}  id="password" placeholder=" " required />
                 <label htmlFor="password">Senha*</label>
+                <i  className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
+                onClick={()=> setShowPassword(!showPassword)}
+                ></i>
             </div>
 
             <a href="#">Esqueceu sua senha?</a>
