@@ -2,29 +2,27 @@
      display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0;
+  margin: 2rem 0;
     .sub__login {
   display: flex;
   justify-content: center;
   align-content: center;
   height: 600px;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
   width: 450px;
  
 
-  form .sub__text {
-    margin-top:1rem;
-  }
+  
 
   form .sub__text h2 {
     color: #ee7104;
     font-size: 2rem;
-   
+    padding:  0;
   }
 
   form .sub__text p{
     color: #666;
-    padding:0.6rem 0;
+    padding: 1rem 0;
   }
 
   form {
@@ -39,7 +37,12 @@
   form .input__box {
     width: 100%;
     position: relative;
-    margin: 0.8rem 0;
+    margin: 0.7rem 0;
+  }
+
+  form .g-recaptcha{
+    width: 100px;
+    margin:1rem;
   }
 
   form .input__box input {
@@ -93,10 +96,6 @@
     color:#ee7104;
   }
 
-  form .g-recaptcha{
-    padding: 1rem;
-  }
-
   form a{
    
     color: #ee7104;
@@ -135,23 +134,16 @@
 
 
 
-@media(max-width:79rem){
-    
-      .login__wrapper{
-        
-        .sub__login{
+@media(max-width:700px){
 
-            width:100% ;
+    .login__wrapper{
 
-            padding: 1rem;
-
-            height: 620px;
+      .sub__login{
+          padding: 0 1rem;
+          width:100% ;
+          height: 600px;
         }
-
-         form .sub__text {
-         margin-top:0rem;
-  }
-      }
+    }
         
     
 }
