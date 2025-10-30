@@ -39,7 +39,7 @@
 }
 .login__wrapper .sub__login form .g-recaptcha {
   width: 100px;
-  margin: 1rem;
+  margin: 1rem 0;
 }
 .login__wrapper .sub__login form .input__box input {
   width: 100%;
