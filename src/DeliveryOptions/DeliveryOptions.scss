@@ -1,0 +1,57 @@
+.delivery {
+  background: yellow;
+  color: black;
+  height: 200px;
+  width: 400px;
+  padding: 1rem;
+  
+  .delivery__container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  
+    .delivery__title {
+      font-size: 1rem;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .delivery__options {
+      display: flex;
+      background: #fff;
+      border:1px solid #ee7104;
+      border-radius: 50px; /* ✅ round the whole switch */
+      overflow: hidden; /* ✅ clip the inside buttons nicely */
+      max-width:400px;
+    }
+
+    .delivery__option {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 0px;
+      background: none;
+      border: none;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color:#ee7104;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border-radius:0px; /* ✅ remove extra round edges */
+    }
+
+    .delivery__option.active {
+      background-color:#ee7104;
+      color: white;
+      border-radius: 300px; /* ✅ prevent circle effect */
+    }
+
+   
+
+    .pickup__icon {
+      font-size: 1rem;
+    }
+  }
+}
