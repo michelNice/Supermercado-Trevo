@@ -15,7 +15,7 @@ function App() {
       {/* Exibe Subscription se true, senão HeroSlider */}
       {showSubscription ? <Subscription /> : <HeroSlider />}
 
-      <DeliveryOptions />
+    
     </>
   )
 }

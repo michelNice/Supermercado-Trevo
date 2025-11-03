@@ -1,15 +1,21 @@
 .delivery {
   background: yellow;
   color: black;
-  height: 200px;
-  width: 400px;
+  width: 420px;
   padding: 1rem;
-  
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  animation: fadeIn 0.3s ease;
+  z-index: 999;
+  position: absolute;
+  top: 100%;
+  right: 0;
+
   .delivery__container {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-  
+
     .delivery__title {
       font-size: 1rem;
       color: #333;
@@ -19,10 +25,10 @@
     .delivery__options {
       display: flex;
       background: #fff;
-      border:1px solid #ee7104;
-      border-radius: 50px; /* ✅ round the whole switch */
-      overflow: hidden; /* ✅ clip the inside buttons nicely */
-      max-width:400px;
+      border: 1px solid #ee7104;
+      border-radius: 50px;
+      overflow: hidden;
+      max-width: 400px;
     }
 
     .delivery__option {
@@ -36,22 +42,75 @@
       border: none;
       font-size: 0.7rem;
       cursor: pointer;
-      color:#ee7104;
+      color: #ee7104;
       font-weight: 600;
       transition: all 0.3s ease;
-      border-radius:0px; /* ✅ remove extra round edges */
+      border-radius: 0;
     }
 
     .delivery__option.active {
-      background-color:#ee7104;
+      background-color: #ee7104;
       color: white;
-      border-radius: 300px; /* ✅ prevent circle effect */
+      border-radius: 300px;
     }
-
-   
 
     .pickup__icon {
       font-size: 1rem;
     }
   }
+
+  /* CEP e Lojas */
+  .delivery__home, .store__list {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    color: #333;
+  }
+
+  .delivery__home p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .delivery__home a {
+    color: #ee7104;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.85rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .store__list h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    color: #222;
+  }
+
+  .store__list ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: #444;
+
+      i {
+        color: #ee7104;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

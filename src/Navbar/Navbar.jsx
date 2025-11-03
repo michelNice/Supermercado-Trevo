@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
 import NavMobile from "../NavMobile/NavMobile";
+import DeliveryOptions from "../DeliveryOptions/DeliveryOptions"
 import {
   FaSearch,
   FaUser,
@@ -14,6 +15,9 @@ import {
 
 function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [showDelivery, setShowDelivery] = useState(false);
+
 
   return (
     <header className="header">
@@ -46,14 +50,15 @@ function Navbar({ onLoginClick }) {
 
           {/* Actions (desktop only) */}
           <div className="actions">
-            <a className="store" href="/">
+            <div className="store"  onClick={()=> setShowDelivery(!showDelivery)}>
               <FaStore className="icon" />
               <span>
                 <div className="actions__address2">Retirar na loja: <br /></div>
                 <div className="actions__address">Rua Eliza Cabral de Souza</div>
               </span>
               <FaChevronDown className="arrow" />
-            </a>
+              {showDelivery && <DeliveryOptions />}
+            </div>
 
             <div className="store" onClick={onLoginClick} style={{ cursor: "pointer" }}>
               <FaUser className="icon" />
