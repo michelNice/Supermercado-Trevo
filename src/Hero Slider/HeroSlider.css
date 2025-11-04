@@ -6,7 +6,7 @@
     margin-top:0.625rem;
 }
 
-.hero{height:60vh;}
+.hero{height:60vh; position: relative;   z-index: 1; /* mantém atrás do delivery */}
 
 .hero img{
   width: 100%;
@@ -25,6 +25,15 @@
   background:#ee7104; 
   width: 55px; 
 }
+
+.mySwiper {
+  z-index: 1;
+}
+
+header {
+  overflow: visible;
+}
+
 
 .swiper-button-prev,
 .swiper-button-next {
