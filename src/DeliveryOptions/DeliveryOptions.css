@@ -1,6 +1,6 @@
 .delivery {
-  position: absolute; /* <-- o mais importante */
-  top: 100%; /* ajusta conforme a altura do seu navbar */
+  position: absolute;
+  top: 100%;
   right: 40px;
   background: #fff;
   color: black;
@@ -8,7 +8,7 @@
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 99999; /* garante que fica acima do slider */
+  z-index: 2000;
   animation: fadeIn 0.3s ease;
   /* CEP e Lojas */
 }
