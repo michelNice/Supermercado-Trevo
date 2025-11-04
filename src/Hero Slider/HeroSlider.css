@@ -6,11 +6,9 @@
     margin-top:0.625rem;
 }
 
-.hero{height:60vh;
-   position: relative;
-   
-   
-  }
+.hero{
+  height:60vh;
+  position: relative;}
 
 .hero img{
   width: 100%;
@@ -68,13 +66,9 @@
 }
 
 /* Posicionamento */
-.swiper-button-prev {
-  left: 10px;
-}
+.swiper-button-prev {left: 10px;}
 
-.swiper-button-next {
-  right: 10px;
-}
+.swiper-button-next {right: 10px;}
 
 
 .swiper-button-prev svg,
