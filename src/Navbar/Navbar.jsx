@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
 import NavMobile from "../NavMobile/NavMobile";
@@ -17,6 +17,22 @@ function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const [showDelivery, setShowDelivery] = useState(false);
+
+
+  useEffect(()=> {
+
+    const  handleClickOutside = () => setShowDelivery(false);
+
+    if(showDelivery){
+
+      document.addEventListener('mousedown',handleClickOutside)
+    }
+
+    return () => {
+
+      document.removeEventListener('mousedown',handleClickOutside)
+    }
+  }, [showDelivery])
 
 
   return (
@@ -57,7 +73,15 @@ function Navbar({ onLoginClick }) {
                 <div className="actions__address">Rua Eliza Cabral de Souza</div>
               </span>
               <FaChevronDown className="arrow" />
-              {showDelivery && <DeliveryOptions />}
+
+          {showDelivery && (
+            <div
+              className="delivery__dropdown"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <DeliveryOptions />
+            </div>
+          )}
             </div>
 
             <div className="store" onClick={onLoginClick} style={{ cursor: "pointer" }}>

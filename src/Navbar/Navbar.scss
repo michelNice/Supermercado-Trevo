@@ -220,6 +220,7 @@ a {
 .actions {
   @include flex-center;
   gap: 1.5rem;
+  z-index:200;
 
   .store {
     @include flex-center;
