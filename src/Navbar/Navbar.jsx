@@ -63,7 +63,7 @@ function Navbar({ onLoginClick }) {
           <div className="actions">
             {/* ✅ Wrapper com ref englobando botão + menu */}
             <div ref={deliveryRef} className="store__wrapper">
-              <div
+              <button
                 className="store"
                 onClick={() => setShowDelivery(!showDelivery)}
               >
@@ -75,7 +75,7 @@ function Navbar({ onLoginClick }) {
                   <div className="actions__address">Rua Eliza Cabral de Souza</div>
                 </span>
                 <FaChevronDown className="arrow" />
-              </div>
+              </button>
 
               {showDelivery && (
                 <div className="delivery__dropdown">
