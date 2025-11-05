@@ -1,8 +1,8 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
 import NavMobile from "../NavMobile/NavMobile";
-import DeliveryOptions from "../DeliveryOptions/DeliveryOptions"
+import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
 import {
   FaSearch,
   FaUser,
@@ -15,29 +15,28 @@ import {
 
 function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const [showDelivery, setShowDelivery] = useState(false);
+  const deliveryRef = useRef(null);
 
+  // Fecha o delivery se clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (deliveryRef.current && !deliveryRef.current.contains(event.target)) {
+        setShowDelivery(false);
+      }
+    };
 
-  useEffect(()=> {
-
-    const  handleClickOutside = () => setShowDelivery(false);
-
-    if(showDelivery){
-
-      document.addEventListener('mousedown',handleClickOutside)
-    }
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside); // necessário no mobile
 
     return () => {
-
-      document.removeEventListener('mousedown',handleClickOutside)
-    }
-  }, [showDelivery])
-
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="header">
-      {/* Promo Bar */}
       <div className="promo__bar">
         <div className="promo__track">
           <span>Compre acima de R$199 e ganhe R$10 com cupom PRIMEIRACOMPRA10</span>
@@ -46,10 +45,8 @@ function Navbar({ onLoginClick }) {
         </div>
       </div>
 
-      {/* Navbar */}
       <nav className="navbar">
         <div className="row">
-          {/* Hamburger (mobile only) */}
           <div className="hamburger" onClick={() => setMenuOpen(true)}>
             <FaBars />
           </div>
@@ -58,49 +55,56 @@ function Navbar({ onLoginClick }) {
             <img src={trevo} alt="Trevo" />
           </a>
 
-          {/* Search Box */}
           <div className="search__box">
             <input type="text" placeholder="O que você precisa?" />
             <FaSearch className="icon seacher" />
           </div>
 
-          {/* Actions (desktop only) */}
           <div className="actions">
-            <div className="store"  onClick={()=> setShowDelivery(!showDelivery)}>
-              <FaStore className="icon" />
-              <span>
-                <div className="actions__address2">Retirar na loja: <br /></div>
-                <div className="actions__address">Rua Eliza Cabral de Souza</div>
-              </span>
-              <FaChevronDown className="arrow" />
+            {/* ✅ Wrapper com ref englobando botão + menu */}
+            <div ref={deliveryRef} className="store__wrapper">
+              <div
+                className="store"
+                onClick={() => setShowDelivery(!showDelivery)}
+              >
+                <FaStore className="icon" />
+                <span>
+                  <div className="actions__address2">
+                    Retirar na loja: <br />
+                  </div>
+                  <div className="actions__address">Rua Eliza Cabral de Souza</div>
+                </span>
+                <FaChevronDown className="arrow" />
+              </div>
 
-          {showDelivery && (
+              {showDelivery && (
+                <div className="delivery__dropdown">
+                  <DeliveryOptions />
+                </div>
+              )}
+            </div>
+
             <div
-              className="delivery__dropdown"
-              onClick={(e) => e.stopPropagation()}
+              className="store"
+              onClick={onLoginClick}
+              style={{ cursor: "pointer" }}
             >
-              <DeliveryOptions />
-            </div>
-          )}
-            </div>
-
-            <div className="store" onClick={onLoginClick} style={{ cursor: "pointer" }}>
               <FaUser className="icon" />
               <span>
-                <div className="actions__address2">Olá, faça seu login <br /></div>
+                <div className="actions__address2">
+                  Olá, faça seu login <br />
+                </div>
                 <div className="actions__address"> ou cadastre-se</div>
               </span>
             </div>
           </div>
 
-          {/* Cart */}
           <a className="cart" href="#">
             <FaShoppingCart className="icon" />
           </a>
         </div>
       </nav>
 
-      {/* Nav Down */}
       <div className="nav__down">
         <div className="row">
           <ul className="main__nav">
@@ -121,14 +125,12 @@ function Navbar({ onLoginClick }) {
         </div>
       </div>
 
-      {/* Menu Mobile */}
       <NavMobile
         menuOpen={menuOpen}
         closeMenu={() => setMenuOpen(false)}
-        onLoginClick={onLoginClick} // <-- aqui está a correção
+        onLoginClick={onLoginClick}
       />
 
-      {/* Overlay (fecha ao clicar fora) */}
       {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)}></div>}
     </header>
   );

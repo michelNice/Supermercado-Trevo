@@ -106,5 +106,11 @@
     transform: translateY(0);
   }
 }
+@media (max-width: 760px) {
+  .delivery {
+    right: 0;
+    width: 100%;
+  }
+}
 
 /*# sourceMappingURL=DeliveryOptions.css.map */
