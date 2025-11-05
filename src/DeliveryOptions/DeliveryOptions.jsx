@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './deliveryOptions.css'
+import './DeliveryOptions.css'
 function Delivery() {
   const [selected, setSelected] = useState("home");
 
