@@ -4,10 +4,10 @@
   right: 40px;
   background: #fff;
   color: black;
-  width: 420px;
-  padding: 1rem;
+  width: 370px;
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 2000;
   animation: fadeIn 0.3s ease;
   /* CEP e Lojas */
@@ -20,7 +20,7 @@
 .delivery .delivery__container .delivery__title {
   font-size: 1rem;
   color: #333;
-  font-weight: bold;
+  margin-bottom: 0.8rem;
 }
 .delivery .delivery__container .delivery__options {
   display: flex;
@@ -28,7 +28,7 @@
   border: 1px solid #ee7104;
   border-radius: 50px;
   overflow: hidden;
-  max-width: 400px;
+  max-width: 300px;
 }
 .delivery .delivery__container .delivery__option {
   flex: 1;
@@ -36,7 +36,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 0px;
+  padding: 6px 0px;
   background: none;
   border: none;
   font-size: 0.7rem;
@@ -57,22 +57,28 @@
 .delivery .delivery__home, .delivery .store__list {
   background: #fff;
   border-radius: 10px;
-  padding: 1rem;
-  margin-top: 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 0;
   color: #333;
 }
-.delivery .delivery__home p {
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+.delivery .delivery__home h3 {
+  margin: 2rem 0;
+  font-size: 0.8rem;
 }
-.delivery .delivery__home a {
+.delivery .delivery__home button {
   color: #ee7104;
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: underline;
   font-size: 0.85rem;
+  padding: 0rem 0;
+  text-align: center;
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
-.delivery .delivery__home a:hover {
+.delivery .delivery__home button:hover {
   text-decoration: underline;
 }
 .delivery .store__list h3 {
