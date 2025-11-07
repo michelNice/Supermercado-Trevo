@@ -3,30 +3,38 @@ import './DeliveryOptions.css'
 function DeliveryOptions() {
   const [selected, setSelected] = useState("home");
 
+  const [selectedStore,setSelectedStore] = useState(null)
+
   const  trevoAdress = [
 
     {
       id:1,
-      name:"Trevo Supermercado - Boa Viagem",
-      address: "Rua Barão de Souza Leão, 1170 — Boa Viagem - Recife - PE",
+      name:"Trevo - Boa Viagem",
+      address: "Rua Barão de Souza Leão, 1170 — Boa Viagem",
     },
 
     {
       id:2,
-      name:"Trevo Supermercado - Cohab",
-      address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — Cohab - Recife - PE",
+      name:"Trevo - Cohab",
+      address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — Cohab",
     }
     ,
     {
       id:3,
-      name:"Trevo Supermercado - Ibura",
-      address: "Rua Padre José de Anchieta — Ibura - Recife - PE",
+      name:"Trevo - Ibura",
+      address: "Rua Padre José de Anchieta — Ibura Rotatoria",
     }
     , {
 
       id:4,
-       name: "Trevo Supermercado - Domingos Ferreira",
-      address: "Av. Engenheiro Domingos Ferreira, 1990 — Boa Viagem - Recife - PE",
+       name: "Trevo - Domingos Ferreira",
+      address: "Av. Engenheiro Domingos Ferreira, 1990 — Boa Viagem",
+    }
+    ,
+    {
+      id:5,
+      name:"Trevo - Setúbal",
+      address:"Rua Dr. Luiz Inácio Pessoa de Melo, 342 - Boa Viagem"
     }
   ]
   return (
@@ -62,18 +70,22 @@ function DeliveryOptions() {
     <button>Informar um CEP</button>
   </div>
 ) : (
-  <div>
-      <h3>Em qual loja deseja retirar sua compra?</h3>
-
-       <ul className="store__list">
+  <div className="store__conteiner">
+      <h4>Em qual loja deseja retirar sua compra?</h4>
+    <ul className="store__list">
     {trevoAdress.map((store) => {
+      const isSelected = selectedStore === store.id
       return (
-        <li key={store.id}>
+        <li key={store.id} className={`store__item ${isSelected ? "selected" : ""}`} 
+        
+        onClick={()=> setSelectedStore(store.id)}>
           <i className="fas fa-map-marker-alt store-icon"></i>
           <div className="store-info">
             <strong>{store.name}</strong>
             <p>{store.address}</p>
           </div>
+
+          {isSelected && <i className="fas fa-check check-icon"></i>}
         </li>
       );
     })}

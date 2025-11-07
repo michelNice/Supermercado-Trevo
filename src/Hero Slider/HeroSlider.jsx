@@ -8,6 +8,7 @@ import imgSlider1 from '../Hero Slider/imgSlider1.jpg';
 import imgSlider2 from '../Hero Slider/imgSlider2.png';
 import imgSlider3 from '../Hero Slider/imgSlider3.jpg';
 import imgSlider4 from '../Hero Slider/imgSlider4.jpg';
+import imgSlider5 from '../Hero Slider/imgSlider5.png';
 
 function HeroSlider(){
 
@@ -36,6 +37,9 @@ function HeroSlider(){
                 </SwiperSlide>
                 <SwiperSlide>
                     <img src={imgSlider3} alt="Slide 3" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src={imgSlider5} alt="Slide 3" />
                 </SwiperSlide>
             </Swiper>
 

@@ -11,6 +11,7 @@
   z-index: 2000;
   animation: fadeIn 0.3s ease;
   /* CEP e Lojas */
+  /* --- LISTA DE LOJAS --- */
 }
 .delivery .delivery__container {
   display: flex;
@@ -69,8 +70,6 @@
   font-weight: 600;
   text-decoration: underline;
   font-size: 0.85rem;
-  padding: 0rem 0;
-  text-align: center;
   display: block;
   width: fit-content;
   margin: 0 auto;
@@ -78,28 +77,50 @@
   background: none;
   cursor: pointer;
 }
-.delivery .delivery__home button:hover {
-  text-decoration: underline;
+.delivery .store__conteiner h4 {
+  margin-top: 2rem;
 }
-.delivery .store__list h3 {
-  font-size: 0.9rem;
-  margin-bottom: 0.8rem;
+.delivery .store__list {
+  margin-top: 1rem;
+}
+.delivery .store__list .store__item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, border 0.2s ease;
+  border: 1px solid transparent;
+}
+.delivery .store__list .store__item:hover {
+  background: #f5f5f5;
+}
+.delivery .store__list .store__item.selected {
+  background: #e8e8e8;
+  border: 1px solid #ccc;
+}
+.delivery .store__list .store__item .store-icon {
+  color: #ee7104;
+  font-size: 1rem;
+  margin-top: 3px;
+}
+.delivery .store__list .store__item .check-icon {
+  color: #ee7104;
+  font-size: 1rem;
+}
+.delivery .store__list .store__item .store-info {
+  margin-left: 0.8rem;
+}
+.delivery .store__list .store__item .store-info strong {
+  font-size: 0.85rem;
+  font-weight: 600;
   color: #222;
 }
-.delivery .store__list ul {
-  list-style: none;
-  padding: 0;
-}
-.delivery .store__list ul li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 0.5rem;
-  font-size: 0.85rem;
-  color: #444;
-}
-.delivery .store__list ul li i {
-  color: #ee7104;
+.delivery .store__list .store__item .store-info p {
+  font-size: 0.75rem;
+  color: #555;
+  margin-top: 2px;
 }
 
 @keyframes fadeIn {
