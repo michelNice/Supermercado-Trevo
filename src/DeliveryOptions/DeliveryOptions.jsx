@@ -19,20 +19,15 @@ function DeliveryOptions() {
       address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — Cohab",
     }
     ,
-    {
-      id:3,
-      name:"Trevo - Ibura",
-      address: "Rua Padre José de Anchieta — Ibura Rotatoria",
-    }
-    , {
+     {
 
-      id:4,
+      id:3,
        name: "Trevo - Domingos Ferreira",
       address: "Av. Engenheiro Domingos Ferreira, 1990 — Boa Viagem",
     }
     ,
     {
-      id:5,
+      id:4,
       name:"Trevo - Setúbal",
       address:"Rua Dr. Luiz Inácio Pessoa de Melo, 342 - Boa Viagem"
     }
