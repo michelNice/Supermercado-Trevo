@@ -1,14 +1,14 @@
 .delivery {
-  position:absolute;
-  top:100%;
+  position: absolute;
+  top: 100%;
   right: 40px;
-  background:#fff;
+  background: #fff;
   color: black;
-  width:370px;
-  padding:2rem;
+  width: 370px;
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 1px 4px 10px rgba(0,0,0,0.1);
-  z-index:2000;
+  box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
   animation: fadeIn 0.3s ease;
 
   .delivery__container {
@@ -17,9 +17,9 @@
     gap: 0.8rem;
 
     .delivery__title {
-      font-size:1rem;
+      font-size: 1rem;
       color: #333;
-      margin-bottom:0.8rem;
+      margin-bottom: 0.8rem;
     }
 
     .delivery__options {
@@ -29,78 +29,101 @@
       border-radius: 50px;
       overflow: hidden;
       max-width: 300px;
-    }
 
-    .delivery__option {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 6px 0px;
-      background: none;
-      border: none;
-      font-size: 0.7rem;
-      cursor: pointer;
-      color: #ee7104;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border-radius: 0;
-    }
+      .delivery__option {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 6px 0px;
+        background: none;
+        border: none;
+        font-size: 0.7rem;
+        cursor: pointer;
+        color: #ee7104;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border-radius: 0;
 
-    .delivery__option.active {
-      background-color: #ee7104;
-      color: white;
-      border-radius: 300px;
-    }
+        &.active {
+          background-color: #ee7104;
+          color: white;
+          border-radius: 300px;
+        }
 
-    .pickup__icon {
-      font-size: 1rem;
+        .pickup__icon {
+          font-size: 1rem;
+        }
+      }
     }
   }
 
   /* CEP e Lojas */
-  .delivery__home, .store__list {
+  .delivery__home,
+  .store__list {
     background: #fff;
     border-radius: 10px;
-    padding:0;
+    padding: 0;
     color: #333;
   }
 
-  .delivery__home h3 {
-    margin:2rem 0;
-    font-size: .8rem;
+  .delivery__home {
+    h3 {
+      margin: 2rem 0;
+      font-size: 0.8rem;
+    }
+
+    button {
+      color: #ee7104;
+      font-weight: 600;
+      text-decoration: underline;
+      font-size: 0.85rem;
+      display: block;
+      width: fit-content;
+      margin: 0 auto;
+      border: 0;
+      background: none;
+      cursor: pointer;
+    }
   }
 
-  .delivery__home button {
-    color: #ee7104;
-    font-weight: 600;
-    text-decoration:underline;
-    font-size: 0.85rem;
-    display: block;
-    width: fit-content;
-    margin: 0 auto;
-    border: 0;
-    background: none;
-    cursor: pointer;
-  }
-
-  .store__conteiner h4 {
-    margin-top: 2rem ;
+  .store__conteiner {
+    h4 {
+      margin-top: 2rem;
+    }
   }
 
   /* --- LISTA DE LOJAS --- */
   .store__list {
     margin-top: 1rem;
 
+    /* ✅ Limite de altura e rolagem suave */
+    max-height: 180px; // ~3 lojas visíveis
+    overflow-y: auto;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #ee7104 #f0f0f0;
+
+    /* Estilo do scroll no Chrome */
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ee7104;
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #f0f0f0;
+    }
+
     .store__item {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
-      padding: 12px;
+      padding: 10px;
       border-radius: 10px;
       cursor: pointer;
-      transition: background .2s ease, border .2s ease;
+      transition: background 0.2s ease, border 0.2s ease;
       border: 1px solid transparent;
 
       &:hover {
@@ -121,35 +144,50 @@
       .check-icon {
         color: #ee7104;
         font-size: 1rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        width: 16px;
+        text-align: right;
+
+        &.visible {
+          opacity: 1;
+          visibility: visible;
+        }
       }
 
       .store-info {
         margin-left: 0.8rem;
+        flex: 1;
 
         strong {
-          font-size: .85rem;
+          font-size: 0.85rem;
           font-weight: 600;
           color: #222;
         }
 
         p {
-          font-size: .75rem;
+          font-size: 0.75rem;
           color: #555;
           margin-top: 2px;
         }
       }
     }
   }
-}
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-@media(max-width:760px){
-  .delivery {
-    right:0;
-    width:100%;
+  @media (max-width: 760px) {
+    right: 0;
+    width: 100%;
   }
 }

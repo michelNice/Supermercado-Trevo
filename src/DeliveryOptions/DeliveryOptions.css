@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .delivery {
   position: absolute;
   top: 100%;
@@ -31,7 +32,7 @@
   overflow: hidden;
   max-width: 300px;
 }
-.delivery .delivery__container .delivery__option {
+.delivery .delivery__container .delivery__options .delivery__option {
   flex: 1;
   display: flex;
   align-items: center;
@@ -47,15 +48,16 @@
   transition: all 0.3s ease;
   border-radius: 0;
 }
-.delivery .delivery__container .delivery__option.active {
+.delivery .delivery__container .delivery__options .delivery__option.active {
   background-color: #ee7104;
   color: white;
   border-radius: 300px;
 }
-.delivery .delivery__container .pickup__icon {
+.delivery .delivery__container .delivery__options .delivery__option .pickup__icon {
   font-size: 1rem;
 }
-.delivery .delivery__home, .delivery .store__list {
+.delivery .delivery__home,
+.delivery .store__list {
   background: #fff;
   border-radius: 10px;
   padding: 0;
@@ -82,12 +84,28 @@
 }
 .delivery .store__list {
   margin-top: 1rem;
+  /* ✅ Limite de altura e rolagem suave */
+  max-height: 180px;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #ee7104 #f0f0f0;
+  /* Estilo do scroll no Chrome */
+}
+.delivery .store__list::-webkit-scrollbar {
+  width: 6px;
+}
+.delivery .store__list::-webkit-scrollbar-thumb {
+  background-color: #ee7104;
+  border-radius: 4px;
+}
+.delivery .store__list::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
 }
 .delivery .store__list .store__item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 12px;
+  padding: 10px;
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s ease, border 0.2s ease;
@@ -108,9 +126,19 @@
 .delivery .store__list .store__item .check-icon {
   color: #ee7104;
   font-size: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+  width: 16px;
+  text-align: right;
+}
+.delivery .store__list .store__item .check-icon.visible {
+  opacity: 1;
+  visibility: visible;
 }
 .delivery .store__list .store__item .store-info {
   margin-left: 0.8rem;
+  flex: 1;
 }
 .delivery .store__list .store__item .store-info strong {
   font-size: 0.85rem;
@@ -122,7 +150,6 @@
   color: #555;
   margin-top: 2px;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
