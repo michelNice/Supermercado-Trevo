@@ -1,4 +1,5 @@
 /* =============== MOBILE MENU =============== */
+@use '../Styles/variables' as *;
 .mobile__header {
   position: relative;
   z-index: 1000;
@@ -11,8 +12,8 @@
   left: -100%; /* começa fora da tela */
   width: 100%;
   height: 100vh;
-  background-color: #004d26; /* verde escuro do Trevo */
-  color: #fff;
+  background-color: $text-dark-bg; /* verde escuro do Trevo */
+  color: $white;
   transition: left 0.3s ease;
   overflow-y: auto;
   padding: 20px;
@@ -33,7 +34,7 @@
 .close__icon {
   font-size: 1.8rem;
   cursor: pointer;
-  color: #fff;
+  color: $white;
 }
 
 .mobile_user{
@@ -50,7 +51,7 @@
 }
 
 .mobile__user span {
-  color:#ee7104;
+  color:$primary;
 }
 
 .mobile__user p {
@@ -102,11 +103,11 @@
 
 .mobile__nav li .icon {
   font-size: 1.2rem;
-  color:#ee7104;
+  color:$primary;
 }
 
 .mobile__nav li a {
-  color: #fff;
+  color: $white;
   text-decoration: none;
   font-size: 1rem;
   display: flex;
@@ -137,7 +138,7 @@
 }
 
 .mobile__item .icon {
-  color:#ee7104;
+  color:$primary;
   font-size: 1.2rem;
 }
 
@@ -164,12 +165,12 @@
   border-radius: 5px;
   margin: 10px 0;
    background: transparent;
-   border: 1px solid #ee7104;
-   color: #fff;
+   border: 1px solid $primary;
+   color: $white;
 }
 
 .mobile__button button:nth-child(2){
-  background: #ee7104;
+  background:$primary;
   
 }
 
@@ -183,13 +184,13 @@
 .mobile__nav li .text span {
   font-size: 1rem;
   font-weight: 600;
-  color: #fff; /* título branco */
+  color: $white; /* título branco */
   text-transform: capitalize;
 }
 
 .mobile__nav li .text p {
   font-size: 0.85rem;
-  color: #ccc; /* descrição cinza clara */
+  color:$border-light; /* descrição cinza clara */
   margin-top: 3px;
   text-transform: lowercase;
 }

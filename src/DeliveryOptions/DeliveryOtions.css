@@ -19,8 +19,8 @@
   top: 100%;
   right: 40px;
   background: #fff;
-  color: #000;
-  width: 371px;
+  color: black;
+  width: 370px;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.1);
@@ -65,7 +65,7 @@
 }
 .delivery .delivery__container .delivery__options .delivery__option.active {
   background-color: #ee7104;
-  color: #fff;
+  color: white;
   border-radius: 300px;
 }
 .delivery .delivery__container .delivery__options .delivery__option .pickup__icon {
@@ -158,7 +158,7 @@
 .delivery .store__list .store__item .store-info strong {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #004d26;
+  color: #222;
 }
 .delivery .store__list .store__item .store-info p {
   font-size: 0.75rem;
@@ -182,4 +182,4 @@
   }
 }
 
-/*# sourceMappingURL=DeliveryOptions.css.map */
+/*# sourceMappingURL=DeliveryOtions.css.map */

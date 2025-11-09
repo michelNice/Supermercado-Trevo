@@ -1,0 +1,43 @@
+/******************************
+ * MAIN COLORS
+ ******************************/
+$primary: #ee7104;        // Main orange
+$primary-dark: #c65a03;   // Darker orange (hover)
+
+$white: #fff;
+$black: #000;
+
+
+
+$brand-main: #ffcc00;
+$brand-accent: #ff0000;
+$bg-light: #ffffff;
+$text-dark-bg: #004d26;
+
+
+/******************************
+ * GRAYS
+ ******************************/
+$text-dark: #333;         
+$text-medium: #555;       
+$border-light: #ccc;      
+$gray-soft: #f0f0f0;      
+$bg-hover-light: #f5f5f5; 
+$bg-selected: #e8e8e8;
+
+/******************************
+ * BORDER RADIUS
+ ******************************/
+$radius-sm: 5px;
+$radius-md: 10px;
+$radius-round: 300px;
+
+/******************************
+ * SHADOW
+ ******************************/
+$shadow-soft: 1px 4px 10px rgba(0,0,0,0.1);
+
+/******************************
+ * TRANSITION
+ ******************************/
+$transition-default: 0.3s ease;
