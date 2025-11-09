@@ -1,0 +1,65 @@
+@use '../Styles/variables' as *;
+
+/****************************/
+/* MIXINS GLOBAIS           */
+/****************************/
+
+/* Flexbox center */
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container com largura máxima */
+@mixin container($max-width: 84.5rem) {
+  max-width: $max-width;
+  margin-inline: auto;
+  padding: 0 1rem;
+}
+
+/* Transição padrão */
+@mixin transition($time: 0.3s, $ease: ease) {
+  transition: all $time $ease;
+}
+
+/* Botão padrão */
+@mixin btn($bg, $color) {
+  background: $bg;
+  color: $color;
+  padding: 0.8rem;
+  border-radius: $radius-md;
+  border: none;
+  cursor: pointer;
+  @include transition();
+}
+
+/* Floating label */
+@mixin floating-label {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: $text-medium;
+  background: $white;
+  padding: 0 5px;
+  pointer-events: none;
+  opacity: 0.9;
+  @include transition();
+}
+
+/* Ícones padrão */
+@mixin icon-style {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.1rem;
+  @include transition();
+
+  &:hover {
+    color: $primary;
+  }
+}
