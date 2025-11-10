@@ -58,32 +58,35 @@ function Subscription() {
         </div>
       </section>
 
-      {showModal && (
-        <section className="modal__overlay" onClick={() => setShowModal(false)}>
-          <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
-            
-            {/* ✅ Botão Fechar Ajustado */}
-            <button className="modal__close" onClick={() => setShowModal(false)}>×</button>
+     {showModal && (
+  <section className="modal__overlay" onClick={() => setShowModal(false)}>
+    <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
+      
+      <div className="modal">
+        {/* ✅ CLOSE BUTTON MUST BE INSIDE .modal */}
+        <button className="modal__close" onClick={() => setShowModal(false)}>×</button>
 
-            <div className="modal">
-              <h2 className="modal__title">Qual o seu CEP?</h2>
+        <h2 className="modal__title">Qual o seu CEP?</h2>
 
-              <p className="modal__description">
-                Precisamos validar seu CEP para saber se o nosso serviço atende a sua região.
-              </p>
+        <p className="modal__description">
+          Precisamos validar seu CEP para saber se o nosso serviço atende a sua região.
+        </p>
 
-              <div className="modal__inputBox">
-                <input className="modal__input" type="text" placeholder=" " id="cep" />
-                <label htmlFor="cep" className="modal__label">Digite seu CEP*</label>
-              </div>
+        <div className="modal__inputBox">
+          <input className="modal__input" type="text" placeholder=" " id="cep" />
+          <label htmlFor="cep" className="modal__label">Digite seu CEP*</label>
+        </div>
 
-              <div className="modal__footer">
-                <button className="modal__button">Verificar Disponibilidade</button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+        <div className="modal__footer">
+          <button className="modal__button">Verificar Disponibilidade</button>
+        </div>
+        
+      </div>
+
+    </div>
+  </section>
+)}
+
     </>
   );
 }

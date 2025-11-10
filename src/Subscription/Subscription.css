@@ -155,17 +155,16 @@
     width: 100%;
     height: 600px;
   }
+  .modal {
+    background: #fff;
+    width: 100%;
+    max-width: 92%;
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.25s ease-out;
+  }
 }
-.modal__close {
-  display: flex;
-  align-items: flex-end;
-  justify-content: end;
-  color: #555;
-  background: #fff;
-  width: 20px;
-  text-align: center;
-}
-
 .modal__overlay {
   position: fixed;
   inset: 0;
@@ -179,12 +178,33 @@
 
 .modal {
   background: #fff;
-  width: 540px;
+  width: 570px;
   max-width: 92%;
-  padding: 32px;
-  border-radius: 10px;
+  padding: 25px;
+  border-radius: 5px;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
   animation: fadeIn 0.25s ease-out;
+  position: relative;
+}
+
+/* FIXED CLOSE BUTTON */
+.modal__close {
+  position: absolute;
+  top: -40px;
+  right: 0px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #555;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: 0;
 }
 
 .modal__title {
@@ -265,6 +285,12 @@
   opacity: 0.85;
 }
 
+.modal__footer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -275,10 +301,53 @@
     transform: scale(1);
   }
 }
-.modal__footer {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
+/*
+@media (max-width: 700px) {
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px;
+  }
+
+  .modal__overlay{
+    padding: 1rem;
+  }
+}
+
+*/
+@media (max-width: 700px) {
+  .modal__overlay {
+    justify-content: flex-end; /* Push modal to the bottom */
+  }
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 4px; /* Rounded top only */
+    padding: 24px;
+    transform: translateY(100%); /* Start hidden below screen */
+    animation: slideUp 0.35s ease-out forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .modal__overlay {
+    padding: 0;
+    align-items: end;
+    justify-content: end;
+  }
+  .modal__footer {
+    justify-content: center;
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 /*# sourceMappingURL=Subscription.css.map */
