@@ -14,6 +14,15 @@
 /******************************
  * TRANSITION
  ******************************/
+/****************************/
+/* MIXINS GLOBAIS           */
+/****************************/
+/* Flexbox center */
+/* Container com largura máxima */
+/* Transição padrão */
+/* Botão padrão */
+/* Floating label */
+/* Ícones padrão */
 .delivery {
   position: absolute;
   top: 100%;
@@ -27,7 +36,6 @@
   z-index: 2000;
   animation: fadeIn 0.3s ease;
   /* CEP e Lojas */
-  /* --- LISTA DE LOJAS --- */
 }
 .delivery .delivery__container {
   display: flex;
@@ -48,10 +56,10 @@
   max-width: 300px;
 }
 .delivery .delivery__container .delivery__options .delivery__option {
-  flex: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  flex: 1;
   gap: 8px;
   padding: 6px 0px;
   background: none;
@@ -99,12 +107,10 @@
 }
 .delivery .store__list {
   margin-top: 1rem;
-  /* ✅ Limite de altura e rolagem suave */
   max-height: 180px;
   overflow-y: auto;
-  scrollbar-width: thin; /* Firefox */
+  scrollbar-width: thin;
   scrollbar-color: #ee7104 #f0f0f0;
-  /* Estilo do scroll no Chrome */
 }
 .delivery .store__list::-webkit-scrollbar {
   width: 6px;

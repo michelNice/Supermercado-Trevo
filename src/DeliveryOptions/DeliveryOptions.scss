@@ -1,4 +1,5 @@
 @use '../Styles/variables' as *;
+@use '../Styles/mixins' as *;
 
 .delivery {
   position: absolute;
@@ -33,10 +34,8 @@
       max-width: 300px;
 
       .delivery__option {
+        @include flex-center;
         flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         gap: 8px;
         padding: 6px 0px;
         background: none;
@@ -96,17 +95,13 @@
     }
   }
 
-  /* --- LISTA DE LOJAS --- */
   .store__list {
     margin-top: 1rem;
-
-    /* ✅ Limite de altura e rolagem suave */
-    max-height: 180px; // ~3 lojas visíveis
+    max-height: 180px;
     overflow-y: auto;
-    scrollbar-width: thin; /* Firefox */
+    scrollbar-width: thin;
     scrollbar-color: $primary $gray-soft;
 
-    /* Estilo do scroll no Chrome */
     &::-webkit-scrollbar {
       width: 6px;
     }

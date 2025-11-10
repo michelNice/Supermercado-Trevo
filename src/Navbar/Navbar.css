@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /******************************
  * MAIN COLORS
  ******************************/
@@ -14,11 +15,14 @@
  * TRANSITION
  ******************************/
 /****************************/
-/* MIXINS                   */
+/* MIXINS GLOBAIS           */
 /****************************/
-/****************************/
-/* RESET                    */
-/****************************/
+/* Flexbox center */
+/* Container com largura máxima */
+/* Transição padrão */
+/* Botão padrão */
+/* Floating label */
+/* Ícones padrão */
 /****************************/
 /* ROW                      */
 /****************************/
@@ -231,7 +235,7 @@
 }
 
 /****************************/
-/* SHOPPING CART (EXACT CSS MATCH) */
+/* SHOPPING CART             */
 /****************************/
 .cart .icon {
   font-size: 1.8rem;
@@ -310,6 +314,25 @@
   .arrow {
     transform: rotate(-90deg);
   }
+}
+.arrow {
+  transition: transform 0.3s ease;
+}
+@media (min-width: 1024px) {
+  .arrow {
+    transform: rotate(0deg);
+  }
+  .arrow.rotate {
+    transform: rotateX(180deg);
+  }
+}
+
+.actions__address {
+  max-width: 160px; /* Ajuste conforme o layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 /*# sourceMappingURL=Navbar.css.map */

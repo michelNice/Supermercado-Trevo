@@ -1,23 +1,7 @@
 @use '../Styles/variables' as *;
+@use '../Styles/mixins' as *;
 
-/****************************/
-/* MIXINS                   */
-/****************************/
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-@mixin container($max-width: 84.5rem) {
-  max-width: $max-width;
-  margin-inline: auto;
-  padding: 0 1rem;
-}
-
-/****************************/
-/* RESET                    */
-/****************************/
 
 
 /****************************/
@@ -33,7 +17,7 @@
 .promo__bar {
   @include flex-center;
   background: $brand-main;
-  color:$brand-accent;
+  color: $brand-accent;
   height: 25px;
   overflow: hidden;
   white-space: nowrap;
@@ -66,7 +50,6 @@
 /****************************/
 /* NAVBAR                   */
 /****************************/
-
 .navbar {
   @include flex-center;
   justify-content: space-between;
@@ -77,6 +60,7 @@
   top: 0;
   width: 100%;
   z-index: 200;
+
   .row {
     @include flex-center;
     justify-content: space-between;
@@ -114,7 +98,7 @@
 
       a {
         text-decoration: none;
-        color:$bg-light;
+        color: $bg-light;
         transition: 0.2s;
         font-size: 0.9rem;
 
@@ -141,7 +125,7 @@
     .divider {
       width: 1px;
       height: 20px;
-      background:$bg-light;
+      background: $bg-light;
       margin: 0 1rem;
     }
   }
@@ -198,17 +182,18 @@
 .actions {
   @include flex-center;
   gap: 1.5rem;
-  z-index:200;
+  z-index: 200;
 
   .store {
     @include flex-center;
     font-size: 0.9rem;
     color: var(--color-light);
-     transition: background-color 0.5s ease, color 0.5s ease;
-     cursor: pointer;
-    &:hover{
-        color:#ffffffdf;
-      }
+    transition: background-color 0.5s ease, color 0.5s ease;
+    cursor: pointer;
+
+    &:hover {
+      color: #ffffffdf;
+    }
 
     .icon {
       font-size: 1.6rem;
@@ -223,27 +208,26 @@
     .actions__address2 {
       font-size: 0.8rem;
       font-weight: 300;
-      
     }
 
     .arrow {
       font-size: 0.8rem;
       margin-left: 0.375rem;
       transition: transform 0.2s ease;
-      color:$bg-light;
+      color: $bg-light;
     }
   }
 }
 
 /****************************/
-/* SHOPPING CART (EXACT CSS MATCH) */
+/* SHOPPING CART             */
 /****************************/
 .cart {
   .icon {
     font-size: 1.8rem;
     margin: 0 0 0 2rem;
     cursor: pointer;
-    color:$bg-light;
+    color: $bg-light;
   }
 }
 
@@ -327,4 +311,24 @@
   .arrow {
     transform: rotate(-90deg);
   }
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+
+  @media (min-width: 1024px) {
+    transform: rotate(0deg); 
+
+    &.rotate {
+      transform: rotateX(180deg);
+    }
+  }
+}
+
+.actions__address {
+  max-width: 160px; /* Ajuste conforme o layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }

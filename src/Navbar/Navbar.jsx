@@ -17,6 +17,7 @@ function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDelivery, setShowDelivery] = useState(false);
   const deliveryRef = useRef(null);
+  const [currentAddress,setCurrentAddress] = useState("Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE")
 
   // Fecha o delivery se clicar fora
   useEffect(() => {
@@ -72,14 +73,14 @@ function Navbar({ onLoginClick }) {
                   <div className="actions__address2">
                     Retirar na loja: <br />
                   </div>
-                  <div className="actions__address">Rua Eliza Cabral de Souza</div>
+                  <div className="actions__address">{currentAddress}</div>
                 </span>
-                <FaChevronDown className="arrow" />
+                <FaChevronDown className={`arrow ${showDelivery ? "rotate" : ""}`} />
               </div>
 
               {showDelivery && (
                 <div className="delivery__dropdown">
-                  <DeliveryOptions />
+                  <DeliveryOptions  onSelectStore={(address)=> setCurrentAddress(address)} />
                 </div>
               )}
             </div>

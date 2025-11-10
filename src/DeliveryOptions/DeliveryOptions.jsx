@@ -1,42 +1,46 @@
 import { useState } from "react";
-import './DeliveryOptions.css'
+import "./DeliveryOptions.css";
 
-function DeliveryOptions() {
+function DeliveryOptions({ onSelectStore }) {
   const [selected, setSelected] = useState("home");
   const [selectedStore, setSelectedStore] = useState(null);
 
   const trevoAdress = [
-  {
-    id: 1,
-    name: "Trevo - Boa Viagem",
-    address: "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE",
-  },
-  {
-    id: 2,
-    name: "Trevo - Cohab",
-    address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — Cohab, Recife - PE",
-  },
-  {
-    id: 3,
-    name: "Trevo - Domingos Ferreira",
-    address: "Av. Engenheiro Domingos Ferreira, 1990 — Boa Viagem, Recife - PE",
-  },
-  {
-    id: 4,
-    name: "Trevo - Setúbal",
-    address: "Rua Dr. Luiz Inácio Pessoa de Melo, 342 — Boa Viagem, Recife - PE",
-  },
-  {
-    id: 5,
-    name: "Trevo - Ibura",
-    address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — UR-5, Ibura, Recife - PE",
-  },
-];
+    {
+      id: 1,
+      name: "Trevo - Boa Viagem",
+      address: "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE",
+    },
+    {
+      id: 2,
+      name: "Trevo - Cohab",
+      address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — Cohab, Recife - PE",
+    },
+    {
+      id: 3,
+      name: "Trevo - Domingos Ferreira",
+      address:
+        "Av. Engenheiro Domingos Ferreira, 1990 — Boa Viagem, Recife - PE",
+    },
+    {
+      id: 4,
+      name: "Trevo - Setúbal",
+      address:
+        "Rua Dr. Luiz Inácio Pessoa de Melo, 342 — Boa Viagem, Recife - PE",
+    },
+    {
+      id: 5,
+      name: "Trevo - Ibura",
+      address:
+        "Rua Dr. Otávio de Moraes Vasconcelos, 39 — UR-5, Ibura, Recife - PE",
+    },
+  ];
 
   return (
     <div className="delivery">
       <div className="delivery__container">
         <h2 className="delivery__title">Você deseja:</h2>
+
         <div className="delivery__options">
           <button
             className={`delivery__option ${
@@ -68,14 +72,19 @@ function DeliveryOptions() {
       ) : (
         <div className="store__conteiner">
           <h4>Em qual loja deseja retirar sua compra?</h4>
+
           <ul className="store__list">
             {trevoAdress.map((store) => {
               const isSelected = selectedStore === store.id;
+
               return (
                 <li
                   key={store.id}
                   className={`store__item ${isSelected ? "selected" : ""}`}
-                  onClick={() => setSelectedStore(store.id)}
+                  onClick={() => {
+                    setSelectedStore(store.id);      // ✅ Marca a loja
+                    onSelectStore(store.address);   // ✅ Envia endereço para o pai
+                  }}
                 >
                   <i className="fas fa-map-marker-alt store-icon"></i>
 
