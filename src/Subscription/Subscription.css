@@ -301,20 +301,6 @@
     transform: scale(1);
   }
 }
-/*
-@media (max-width: 700px) {
-  .modal {
-    width: 100%;
-    max-width: 100%;
-    padding: 24px;
-  }
-
-  .modal__overlay{
-    padding: 1rem;
-  }
-}
-
-*/
 @media (max-width: 700px) {
   .modal__overlay {
     justify-content: flex-end; /* Push modal to the bottom */
@@ -339,6 +325,12 @@
   }
   .modal__footer {
     justify-content: center;
+  }
+  .modal__close {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translate(-50%);
   }
 }
 @keyframes slideUp {

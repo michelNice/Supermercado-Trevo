@@ -330,24 +330,6 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   }
 }
 
-// ──────────────────────────────
-// Responsive
-// ──────────────────────────────
-/*
-@media (max-width: 700px) {
-  .modal {
-    width: 100%;
-    max-width: 100%;
-    padding: 24px;
-  }
-
-  .modal__overlay{
-    padding: 1rem;
-  }
-}
-
-*/
-
 
 
 @media (max-width: 700px) {
@@ -379,10 +361,19 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   .modal__footer {
   justify-content:center;
 }
+
+
+
+.modal__close {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translate(-50%);
+
+ 
 }
 
-
-
+}
 
 @keyframes slideUp {
   from {

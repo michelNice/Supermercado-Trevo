@@ -1,9 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Subscription.css';
 
 function Subscription() {
   const [showPassword, setShowPassword] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const [cep, setCep] = useState('');
+  const [cepData, setCepData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Bloqueia scroll quando modal está aberto
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
+
+  // Formata o CEP com traço automático
+  const handleCepChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // remove tudo que não é número
+    if (value.length > 5) value = value.replace(/^(\d{5})(\d)/, '$1-$2'); // coloca o traço
+    setCep(value);
+  };
 
   return (
     <>
@@ -58,35 +81,40 @@ function Subscription() {
         </div>
       </section>
 
-     {showModal && (
-  <section className="modal__overlay" onClick={() => setShowModal(false)}>
-    <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
-      
-      <div className="modal">
-        {/* ✅ CLOSE BUTTON MUST BE INSIDE .modal */}
-        <button className="modal__close" onClick={() => setShowModal(false)}>×</button>
+      {/* ===================== MODAL ===================== */}
+      {showModal && (
+        <section className="modal__overlay" onClick={() => setShowModal(false)}>
+          <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
+            <div className="modal">
+              <button className="modal__close" onClick={() => setShowModal(false)}>×</button>
 
-        <h2 className="modal__title">Qual o seu CEP?</h2>
+              <h2 className="modal__title">Qual o seu CEP?</h2>
 
-        <p className="modal__description">
-          Precisamos validar seu CEP para saber se o nosso serviço atende a sua região.
-        </p>
+              <p className="modal__description">
+                Precisamos validar seu CEP para saber se o nosso serviço atende a sua região.
+              </p>
 
-        <div className="modal__inputBox">
-          <input className="modal__input" type="text" placeholder=" " id="cep" />
-          <label htmlFor="cep" className="modal__label">Digite seu CEP*</label>
-        </div>
+              <div className="modal__inputBox">
+                <input
+                  className="modal__input"
+                  type="text"
+                  id="cep"
+                  placeholder=" "
+                  value={cep}
+                  onChange={handleCepChange}
+                  maxLength={9}
+                  required
+                />
+                <label htmlFor="cep" className="modal__label">Digite seu CEP*</label>
+              </div>
 
-        <div className="modal__footer">
-          <button className="modal__button">Verificar Disponibilidade</button>
-        </div>
-        
-      </div>
-
-    </div>
-  </section>
-)}
-
+              <div className="modal__footer">
+                <button className="modal__button">Verificar Disponibilidade</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }
