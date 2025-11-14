@@ -16,13 +16,16 @@ function Subscription() {
 
 
   useEffect(() => {
-  if (window.grecaptcha) {
-    window.grecaptcha.ready(() => {
+  const interval = setInterval(() => {
+    if (window.grecaptcha && document.getElementById("recaptcha-container")) {
       window.grecaptcha.render("recaptcha-container", {
         sitekey: "6Lcq8QwsAAAAAC-gAaKfouyLiuEKm2uKK_IDLZHu",
       });
-    });
-  }
+      clearInterval(interval);
+    }
+  }, 300);
+
+  return () => clearInterval(interval);
 }, []);
 
 
