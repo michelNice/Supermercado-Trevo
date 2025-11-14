@@ -140,6 +140,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
       a {
         color: $primary;
         text-decoration: underline;
+        padding: .6rem 0;
       }
 
       button {
@@ -330,9 +331,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   }
 }
 
-.recaptcha-container{
-  padding: .5rem 0;
-}
+
 
 @media (max-width: 700px) {
   .modal__overlay {
