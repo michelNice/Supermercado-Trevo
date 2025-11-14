@@ -14,6 +14,18 @@ function Subscription() {
 
   const [cep, setCep] = useState('');
 
+
+  useEffect(() => {
+  if (window.grecaptcha) {
+    window.grecaptcha.ready(() => {
+      window.grecaptcha.render("recaptcha-container", {
+        sitekey: "6LfuffwrAAAAAPz2OKRB-Tmn3NEtjmgAdoont_sF",
+      });
+    });
+  }
+}, []);
+
+
   // Bloqueia scroll ao abrir modal
   useEffect(() => {
     document.body.style.overflow = showModal ? "hidden" : "";
@@ -102,7 +114,7 @@ function Subscription() {
 
             <a href="#">Esqueceu sua senha?</a>
 
-            <div className="g-recaptcha" data-sitekey="6LfuffwrAAAAAPz2OKRB-Tmn3NEtjmgAdoont_sF"></div>
+            <div id="recaptcha-container"></div>
 
             <button type="submit" className="btn__subscription">Entrar</button>
 
