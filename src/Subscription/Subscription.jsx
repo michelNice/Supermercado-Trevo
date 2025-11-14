@@ -19,7 +19,7 @@ function Subscription() {
   const interval = setInterval(() => {
     if (window.grecaptcha && document.getElementById("recaptcha-container")) {
       window.grecaptcha.render("recaptcha-container", {
-        sitekey: "6Lcq8QwsAAAAAC-gAaKfouyLiuEKm2uKK_IDLZHu",
+        sitekey: "6Lfj-gwsAAAAAJwiSh-pko8rcPYPGEiOjm26IWCC",
       });
       clearInterval(interval);
     }
