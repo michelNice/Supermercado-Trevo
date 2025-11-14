@@ -1,10 +1,13 @@
 import { useState } from "react";
 import "./DeliveryOptions.css";
+import "../Subscription/Subscription"
 
 function DeliveryOptions({ onSelectStore }) {
   const [selected, setSelected] = useState("home");
   const [selectedStore, setSelectedStore] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
+  
   const trevoAdress = [
     {
       id: 1,
@@ -67,7 +70,9 @@ function DeliveryOptions({ onSelectStore }) {
       {selected === "home" ? (
         <div className="delivery__home">
           <h3>Em qual endereço deseja receber?</h3>
-          <button>Informar um CEP</button>
+
+          <button onClick={() => setShowModal(true)}>Informar um CEP</button>
+
         </div>
       ) : (
         <div className="store__conteiner">
