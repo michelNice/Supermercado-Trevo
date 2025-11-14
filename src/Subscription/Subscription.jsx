@@ -19,7 +19,7 @@ function Subscription() {
   if (window.grecaptcha) {
     window.grecaptcha.ready(() => {
       window.grecaptcha.render("recaptcha-container", {
-        sitekey: "6LfuffwrAAAAAPz2OKRB-Tmn3NEtjmgAdoont_sF",
+        sitekey: "6Lcq8QwsAAAAAC-gAaKfouyLiuEKm2uKK_IDLZHu",
       });
     });
   }
