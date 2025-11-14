@@ -95,7 +95,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
       .input__box {
         position: relative;
-        margin: 0.7rem 0;
+        margin: .2rem 0;
 
         input {
           width: 100%;
@@ -246,7 +246,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 .modal__inputBox {
   position: relative;
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 
   .modal__input {
     width: 100%;
@@ -429,5 +429,33 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   background: #fff;
   padding: 0 4px;
   color: #ee7104;
+}
+
+
+
+
+
+
+
+
+/* mantém o input no lugar mesmo com erro */
+.error__space {
+  height:0px; /* reserva espaço */
+  margin-bottom:17px;
+}
+
+/* estilo da mensagem de erro */
+.error__text {
+  color: #e53935;
+  font-size: 0.8rem;
+  margin: 0;
+  padding-left: 2px;
+  
+}
+
+/* borda vermelha quando erro */
+.input__box.error input {
+  border: 1px solid #e53935 !important;
+  color: #e53935;
 }
 

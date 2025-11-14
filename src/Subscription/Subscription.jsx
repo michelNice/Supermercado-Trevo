@@ -3,28 +3,51 @@ import './Subscription.css';
 
 function Subscription() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [userError, setUserError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   const [showModal, setShowModal] = useState(false);
 
   const [cep, setCep] = useState('');
-  const [cepData, setCepData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Bloqueia scroll quando modal está aberto
+  // Bloqueia scroll ao abrir modal
   useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = showModal ? "hidden" : "";
   }, [showModal]);
 
-  // Formata o CEP com traço automático
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let valid = true;
+
+    // Validação usuário
+    if (user.trim() === '') {
+      setUserError('Por favor, informe EMAIL, CPF ou CNPJ');
+      valid = false;
+    } else {
+      setUserError('');
+    }
+
+    // Validação senha
+    if (password.trim() === '') {
+      setPasswordError('Por favor, informe a senha');
+      valid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    if (!valid) return;
+
+    console.log("Login enviado!");
+  };
+
   const handleCepChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ''); // remove tudo que não é número
-    if (value.length > 5) value = value.replace(/^(\d{5})(\d)/, '$1-$2'); // coloca o traço
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 5) value = value.replace(/^(\d{5})(\d)/, '$1-$2');
     setCep(value);
   };
 
@@ -32,23 +55,37 @@ function Subscription() {
     <>
       <section className="login__wrapper">
         <div className="sub__login">
-          <form action="#" method="post">
+          <form onSubmit={handleSubmit}>
             <div className="sub__text">
               <h2>Seja bem-vindo(a)!</h2>
               <p>Insira seus dados nos campos abaixo para fazer login</p>
             </div>
 
-            <div className="input__box">
-              <input type="text" id="user" placeholder=" " required />
+            {/* CAMPO USUÁRIO */}
+            <div className={`input__box ${userError ? 'error' : ''}`}>
+              <input
+                type="text"
+                id="user"
+                placeholder=" "
+                value={user}
+                onChange={(e) => setUser(e.target.value)}
+              />
               <label htmlFor="user">Email, CPF ou CNPJ*</label>
             </div>
 
-            <div className="input__box">
+            {/* espaço fixo para evitar movimento */}
+            <div className="error__space">
+              {userError && <p className="error__text">{userError}</p>}
+            </div>
+
+            {/* CAMPO SENHA */}
+            <div className={`input__box ${passwordError ? 'error' : ''}`}>
               <input
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder=" "
-                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <label htmlFor="password">Senha*</label>
 
@@ -58,13 +95,14 @@ function Subscription() {
               ></i>
             </div>
 
+            {/* espaço fixo para evitar movimento */}
+            <div className="error__space">
+              {passwordError && <p className="error__text">{passwordError}</p>}
+            </div>
+
             <a href="#">Esqueceu sua senha?</a>
 
-            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-            <div
-              className="g-recaptcha"
-              data-sitekey="6LfuffwrAAAAAPz2OKRB-Tmn3NEtjmgAdoont_sF"
-            ></div>
+            <div className="g-recaptcha" data-sitekey="6LfuffwrAAAAAPz2OKRB-Tmn3NEtjmgAdoont_sF"></div>
 
             <button type="submit" className="btn__subscription">Entrar</button>
 
