@@ -406,4 +406,21 @@
   color: #e53935;
 }
 
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* estilo do texto de erro */
+.error__text {
+  color: #e53935;
+  font-size: 0.75rem;
+  animation: slideUpFade 0.25s ease-out; /* 🔥 animação aqui */
+}
+
 /*# sourceMappingURL=Subscription.css.map */
