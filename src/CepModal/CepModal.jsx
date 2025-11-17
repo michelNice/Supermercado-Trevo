@@ -1,5 +1,4 @@
 import "./CepModal.css";
-
 function CepModal({ show, onClose, cep, setCep, onSubmit }) {
   if (!show) return null;
 

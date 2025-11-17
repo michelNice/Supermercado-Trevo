@@ -5,11 +5,11 @@ import "swiper/css/pagination";
 import {Swiper, SwiperSlide} from  'swiper/react';
 import { Navigation,Pagination,Autoplay } from 'swiper/modules';
 import imgSlider1 from '../Hero Slider/imgSlider1.jpg';
-import imgSlider2 from '../Hero Slider/imgSlider2.png';
+import imgSlider2 from '../Hero Slider/imgSlider2.jpg';
 import imgSlider3 from '../Hero Slider/imgSlider3.jpg';
 import imgSlider4 from '../Hero Slider/imgSlider4.jpg';
 import imgSlider5 from '../Hero Slider/imgSlider5.png';
-
+import imgSlider6 from '../Hero Slider/imgSlider6.png';
 function HeroSlider(){
 
     return(
@@ -36,10 +36,10 @@ function HeroSlider(){
                     <img src={imgSlider4} alt="Slide 4" />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src={imgSlider3} alt="Slide 3" />
+                    <img src={imgSlider5} alt="Slide 3" />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src={imgSlider5} alt="Slide 3" />
+                    <img src={imgSlider6} alt="slide 6" />
                 </SwiperSlide>
             </Swiper>
 
