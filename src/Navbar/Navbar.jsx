@@ -17,9 +17,14 @@ function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDelivery, setShowDelivery] = useState(false);
   const deliveryRef = useRef(null);
-  const [currentAddress,setCurrentAddress] = useState("Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE")
 
-  // Fecha o delivery se clicar fora
+  // 🔹 Puxar endereço salvo ou usar padrão
+  const [currentAddress, setCurrentAddress] = useState(
+    localStorage.getItem("selectedAddress") ||
+    "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE"
+  );
+
+  // 🔹 Fechar dropdown quando clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (deliveryRef.current && !deliveryRef.current.contains(event.target)) {
@@ -28,7 +33,7 @@ function Navbar({ onLoginClick }) {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside); // necessário no mobile
+    document.addEventListener("touchstart", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -62,7 +67,6 @@ function Navbar({ onLoginClick }) {
           </div>
 
           <div className="actions">
-            {/* ✅ Wrapper com ref englobando botão + menu */}
             <div ref={deliveryRef} className="store__wrapper">
               <div
                 className="store"
@@ -80,7 +84,12 @@ function Navbar({ onLoginClick }) {
 
               {showDelivery && (
                 <div className="delivery__dropdown">
-                  <DeliveryOptions  onSelectStore={(address)=> setCurrentAddress(address)} />
+                  <DeliveryOptions
+                    onSelectStore={(address) => {
+                      setCurrentAddress(address);
+                      localStorage.setItem("selectedAddress", address); // 🔥 salva aqui também
+                    }}
+                  />
                 </div>
               )}
             </div>
