@@ -4,7 +4,11 @@ import './Subscription.css';
 function Subscription() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem("subscriptionUser");
+    return saved ? JSON.parse(saved).user : "";
+  });
+
   const [password, setPassword] = useState('');
 
   const [userError, setUserError] = useState('');
@@ -12,27 +16,23 @@ function Subscription() {
 
   const [showModal, setShowModal] = useState(false);
 
-  const [selectedStore, setSelectedStore] = useState(
-  localStorage.getItem("selectedStore") || ""
-);
-
+  const isLogged = Boolean(localStorage.getItem("subscriptionUser"));
 
   const [cep, setCep] = useState('');
 
-
+  // Render reCAPTCHA
   useEffect(() => {
-  const interval = setInterval(() => {
-    if (window.grecaptcha && document.getElementById("recaptcha-container")) {
-      window.grecaptcha.render("recaptcha-container", {
-        sitekey: "6Lfj-gwsAAAAAJwiSh-pko8rcPYPGEiOjm26IWCC",
-      });
-      clearInterval(interval);
-    }
-  }, 300);
+    const interval = setInterval(() => {
+      if (window.grecaptcha && document.getElementById("recaptcha-container")) {
+        window.grecaptcha.render("recaptcha-container", {
+          sitekey: "6Lfj-gwsAAAAAJwiSh-pko8rcPYPGEiOjm26IWCC",
+        });
+        clearInterval(interval);
+      }
+    }, 300);
 
-  return () => clearInterval(interval);
-}, []);
-
+    return () => clearInterval(interval);
+  }, []);
 
   // Bloqueia scroll ao abrir modal
   useEffect(() => {
@@ -44,7 +44,6 @@ function Subscription() {
 
     let valid = true;
 
-    // Validação usuário
     if (user.trim() === '') {
       setUserError('Por favor, informe EMAIL, CPF ou CNPJ');
       valid = false;
@@ -52,7 +51,6 @@ function Subscription() {
       setUserError('');
     }
 
-    // Validação senha
     if (password.trim() === '') {
       setPasswordError('Por favor, informe a senha');
       valid = false;
@@ -62,7 +60,13 @@ function Subscription() {
 
     if (!valid) return;
 
-    console.log("Login enviado!");
+    // SALVAR LOGIN AQUI
+    localStorage.setItem("subscriptionUser", JSON.stringify({
+      user,
+      logged: true,
+    }));
+
+    console.log("Login salvo no localStorage!");
   };
 
   const handleCepChange = (e) => {
@@ -75,13 +79,19 @@ function Subscription() {
     <>
       <section className="login__wrapper">
         <div className="sub__login">
+
+          {isLogged && (
+            <div className="loggedAlert">
+              <p>Você está logado como: <strong>{user}</strong></p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="sub__text">
               <h2>Seja bem-vindo(a)!</h2>
               <p>Insira seus dados nos campos abaixo para fazer login</p>
             </div>
 
-            {/* CAMPO USUÁRIO */}
             <div className={`input__box ${userError ? 'error' : ''}`}>
               <input
                 type="text"
@@ -93,12 +103,10 @@ function Subscription() {
               <label htmlFor="user">Email, CPF ou CNPJ*</label>
             </div>
 
-            {/* espaço fixo para evitar movimento */}
             <div className="error__space">
               {userError && <p className="error__text">{userError}</p>}
             </div>
 
-            {/* CAMPO SENHA */}
             <div className={`input__box ${passwordError ? 'error' : ''}`}>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -115,7 +123,6 @@ function Subscription() {
               ></i>
             </div>
 
-            {/* espaço fixo para evitar movimento */}
             <div className="error__space">
               {passwordError && <p className="error__text">{passwordError}</p>}
             </div>
@@ -138,41 +145,6 @@ function Subscription() {
           </form>
         </div>
       </section>
-
-      {/* ===================== MODAL ===================== */}
-      {showModal && (
-        <section className="modal__overlay" onClick={() => setShowModal(false)}>
-          <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
-            <div className="modal">
-              <button className="modal__close" onClick={() => setShowModal(false)}>×</button>
-
-              <h2 className="modal__title">Qual o seu CEP?</h2>
-
-              <p className="modal__description">
-                Precisamos validar seu CEP para saber se o nosso serviço atende a sua região.
-              </p>
-
-              <div className="modal__inputBox">
-                <input
-                  className="modal__input"
-                  type="text"
-                  id="cep"
-                  placeholder=" "
-                  value={cep}
-                  onChange={handleCepChange}
-                  maxLength={9}
-                  required
-                />
-                <label htmlFor="cep" className="modal__label">Digite seu CEP*</label>
-              </div>
-
-              <div className="modal__footer">
-                <button className="modal__button">Verificar Disponibilidade</button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
     </>
   );
 }
