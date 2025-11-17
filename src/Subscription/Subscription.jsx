@@ -12,6 +12,11 @@ function Subscription() {
 
   const [showModal, setShowModal] = useState(false);
 
+  const [selectedStore, setSelectedStore] = useState(
+  localStorage.getItem("selectedStore") || ""
+);
+
+
   const [cep, setCep] = useState('');
 
 

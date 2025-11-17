@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./DeliveryOptions.css";
 import "../Subscription/Subscription"
+import CepModal from "../CepModal/CepModal"; 
 
 function DeliveryOptions({ onSelectStore }) {
   const [selected, setSelected] = useState("home");
   const [selectedStore, setSelectedStore] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [cep,setCep] = useState("")
 
   
   const trevoAdress = [
@@ -109,6 +111,16 @@ function DeliveryOptions({ onSelectStore }) {
           </ul>
         </div>
       )}
+        <CepModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        cep={cep}
+        setCep={setCep}
+        onSubmit={() => {
+          console.log("CEP enviado:", cep);
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 }
