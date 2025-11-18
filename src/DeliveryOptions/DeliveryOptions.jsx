@@ -30,7 +30,12 @@ function DeliveryOptions({ onSelectStore }) {
     if (selectedStore !== null) {
       localStorage.setItem("selectedStore", selectedStore);
     }
-  }, [selectedStore]);
+  }, [selectedStore]); useEffect(() => {
+    document.body.style.overflow = showModal ? "hidden" : "";
+  }, [showModal]);
+
+
+
 
   return (
     <div className="delivery">

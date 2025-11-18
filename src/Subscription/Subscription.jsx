@@ -12,53 +12,107 @@ function Subscription() {
   const [passwordError, setPasswordError] = useState('');
 
   const [showModal, setShowModal] = useState(false);
+  const [cep, setCep] = useState("");
 
-  const [selectedStore, setSelectedStore] = useState(
-  localStorage.getItem("selectedStore") || ""
-);
-
-
-  const [cep, setCep] = useState('');
-
-
+  // reCAPTCHA
   useEffect(() => {
-  const interval = setInterval(() => {
-    if (window.grecaptcha && document.getElementById("recaptcha-container")) {
-      window.grecaptcha.render("recaptcha-container", {
-        sitekey: "6Lfj-gwsAAAAAJwiSh-pko8rcPYPGEiOjm26IWCC",
-      });
-      clearInterval(interval);
-    }
-  }, 300);
+    const interval = setInterval(() => {
+      if (window.grecaptcha && document.getElementById("recaptcha-container")) {
+        window.grecaptcha.render("recaptcha-container", {
+          sitekey: "6Lfj-gwsAAAAAJwiSh-pko8rcPYPGEiOjm26IWCC",
+        });
+        clearInterval(interval);
+      }
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
 
-  return () => clearInterval(interval);
-}, []);
-
-
-  // Bloqueia scroll ao abrir modal
+  // Bloqueia o scroll quando o modal abre
   useEffect(() => {
     document.body.style.overflow = showModal ? "hidden" : "";
   }, [showModal]);
 
+  // -----------------------------
+  // 🚀 FORMATAÇÃO + VALIDAÇÃO AUTOMÁTICA
+  // -----------------------------
+  const handleUserChange = (e) => {
+    let value = e.target.value;
+    let onlyNumbers = value.replace(/\D/g, "");
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const cpfRegex = /^\d{11}$/;
+    const cnpjRegex = /^\d{14}$/;
+
+    // SE CONTÉM LETRAS → é EMAIL
+    if (/[a-zA-Z]/.test(value)) {
+      setUser(value);
+
+      if (emailRegex.test(value)) {
+        setUserError("");
+      } else {
+        setUserError("Email inválido");
+      }
+
+      return;
+    }
+
+    // -----------------------------
+    // CPF (11 dígitos)
+    // -----------------------------
+    if (onlyNumbers.length <= 11) {
+      value = onlyNumbers
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+      setUser(value);
+
+      if (cpfRegex.test(onlyNumbers)) {
+        setUserError("");
+      } else {
+        setUserError("CPF inválido");
+      }
+
+      return;
+    }
+
+    // -----------------------------
+    // CNPJ (12–14 dígitos)
+    // -----------------------------
+    if (onlyNumbers.length > 11 && onlyNumbers.length <= 14) {
+      value = onlyNumbers
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/\.(\d{3})(\d)/, ".$1/$2")
+        .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+
+      setUser(value);
+
+      if (cnpjRegex.test(onlyNumbers)) {
+        setUserError("");
+      } else {
+        setUserError("CNPJ inválido");
+      }
+
+      return;
+    }
+  };
+
+  // -----------------------------
+  // SUBMIT FINAL
+  // -----------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
 
     let valid = true;
 
-    // Validação usuário
-    if (user.trim() === '') {
-      setUserError('Por favor, informe EMAIL, CPF ou CNPJ');
-      valid = false;
-    } else {
-      setUserError('');
-    }
+    if (userError !== "") valid = false;
 
-    // Validação senha
-    if (password.trim() === '') {
-      setPasswordError('Por favor, informe a senha');
+    if (password.trim() === "") {
+      setPasswordError("Por favor, informe a senha");
       valid = false;
     } else {
-      setPasswordError('');
+      setPasswordError("");
     }
 
     if (!valid) return;
@@ -67,8 +121,8 @@ function Subscription() {
   };
 
   const handleCepChange = (e) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length > 5) value = value.replace(/^(\d{5})(\d)/, '$1-$2');
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 5) value = value.replace(/^(\d{5})(\d)/, "$1-$2");
     setCep(value);
   };
 
@@ -83,26 +137,26 @@ function Subscription() {
             </div>
 
             {/* CAMPO USUÁRIO */}
-            <div className={`input__box ${userError ? 'error' : ''}`}>
+            <div className={`input__box ${userError ? "error" : ""}`}>
               <input
                 type="text"
                 id="user"
                 placeholder=" "
                 value={user}
-                onChange={(e) => setUser(e.target.value)}
+                onChange={handleUserChange}
+                maxLength={80}   // ← CORRIGIDO!
               />
               <label htmlFor="user">Email, CPF ou CNPJ*</label>
             </div>
 
-            {/* espaço fixo para evitar movimento */}
             <div className="error__space">
               {userError && <p className="error__text">{userError}</p>}
             </div>
 
             {/* CAMPO SENHA */}
-            <div className={`input__box ${passwordError ? 'error' : ''}`}>
+            <div className={`input__box ${passwordError ? "error" : ""}`}>
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder=" "
                 value={password}
@@ -111,12 +165,11 @@ function Subscription() {
               <label htmlFor="password">Senha*</label>
 
               <i
-                className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
+                className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
                 onClick={() => setShowPassword(!showPassword)}
               ></i>
             </div>
 
-            {/* espaço fixo para evitar movimento */}
             <div className="error__space">
               {passwordError && <p className="error__text">{passwordError}</p>}
             </div>
@@ -127,7 +180,7 @@ function Subscription() {
 
             <button type="submit" className="btn__subscription">Entrar</button>
 
-            <p>Ainda não tem uma conta?</p>
+            <p className="text_noAcc">Ainda não tem uma conta?</p>
 
             <button
               type="button"
@@ -139,7 +192,9 @@ function Subscription() {
           </form>
         </div>
       </section>
-     <CepModal
+
+      {/* MODAL DE CEP */}
+      <CepModal
         show={showModal}
         onClose={() => setShowModal(false)}
         cep={cep}
