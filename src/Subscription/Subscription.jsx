@@ -32,40 +32,48 @@ function Subscription() {
     document.body.style.overflow = showModal ? "hidden" : "";
   }, [showModal]);
 
+
   // -----------------------------
-  // 🚀 FORMATAÇÃO + VALIDAÇÃO AUTOMÁTICA
+  // 🚀 FORMATAÇÃO + VALIDAÇÃO
   // -----------------------------
   const handleUserChange = (e) => {
     let value = e.target.value;
     let onlyNumbers = value.replace(/\D/g, "");
 
+    setUser(value); // permite digitar email normalmente
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const cpfRegex = /^\d{11}$/;
     const cnpjRegex = /^\d{14}$/;
 
-    // SE CONTÉM LETRAS → é EMAIL
-    if (/[a-zA-Z]/.test(value)) {
-      setUser(value);
+    // Se apagou tudo → limpa o erro
+    if (value.trim() === "") {
+      setUserError("");
+      return;
+    }
 
+    // -----------------------------
+    // EMAIL (contém letras)
+    // -----------------------------
+    if (/[a-zA-Z]/.test(value)) {
       if (emailRegex.test(value)) {
         setUserError("");
       } else {
         setUserError("Email inválido");
       }
-
       return;
     }
 
     // -----------------------------
-    // CPF (11 dígitos)
+    // CPF (até 11 dígitos)
     // -----------------------------
     if (onlyNumbers.length <= 11) {
-      value = onlyNumbers
+      let formatted = onlyNumbers
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
 
-      setUser(value);
+      setUser(formatted);
 
       if (cpfRegex.test(onlyNumbers)) {
         setUserError("");
@@ -77,16 +85,16 @@ function Subscription() {
     }
 
     // -----------------------------
-    // CNPJ (12–14 dígitos)
+    // CNPJ (de 12 a 14 dígitos)
     // -----------------------------
     if (onlyNumbers.length > 11 && onlyNumbers.length <= 14) {
-      value = onlyNumbers
+      let formatted = onlyNumbers
         .replace(/^(\d{2})(\d)/, "$1.$2")
         .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
         .replace(/\.(\d{3})(\d)/, ".$1/$2")
         .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
 
-      setUser(value);
+      setUser(formatted);
 
       if (cnpjRegex.test(onlyNumbers)) {
         setUserError("");
@@ -98,16 +106,25 @@ function Subscription() {
     }
   };
 
+
   // -----------------------------
-  // SUBMIT FINAL
+  // 🚀 SUBMIT FINAL
   // -----------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
 
     let valid = true;
 
+    // Campo vazio
+    if (user.trim() === "") {
+      setUserError("Por favor, informe EMAIL, CPF ou CNPJ");
+      valid = false;
+    }
+
+    // Se já existe erro de validação
     if (userError !== "") valid = false;
 
+    // SENHA
     if (password.trim() === "") {
       setPasswordError("Por favor, informe a senha");
       valid = false;
@@ -119,6 +136,7 @@ function Subscription() {
 
     console.log("Login enviado!");
   };
+
 
   const handleCepChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
@@ -144,7 +162,6 @@ function Subscription() {
                 placeholder=" "
                 value={user}
                 onChange={handleUserChange}
-                maxLength={80}   // ← CORRIGIDO!
               />
               <label htmlFor="user">Email, CPF ou CNPJ*</label>
             </div>
