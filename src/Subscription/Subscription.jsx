@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './Subscription.css';
 import CepModal from '../CepModal/CepModal';
+import UnavailableModal from '../UnavailableModal/UnavailableModal';
 
 function Subscription() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,8 @@ function Subscription() {
 
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
+
+  const [showUnavailable, setShowUnavailable] = useState(false);
 
   // reCAPTCHA
   useEffect(() => {
@@ -219,9 +222,17 @@ function Subscription() {
         onSubmit={() => {
           console.log("CEP enviado:", cep);
           setShowModal(false);
+          setShowUnavailable(true)
         }}
       />
+
+        <UnavailableModal 
+            show={showUnavailable}
+            onClose={()=> setShowUnavailable(false)}
+        />
     </>
+
+  
   );
 }
 
