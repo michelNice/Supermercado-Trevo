@@ -31,11 +31,13 @@ function Subscription() {
   }, []);
 
   // Bloqueia o scroll quando o modal abre
-  useEffect(() => {
-    document.body.style.overflow = showModal ? "hidden" : "";
-  }, [showModal]);
-
-
+ useEffect(() => {
+  if (showModal || showUnavailable) {
+    document.body.style.overflow = "hidden"; // BLOQUEIA
+  } else {
+    document.body.style.overflow = "";       // LIBERA
+  }
+}, [showModal, showUnavailable]);
   // -----------------------------
   // 🚀 FORMATAÇÃO + VALIDAÇÃO
   // -----------------------------

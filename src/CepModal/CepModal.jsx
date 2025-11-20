@@ -31,7 +31,7 @@ function CepModal({ show, onClose, cep, setCep, onSubmit }) {
   return (
     <section className="modal__overlay" onClick={onClose}>
       <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
-        <div className="modal">
+        <div className="modal  modal__trans">
           <button className="modal__close" onClick={onClose}>×</button>
 
           <h2 className="modal__title">Qual o seu CEP?</h2>

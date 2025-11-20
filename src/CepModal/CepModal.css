@@ -175,12 +175,14 @@
     max-width: 100%;
     padding: 2rem;
     border-radius: 0.625rem;
-    transform: translateY(100%);
-    animation: slideUp 0.35s ease-out forwards;
+    transform: translateY(0); /* estado final, não o inicial */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+  .modal__trans {
+    animation: slideUp 0.35s ease-out forwards;
   }
   .modal__footer {
     justify-content: center;
