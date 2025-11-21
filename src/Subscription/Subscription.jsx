@@ -139,7 +139,7 @@ function Subscription() {
 
     if (!valid) return;
 
-    console.log("Login enviado!");
+    //console.log("Login enviado!");
   };
 
 

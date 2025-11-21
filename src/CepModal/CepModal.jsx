@@ -31,7 +31,8 @@ function CepModal({ show, onClose, cep, setCep, onSubmit }) {
   return (
     <section className="modal__overlay" onClick={onClose}>
       <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
-        <div className="modal  modal__trans">
+        <div className="modal modal__trans">
+
           <button className="modal__close" onClick={onClose}>×</button>
 
           <h2 className="modal__title">Qual o seu CEP?</h2>
@@ -42,7 +43,7 @@ function CepModal({ show, onClose, cep, setCep, onSubmit }) {
 
           <div className="modal__inputBox">
             <input
-              className="modal__input"
+              className={`modal__input ${cepError ? "input--error" : ""}`}
               type="text"
               placeholder=" "
               value={cep}
@@ -50,16 +51,24 @@ function CepModal({ show, onClose, cep, setCep, onSubmit }) {
               maxLength={9}
               required
             />
-            <label className="modal__label">Digite seu CEP*</label>
+
+            <label
+              className={`modal__label ${cepError ? "label--error" : ""}`}
+            >
+              Digite seu CEP*
+            </label>
           </div>
+
           <div className="error__space">
             {cepError && <p className="error__text">{cepError}</p>}
           </div>
+
           <div className="modal__footer">
             <button className="modal__button" onClick={handleSubmit}>
               Verificar Disponibilidade
             </button>
           </div>
+
         </div>
       </div>
     </section>

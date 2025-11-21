@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import "./DeliveryOptions.css";
 import CepModal from "../CepModal/CepModal";
+import UnavailableModal from "../UnavailableModal/UnavailableModal";
 
 function DeliveryOptions({ onSelectStore }) {
   const [selected, setSelected] = useState("home");
   const [selectedStore, setSelectedStore] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+
+  const [showModal, setShowModal] = useState(false); // CEP Modal
+  const [showUnavailable, setShowUnavailable] = useState(false); // Unavailable Modal
+
   const [cep, setCep] = useState("");
 
   const trevoAdress = [
@@ -16,7 +20,7 @@ function DeliveryOptions({ onSelectStore }) {
     { id: 5, name: "Trevo - Ibura", address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — UR-5, Ibura, Recife - PE" }
   ];
 
-  // 🔹 Quando abrir o componente, carregar loja e endereço salvos
+  // 🔹 Carregar dados salvo
   useEffect(() => {
     const savedStore = localStorage.getItem("selectedStore");
     const savedAddress = localStorage.getItem("selectedAddress");
@@ -25,17 +29,33 @@ function DeliveryOptions({ onSelectStore }) {
     if (savedAddress) onSelectStore(savedAddress);
   }, []);
 
-  // 🔹 Toda vez que trocar a loja → salva no localStorage
+  // 🔹 Salva loja ao trocar
   useEffect(() => {
     if (selectedStore !== null) {
       localStorage.setItem("selectedStore", selectedStore);
     }
-  }, [selectedStore]); useEffect(() => {
-    document.body.style.overflow = showModal ? "hidden" : "";
-  }, [showModal]);
+  }, [selectedStore]);
 
+  // 🔹 Bloqueia scroll para os DOIS modais
+  useEffect(() => {
+    if (showModal || showUnavailable) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [showModal, showUnavailable]);
 
+  // 🔹 Simulação: CEP inválido → abre modal de indisponível
+  function handleCepSubmit() {
+    if (cep.length !== 8) {
+      setShowModal(false);
+      setShowUnavailable(true);
+      return;
+    }
 
+    console.log("CEP enviado:", cep);
+    setShowModal(false);
+  }
 
   return (
     <div className="delivery">
@@ -80,8 +100,8 @@ function DeliveryOptions({ onSelectStore }) {
                   className={`store__item ${isSelected ? "selected" : ""}`}
                   onClick={() => {
                     setSelectedStore(store.id);
-                    localStorage.setItem("selectedAddress", store.address); // salva o endereço
-                    onSelectStore(store.address); // atualiza no Navbar
+                    localStorage.setItem("selectedAddress", store.address);
+                    onSelectStore(store.address);
                   }}
                 >
                   <i className="fas fa-map-marker-alt store-icon"></i>
@@ -91,9 +111,7 @@ function DeliveryOptions({ onSelectStore }) {
                     <p>{store.address}</p>
                   </div>
 
-                  <i
-                    className={`fas fa-check check-icon ${isSelected ? "visible" : ""}`}
-                  ></i>
+                  <i className={`fas fa-check check-icon ${isSelected ? "visible" : ""}`}></i>
                 </li>
               );
             })}
@@ -101,15 +119,19 @@ function DeliveryOptions({ onSelectStore }) {
         </div>
       )}
 
+      {/* CEP Modal */}
       <CepModal
         show={showModal}
         onClose={() => setShowModal(false)}
         cep={cep}
         setCep={setCep}
-        onSubmit={() => {
-          console.log("CEP enviado:", cep);
-          setShowModal(false);
-        }}
+        onSubmit={handleCepSubmit}
+      />
+
+      {/* Unavailable Modal */}
+      <UnavailableModal
+        show={showUnavailable}
+        onClose={() => setShowUnavailable(false)}
       />
     </div>
   );
