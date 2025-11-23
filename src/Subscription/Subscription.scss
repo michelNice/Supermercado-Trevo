@@ -4,7 +4,7 @@
 // ──────────────────────────────
 // Local Variables
 // ──────────────────────────────
-$error: #e53935;
+//$error: #e53935;
 $text-gray: #666;
 $radius: 5px;
 $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
@@ -184,7 +184,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 }
 
 .input__error {
-  color: #e53935;
+  color: $error;
   font-size: 0.75rem;
   margin-top: 4px;
   min-height: 16px; /* 🔹 reserva espaço mesmo sem erro */
@@ -199,7 +199,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 }
 
 .input__box input.input--error {
-  border-color: #e53935;
+  border-color: $error;
 }
 
 .input__box label {
@@ -230,7 +230,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
 /* estilo da mensagem de erro */
 .error__text {
-  color: #e53935;
+  color: $error;
   font-size: 0.8rem;
   margin: 0;
   padding-left: 2px;
@@ -239,11 +239,11 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
 /* borda vermelha quando erro */
 .input__box.error input {
-  border: 1px solid #e53935 !important;
+  border: 1px solid $error !important;
 }
 
 .error__text {
-  color: #e53935;
+  color: $error;
   font-size: 0.75rem;
   animation: slideUpFade 0.25s ease-out; /* 🔥 animação aqui */
 }

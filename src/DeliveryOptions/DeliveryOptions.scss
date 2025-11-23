@@ -37,7 +37,7 @@
         @include flex-center;
         flex: 1;
         gap: 8px;
-        padding: 6px 0px;
+        padding: 0.375rem 0;
         background: none;
         border: none;
         font-size: 0.7rem;
@@ -183,7 +183,7 @@
     }
   }
 
-  @media (max-width: 760px) {
+  @media (max-width:47.5rem) {
     right: 0;
     width: 100%;
   }

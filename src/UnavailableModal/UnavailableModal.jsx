@@ -1,4 +1,4 @@
-import "./UnavailableModal.css";
+//import "./UnavailableModal.css";
 import  '../CepModal/CepModal.css'
 
 function UnavailableModal({ show, onClose }) {
