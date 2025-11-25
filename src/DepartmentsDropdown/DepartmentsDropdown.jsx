@@ -1,30 +1,38 @@
+import { useState } from 'react';
 import './DepartmentsDropdown.css'
-function DepartmentsDropdown(){
+import { FiChevronRight } from "react-icons/fi";
 
-    const departamentos = [
-        {
-            nome:"Limpeza",
-            sub:["Sabão pó, barra e líquido",
-            "Alvejantes",
-            "Água sanitária",
-            "Acessórios de limpeza",
-            "Amaciantes",
-            "Purificador de ar",
-            "Papel higiênico",
-            "Multiuso",
-            "Limpeza geral",
-            "Limpadores",
-            "Inseticidas",
-            "Desodorizador",
-            "Desinfetantes",
-            "Desengordurantes",
-            "Banheiro",
-            "Cuidados com a louça"],
-        },{
 
-        },{
-          nome:"",
-          sub:["Achocolatado light diet",
+function DepartmentsDropdown() {
+  const [click, setClick] = useState(false);
+  const handleClick = () => setClick(!click);
+
+  const departamentos = [
+    {
+      nome:"Limpeza",
+      sub:[
+        "Sabão pó, barra e líquido",
+        "Alvejantes",
+        "Água sanitária",
+        "Acessórios de limpeza",
+        "Amaciantes",
+        "Purificador de ar",
+        "Papel higiênico",
+        "Multiuso",
+        "Limpeza geral",
+        "Limpadores",
+        "Inseticidas",
+        "Desodorizador",
+        "Desinfetantes",
+        "Desengordurantes",
+        "Banheiro",
+        "Cuidados com a louça"
+      ],
+    },
+    {
+      nome:"Saúde e bem-estar",
+      sub:[
+        "Achocolatado light diet",
         "Açúcares",
         "Adoçantes",
         "Enlatados e conservas",
@@ -36,14 +44,25 @@ function DepartmentsDropdown(){
         "Biscoitos saudáveis",
         "Farináceos",
         "Leites especiais",
-        "Massas integrais",
-        ]
-        }
-    ]
+        "Massas integrais"
+      ]
+    }
+  ];
 
- 
-
+  return (
+    <>
+      <ul onClick={handleClick} className={click ? 'dropdown-menu clicked' : 'dropdown-menu'}>
+        {departamentos.map((dep, index) => {
+          return (
+            <li key={index} className='item'>
+              {dep.nome}
+               <FiChevronRight className="arrow-icon" />
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
 }
-
 
 export default DepartmentsDropdown;

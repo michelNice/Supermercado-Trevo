@@ -1,5 +1,17 @@
-.menu {
+.dropdown-menu {
   background: yellow;
+}
+
+.dropdown-menu {
+  background: red;
+  width: 300px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  justify-content: space-between;
 }
 
 /*# sourceMappingURL=DepartmentsDropdown.css.map */
