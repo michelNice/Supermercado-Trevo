@@ -2,7 +2,6 @@
 import  '../CepModal/CepModal.css'
 
 function UnavailableModal({ show, onClose }) {
-
   if (!show) return null;
 
   return (
