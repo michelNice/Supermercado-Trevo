@@ -102,7 +102,7 @@ function DepartmentsDropdown() {
             onMouseEnter={() => setActiveIndex(index)}
             onMouseLeave={() => setActiveIndex(null)}
           >
-            {dep.nome}
+            <a href="">{dep.nome}</a>
             <FiChevronRight className="arrow-icon" />
           </li>
         ))}

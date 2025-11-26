@@ -18,7 +18,7 @@
     align-items: center;
     padding: 8px 12px;
     justify-content: space-between;
-
+    color: #000;
 }
 
 
@@ -26,7 +26,7 @@
   position: absolute;
   top: 155px;
   left: 410px; /* 280px menu + 100px margem */
-  width: 180px;
+  width: 200px;
   background: white;
   border: 1px solid #ddd;
   border-left: none;
@@ -35,5 +35,13 @@
   z-index: 9999;
 }
 
+
+.submenu li{
+  padding: 5px 0;
+}
+
+.submenu li a{
+  color: black;
+}
 
 
