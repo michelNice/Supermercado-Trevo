@@ -1,10 +1,18 @@
+@charset "UTF-8";
 .dropdown-menu {
   background: yellow;
 }
 
 .dropdown-menu {
-  background: red;
+  position: absolute;
+  top: 155px; /* fica logo abaixo do botão Departamentos */
+  left: 100px; /* alinhado à esquerda */
   width: 300px;
+  background: white;
+  z-index: 9999; /* fica acima de tudo */
+  padding: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .item {
@@ -12,6 +20,19 @@
   align-items: center;
   padding: 8px 12px;
   justify-content: space-between;
+}
+
+.submenu {
+  position: absolute;
+  top: 155px;
+  left: 410px; /* 280px menu + 100px margem */
+  width: 180px;
+  background: white;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  padding: 10px;
+  z-index: 9999;
 }
 
 /*# sourceMappingURL=DepartmentsDropdown.css.map */

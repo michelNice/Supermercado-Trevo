@@ -2,10 +2,11 @@ import { useState } from 'react';
 import './DepartmentsDropdown.css'
 import { FiChevronRight } from "react-icons/fi";
 
-
 function DepartmentsDropdown() {
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
+
+  const [activeIndex, setActiveIndex] = useState(null); // ← ADICIONADO AQUI
 
   const departamentos = [
     {
@@ -46,21 +47,76 @@ function DepartmentsDropdown() {
         "Leites especiais",
         "Massas integrais"
       ]
+    },
+    { 
+      nome:"Hortifruti",
+      sub:[
+        "Folhagem",
+        "Frutas",
+        "Legumes",
+        "Oleaginosas e condimentos",
+        "Ovos",
+        "Goma de mandioca",
+        "Raízes",
+        "Empório"
+      ]
+    },
+    {
+      nome:"Bebidas",
+      sub:[
+        "Bebidas ice",
+        "Cervejas",
+        "Destilados",
+        "Energéticos e isotônicos",
+        "Refrigerantes",
+        "Sucos e refrescos em pó",
+        "Whisky",
+        "Águas",
+        "Aperitivo",
+        "Licor",
+        "Espumantes e vinhos",
+        "Aguardente e cachaça",
+        "Gin e vodkas"
+      ]
+    },
+    {
+      nome:"Salgados",
+      sub:[
+        "Bacalhau",
+        "Fígado bovino",
+        "Cortes suínos salgados"
+      ]
     }
   ];
 
   return (
     <>
-      <ul onClick={handleClick} className={click ? 'dropdown-menu clicked' : 'dropdown-menu'}>
-        {departamentos.map((dep, index) => {
-          return (
-            <li key={index} className='item'>
-              {dep.nome}
-               <FiChevronRight className="arrow-icon" />
-            </li>
-          );
-        })}
+      <ul
+        onClick={handleClick}
+        className={click ? 'dropdown-menu clicked' : 'dropdown-menu'}
+      >
+        {departamentos.map((dep, index) => (
+          <li
+            key={index}
+            className="item"
+            onMouseEnter={() => setActiveIndex(index)}
+            onMouseLeave={() => setActiveIndex(null)}
+          >
+            {dep.nome}
+            <FiChevronRight className="arrow-icon" />
+          </li>
+        ))}
       </ul>
+
+      {activeIndex !== null && (
+        <ul className="submenu">
+          {departamentos[activeIndex].sub.map((sub, i) => (
+            <li key={i} className="subitem">
+              <a href="">{sub}</a>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }

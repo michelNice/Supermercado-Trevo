@@ -3,6 +3,7 @@ import "./Navbar.css";
 import trevo from "../imgs/bebe2.png";
 import NavMobile from "../NavMobile/NavMobile";
 import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
+import DepartmentsDropdown from "../DepartmentsDropdown/DepartmentsDropdown";
 import {
   FaSearch,
   FaUser,
@@ -16,6 +17,7 @@ import {
 function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDelivery, setShowDelivery] = useState(false);
+  const [Departaments,setDepartaments] = useState(false)
   const deliveryRef = useRef(null);
 
   // 🔹 Puxar endereço salvo ou usar padrão
@@ -87,7 +89,7 @@ function Navbar({ onLoginClick }) {
                   <DeliveryOptions
                     onSelectStore={(address) => {
                       setCurrentAddress(address);
-                      localStorage.setItem("selectedAddress", address); // 🔥 salva aqui também
+                      localStorage.setItem("selectedAddress", address); 
                     }}
                   />
                 </div>
@@ -118,11 +120,12 @@ function Navbar({ onLoginClick }) {
       <div className="nav__down">
         <div className="row">
           <ul className="main__nav">
-            <li className="departamentos">
+            <li className="departamentos" onClick={() => setDepartaments(prev => !prev)}>
               <FaTh className="fath" />
               <span>Departamentos</span>
               <FaChevronDown className="chevron" />
             </li>
+            
             <div className="divider"></div>
             <li><a href="#">Mais Vendidos</a></li>
             <li><a href="#">Ofertas</a></li>
@@ -135,14 +138,17 @@ function Navbar({ onLoginClick }) {
         </div>
       </div>
 
+      {Departaments && (<DepartmentsDropdown/>)}
+
       <NavMobile
         menuOpen={menuOpen}
         closeMenu={() => setMenuOpen(false)}
         onLoginClick={onLoginClick}
       />
-
+     
       {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)}></div>}
     </header>
+     
   );
 }
 
