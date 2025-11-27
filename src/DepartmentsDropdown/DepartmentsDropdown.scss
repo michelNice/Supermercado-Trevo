@@ -1,47 +1,54 @@
-.dropdown-menu{
-    background: yellow;
+.dropdown-wrapper {
+  position: relative;
 }
 
+/* MENU PRINCIPAL */
 .dropdown-menu {
   position: absolute;
-  top:155px;        /* fica logo abaixo do botão Departamentos */
-  left:100px;          /* alinhado à esquerda */
+  top: 0px;
+  left: 100px;
   width: 300px;
   background: white;
-  z-index: 9999;    /* fica acima de tudo */
+  z-index: 9999;
   padding: 10px 0;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-.item{
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    justify-content: space-between;
-    color: #000;
+
+.dropdown-menu li a {
+  color: #000;
 }
 
+.dropdown-menu li a:hover {
+  color: aqua;
+}
 
+.item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  justify-content: space-between;
+  color: #000;
+}
+
+/* SUBMENU (NÃO SOME MAIS) */
 .submenu {
   position: absolute;
-  top: 155px;
-  left: 410px; /* 280px menu + 100px margem */
+  top:0;
+  left: 400px;   /* ← ENCOSTA NO MENU (300px + 100px) */
   width: 200px;
   background: white;
   border: 1px solid #ddd;
   border-left: none;
   border-radius: 0 6px 6px 0;
-  padding: 10px ;
+  padding: 10px;
   z-index: 9999;
 }
 
-
-.submenu li{
+.submenu li {
   padding: 5px 0;
 }
 
-.submenu li a{
+.submenu li a {
   color: black;
 }
-
-

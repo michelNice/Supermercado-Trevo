@@ -76,17 +76,17 @@
   transition: all 0.3s ease;
 }
 .login__wrapper .sub__login form .input__box input:focus {
-  border-color: #e53935;
+  border-color: #d93025;
   box-shadow: 0 0 5px rgba(0, 255, 60, 0.3);
 }
 .login__wrapper .sub__login form .input__box input:invalid:focus {
-  border-color: #e53935;
-  box-shadow: 0 0 5px rgba(229, 57, 53, 0.3);
+  border-color: #d93025;
+  box-shadow: 0 0 5px rgba(217, 48, 37, 0.3);
 }
 .login__wrapper .sub__login form .input__box input:focus + label, .login__wrapper .sub__login form .input__box input:not(:placeholder-shown) + label {
   top: 0;
   font-size: 0.75rem;
-  color: #e53935;
+  color: #d93025;
   transform: translateY(-70%);
   opacity: 1;
 }
@@ -171,7 +171,7 @@
 }
 
 .input__error {
-  color: #e53935;
+  color: #d93025;
   font-size: 0.75rem;
   margin-top: 4px;
   min-height: 16px; /* 🔹 reserva espaço mesmo sem erro */
@@ -186,7 +186,7 @@
 }
 
 .input__box input.input--error {
-  border-color: #e53935;
+  border-color: #d93025;
 }
 
 .input__box label {
@@ -210,12 +210,12 @@
 
 .error__space {
   height: 0; /* reserva espaço */
-  margin-bottom: 17px;
+  margin-bottom: 0px;
 }
 
 /* estilo da mensagem de erro */
 .error__text {
-  color: #e53935;
+  color: #d93025;
   font-size: 0.8rem;
   margin: 0;
   padding-left: 2px;
@@ -223,11 +223,11 @@
 
 /* borda vermelha quando erro */
 .input__box.error input {
-  border: 1px solid #e53935 !important;
+  border: 1px solid #d93025 !important;
 }
 
 .error__text {
-  color: #e53935;
+  color: #d93025;
   font-size: 0.75rem;
   animation: slideUpFade 0.25s ease-out; /* 🔥 animação aqui */
 }

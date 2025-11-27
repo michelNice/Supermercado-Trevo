@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import './DepartmentsDropdown.css'
+import './DepartmentsDropdown.css';
 import { FiChevronRight } from "react-icons/fi";
 
 function DepartmentsDropdown() {
-  const [click, setClick] = useState(false);
-  const handleClick = () => setClick(!click);
-
-  const [activeIndex, setActiveIndex] = useState(null); // ← ADICIONADO AQUI
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const departamentos = [
     {
@@ -90,34 +87,38 @@ function DepartmentsDropdown() {
   ];
 
   return (
-    <>
-      <ul
-        onClick={handleClick}
-        className={click ? 'dropdown-menu clicked' : 'dropdown-menu'}
-      >
+    <div 
+      className="dropdown-wrapper"
+      onMouseLeave={() => setActiveIndex(null)}  // só fecha quando sai do wrapper
+    >
+      
+      <ul className="dropdown-menu">
         {departamentos.map((dep, index) => (
           <li
             key={index}
             className="item"
-            onMouseEnter={() => setActiveIndex(index)}
-            onMouseLeave={() => setActiveIndex(null)}
+            onMouseEnter={() => setActiveIndex(index)} // abre ao passar o mouse
           >
-            <a href="">{dep.nome}</a>
+            {dep.nome}
             <FiChevronRight className="arrow-icon" />
           </li>
         ))}
       </ul>
 
       {activeIndex !== null && (
-        <ul className="submenu">
+        <ul 
+          className="submenu"
+          onMouseEnter={() => setActiveIndex(activeIndex)} // NÃO fecha
+        >
           {departamentos[activeIndex].sub.map((sub, i) => (
             <li key={i} className="subitem">
-              <a href="">{sub}</a>
+              <a href="#">{sub}</a>
             </li>
           ))}
         </ul>
       )}
-    </>
+
+    </div>
   );
 }
 
