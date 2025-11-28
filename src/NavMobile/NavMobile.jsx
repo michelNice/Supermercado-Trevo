@@ -119,10 +119,7 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
                   </div>
               </a>
           </li>
-          
         </ul>
-
-    
         {/* Extra Options */}
         
         <div className="mobile__button">

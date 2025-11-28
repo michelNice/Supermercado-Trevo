@@ -123,7 +123,7 @@ function Navbar({ onLoginClick }) {
             <li className="departamentos" onClick={() => setDepartaments(prev => !prev)}>
               <FaTh className="fath" />
               <span>Departamentos</span>
-              <FaChevronDown className="chevron" />
+              <FaChevronDown className={`arrow ${Departaments ? "rotate" : ""}`}/>
             </li>
             
             <div className="divider"></div>
