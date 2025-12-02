@@ -1,6 +1,4 @@
-
 import {
-  FaTimes,
   FaHome,
   FaGift,
   FaTag,
@@ -8,16 +6,12 @@ import {
   FaUtensils,
   FaInfoCircle,
   FaFileAlt,
-  FaStore,
-  FaUser,
-  FaShoppingCart,
   FaArrowLeft,
   FaThLarge,
   FaEnvelope
 } from "react-icons/fa";
 import trevo from "../imgs/bebe2.png";
 import "./NavMobile.css";
-import { ImTab } from "react-icons/im";
 
 function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
 
@@ -80,7 +74,6 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
   }
 
   ]
-
   return (
     <header className="mobile__header">
       <div className={`mobile__menu ${menuOpen ? "open" : ""}`}>
