@@ -4,9 +4,7 @@
 /****************************/
 /* ROW                      */
 /****************************/
-.row {
-  @include container(84.5rem);
-}
+.row {@include container(84.5rem);}
 
 /****************************/
 /* PROMO BAR                */
@@ -36,12 +34,9 @@
 }
 
 @keyframes ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% {transform: translateX(0);}
+
+  100% {transform: translateX(-50%);}
 }
 
 /****************************/
@@ -66,9 +61,7 @@
     max-width: 88.75rem;
   }
 
-  .seacher {
-    color: $text-dark-bg;
-  }
+  .seacher {color: $text-dark-bg;}
 }
 
 /****************************/
@@ -99,9 +92,7 @@
         transition: 0.2s;
         font-size: 0.9rem;
 
-        &:hover {
-          opacity: 0.8;
-        }
+        &:hover {opacity: 0.8;}
       }
 
       &.departamentos {
@@ -114,9 +105,7 @@
         margin: 0;
       }
 
-      .fath {
-        margin-right: 0.6rem;
-      }
+      .fath {margin-right: 0.6rem;}
     }
 
     .divider {
@@ -188,9 +177,7 @@
     transition: background-color 0.5s ease, color 0.5s ease;
     cursor: pointer;
 
-    &:hover {
-      color: #ffffffdf;
-    }
+    &:hover {color: #ffffffdf;}
 
     .icon {
       font-size: 1.6rem;
@@ -241,9 +228,7 @@
 /****************************/
 /* CATEGORY BAR             */
 /****************************/
-.category-bar {
-  background: $brand-accent;
-}
+.category-bar { background: $brand-accent;}
 
 /****************************/
 /* RESPONSIVE               */
@@ -257,14 +242,10 @@
     justify-content: space-between;
     padding: 10px;
 
-    .row {
-      padding: 0;
-    }
+    .row {padding: 0;}
   }
 
-  .hamburger {
-    display: block;
-  }
+  .hamburger {display: block;}
 
   .logo {
     flex: 1;
@@ -280,9 +261,7 @@
   .cart {
     margin-left: auto;
 
-    .icon {
-      margin-left: 0;
-    }
+    .icon {margin-left: 0;}
   }
 
   .search__box {
@@ -291,9 +270,7 @@
     order: 2;
     margin: 0;
 
-    input {
-      width: 100%;
-    }
+    input {width: 100%;}
   }
 
   .actions {
@@ -305,9 +282,7 @@
     }
   }
 
-  .arrow {
-    transform: rotate(-90deg);
-  }
+  .arrow {transform: rotate(-90deg);}
 }
 
 .arrow {
@@ -316,9 +291,7 @@
   @media (min-width: 1024px) {
     transform: rotate(0deg); 
 
-    &.rotate {
-      transform: rotateX(180deg);
-    }
+    &.rotate {transform: rotateX(180deg);}
   }
 }
 

@@ -83,6 +83,78 @@ function DepartmentsDropdown() {
         "Fígado bovino",
         "Cortes suínos salgados"
       ]
+    },
+    {
+      nome:"Resfriado e congelado",
+      sub:[
+        "Batata cong. e vegetais",
+        "Hamburguer e empanados",
+        "Iogurtes",
+        "Manteigas e margarinas",
+        "Queijos",
+        "Requeijão e creme queijo",
+        "Salsichas e embutidos",
+        "Pizzas",
+        "Polpa de fruta",
+        "Sorvete",
+        "Pratos prontos",
+        "Lasanhas",
+        "Açaí e cupuaçu"
+      ]
+    },
+    {
+      nome:"Mercearia",
+      sub:[
+         "Biscoitos e bolinhos",
+        "Bomboniere e doces",
+        "Nutrição infantil",
+        "Salgadinhos e aperitivos",
+        "Sopas",
+        "Queijo ralado",
+        "Catchup",
+        "Maionese",
+        "Catchup",
+        "Mostarda",
+        "Matinais",
+        "Conservas vegetais",
+        "Enlatados",
+        "Sal, caldos e temperos",
+        "Farinhas e farofas",
+        "Arroz",
+        "Feijão",
+        "Azeites, óleos e vinagres"
+      ]
+    },
+    {
+      nome:"Padaria",
+      sub:[
+         "Pães",
+          "Pães de forma",
+          "Tortas e sobremesas",
+          "Farinha de rosca",
+          "Bolos e broas",
+          "Bolachas",
+          "Torradas",
+          "Salgados",
+          "Panetones"
+      ]
+    },
+    {
+      nome:"Higiene e Beleza",
+      sub:[
+      "Desodorantes",
+      "Barba e depilação",
+      "Hidratantes e óleos",
+      "Higiene bucal",
+      "Manicure e maquiagem",
+      "Protetor e repelente",
+      "Sabonetes",
+      "Utilidades para o corpo",
+      "Cabelo",
+      "Coloração",
+      "Absorventes",
+      "Incontinência"
+      ]
     }
   ];
 
