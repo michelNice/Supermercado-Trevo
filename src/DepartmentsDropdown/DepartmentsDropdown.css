@@ -1,15 +1,28 @@
-@charset "UTF-8";
+/******************************
+ * MAIN COLORS
+ ******************************/
+/******************************
+ * GRAYS
+ ******************************/
+/******************************
+ * BORDER RADIUS
+ ******************************/
+/******************************
+ * SHADOW
+ ******************************/
+/******************************
+ * TRANSITION
+ ******************************/
 .dropdown-wrapper {
   position: relative;
 }
 
-/* MENU PRINCIPAL */
 .dropdown-menu {
   position: absolute;
   top: 0px;
   left: 100px;
   width: 300px;
-  background: white;
+  background: #fff;
   z-index: 9999;
   padding: 10px 0;
   border: 1px solid #ddd;
@@ -18,16 +31,17 @@
 
 .dropdown-menu li a {
   color: #000;
+  cursor: pointer;
 }
 
-.dropdown-menu li a:hover {
-  color: aqua;
+.dropdown-menu li:hover {
+  color: rgb(99, 101, 200);
 }
 
 .item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
   justify-content: space-between;
   color: #000;
 }
@@ -35,23 +49,23 @@
 .submenu {
   position: absolute;
   top: 0;
-  left: 400px; /* ← ENCOSTA NO MENU (300px + 100px) */
+  left: 400px;
   width: 200px;
-  background: white;
+  background: #fff;
   border: 1px solid #ddd;
   border-left: none;
   border-radius: 0 6px 6px 0;
-  padding: 10px;
+  padding: 0.625rem;
   z-index: 9999;
-  margin-left: 0rem;
+  margin-left: 0.1rem;
 }
 
 .submenu li {
-  padding: 5px 0;
+  padding: 0.313rem 0;
 }
 
 .submenu li a {
-  color: black;
+  color: #000;
 }
 
 /*# sourceMappingURL=DepartmentsDropdown.css.map */

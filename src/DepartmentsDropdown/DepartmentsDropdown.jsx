@@ -77,14 +77,6 @@ function DepartmentsDropdown() {
       ]
     },
     {
-      nome:"Salgados",
-      sub:[
-        "Bacalhau",
-        "Fígado bovino",
-        "Cortes suínos salgados"
-      ]
-    },
-    {
       nome:"Resfriado e congelado",
       sub:[
         "Batata cong. e vegetais",

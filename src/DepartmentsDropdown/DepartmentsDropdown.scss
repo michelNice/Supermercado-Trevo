@@ -1,4 +1,4 @@
-@use '../Styles/variables';
+@use '../Styles/variables' as *;
 
 .dropdown-wrapper {position: relative;}
 
@@ -13,6 +13,7 @@
   border: 1px solid #ddd;
   border-radius: 5px;
 
+
 }
 
 .dropdown-menu li a {
@@ -22,8 +23,8 @@
 
 
 
-.dropdown-menu li a:hover {
-  color: rgb(170, 255, 0);
+.dropdown-menu li:hover {
+  color: rgb(99, 101, 200);
 }
 
 .item {
@@ -45,6 +46,7 @@
   border-radius: 0 6px 6px 0;
   padding:0.625rem;
   z-index: 9999;
+    margin-left:.1rem;
   
 }
 
