@@ -1,12 +1,34 @@
-//import './DepartmentMobile.css'
 
 const departaments = [
     {
-        name:'hi there'
+        name:'Limpeza'
     },
     {
-        name:'it working'
-    }
+        name:'Saúde e bem-estar'
+    },
+    {
+        name:'Hortifruti'
+    },
+    {
+        name:"Bebidas"
+    },
+    {
+        name: "Salgados",
+    },
+    {
+        name:"Mercearia",
+    },
+    {
+        name:"Aves, carnes e pescados",
+    },
+    { 
+        name: "Pescados",
+      
+    },
+    {
+     name: "Resfriados e congelados",
+   
+    },
 ]
 
 function DepartmentMobile(){
