@@ -18,7 +18,7 @@ function App() {
 
       {showSubscription ? <Subscription /> : <HeroSlider />}
 
-    <DepartmentMobile/>
+
       
     </>
   )
