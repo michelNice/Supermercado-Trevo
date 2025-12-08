@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import trevo from "../imgs/bebe2.png";
 import "./NavMobile.css";
-
+import DepartmentMobile from "../DepartmentsMobile/DepartmentsMobile";
 function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
 
   const mobileMenu = [
@@ -95,7 +95,14 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
         <ul className="mobile__nav">
           {mobileMenu.map((item,index)=>{
             return(
-            <li key={index}>
+            <li 
+            key={index}
+            onClick={()=> {
+              if(index === 1){
+                console.log('hiiii!!!!')
+              }
+            }}
+            >
               <a href={item.link}>
                   {item.icon}
                   <div className="text">

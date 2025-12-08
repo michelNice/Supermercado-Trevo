@@ -1,0 +1,16 @@
+.DepartmentMobile h3 {
+  background: yellow;
+  text-align: center;
+}
+.DepartmentMobile ul {
+  flex-direction: column;
+}
+.DepartmentMobile ul li {
+  background: red;
+  margin: 0.6rem;
+}
+.DepartmentMobile ul li a {
+  color: white;
+}
+
+/*# sourceMappingURL=DepartmentsMobile.css.map */
