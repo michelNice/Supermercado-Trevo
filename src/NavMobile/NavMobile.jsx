@@ -13,8 +13,9 @@ import {
 import trevo from "../imgs/bebe2.png";
 import "./NavMobile.css";
 import DepartmentMobile from "../DepartmentsMobile/DepartmentsMobile";
+import { useState } from "react";
 function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
-
+  const [showDeparments,setShowDeparments] = useState(false)
   const mobileMenu = [
     {
       icon: <FaHome className="icon" />,
@@ -97,11 +98,13 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
             return(
             <li 
             key={index}
-            onClick={()=> {
-              if(index === 1){
-                console.log('hiiii!!!!')
-              }
-            }}
+          onClick={() => {
+            if (item.title === "Departamentos") {
+              setShowDeparments(!showDeparments);
+            } else {
+              setShowDeparments(false);
+            }
+  }}
             >
               <a href={item.link}>
                   {item.icon}
@@ -129,6 +132,9 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
       </div>
     </header>
   );
+
+  {showDeparments && <DepartmentMobile />}
+
 }
 
 export default NavMobile;

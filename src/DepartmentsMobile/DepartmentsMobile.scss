@@ -1,6 +1,7 @@
 
 
 .DepartmentMobile{
+    display: none;
     h3{
         background: yellow;
         text-align: center;
@@ -25,4 +26,35 @@
 
 
 
+}
+
+@media(max-width:70rem){
+    
+.DepartmentMobile{
+    display:block;
+    h3{
+        background: yellow;
+        text-align: center;
+    }
+
+    ul{
+
+       
+        flex-direction: column;
+    }
+
+    ul li{
+        background: red;
+        margin: 0.6rem;
+        
+    }
+
+    ul li a{
+        
+        color: white;
+    }
+
+
+
+}
 }

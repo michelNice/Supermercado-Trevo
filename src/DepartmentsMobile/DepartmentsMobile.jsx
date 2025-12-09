@@ -9,6 +9,7 @@ import {
   FaSnowflake,
 } from "react-icons/fa";
 import "./DepartmentsMobile.css";
+import { useState } from "react";
 
 const departaments = [
   { 
@@ -43,26 +44,27 @@ const departaments = [
 
 
 function DepartmentMobile(){
-
+  const [openShowDeparments,setShowDeparments] = useState(false)
     return(
-        <>
-            <div className="DepartmentMobile ">
-                 <h3>Departaments</h3>
-            <ul>
-            {departaments.map((item,index)=>{
-                return(
-                    <li key={index}>
-                    <a href="">
-                        {item.icon}
-                        {item.name}
-                    </a>
-                   </li>
-                   )
-            })}
-            </ul>
-         </div>
-        </>
-    );
+    <>
+      {openShowDeparments && (
+        <div className="DepartmentMobile">
+          <h3>Departaments</h3>
+          <ul>
+            {departaments.map((item, index) => (
+              <li key={index}>
+                <a href="">
+                  {item.icon}
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
+  );
+
 
 }
 
