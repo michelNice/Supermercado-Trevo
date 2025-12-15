@@ -101,9 +101,9 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
           onClick={() => {
             if (item.title === "Departamentos") {
               setShowDeparments(!showDeparments);
-            } else {
-              setShowDeparments(false);
-            }
+
+              console.log("test it coding")
+            } 
   }}
             >
               <a href={item.link}>
@@ -132,8 +132,6 @@ function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
       </div>
     </header>
   );
-
-  {showDeparments && <DepartmentMobile />}
 
 }
 
