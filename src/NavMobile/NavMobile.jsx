@@ -12,7 +12,6 @@ import {
 } from "react-icons/fa";
 import trevo from "../imgs/bebe2.png";
 import "./NavMobile.css";
-import DepartmentMobile from "../DepartmentsMobile/DepartmentsMobile";
 import { useState } from "react";
 function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
   const [showDeparments,setShowDeparments] = useState(false)

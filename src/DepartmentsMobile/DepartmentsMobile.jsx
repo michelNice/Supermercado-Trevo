@@ -9,8 +9,6 @@ import {
   FaSnowflake,
 } from "react-icons/fa";
 import "./DepartmentsMobile.css";
-import { useState } from "react";
-
 const departaments = [
   { 
     name: "Limpeza",
@@ -32,7 +30,8 @@ const departaments = [
   },
   {
      name: "Mercearia",
-     icon: <FaShoppingBasket /> },
+     icon: <FaShoppingBasket /> }
+     ,
   { 
     name: "Aves, carnes e pescados",
      icon: <FaDrumstickBite /> },
@@ -44,10 +43,8 @@ const departaments = [
 
 
 function DepartmentMobile(){
-  const [openShowDeparments,setShowDeparments] = useState(false)
     return(
     <>
-      {openShowDeparments && (
         <div className="DepartmentMobile">
           <h3>Departaments</h3>
           <ul>
@@ -61,7 +58,6 @@ function DepartmentMobile(){
             ))}
           </ul>
         </div>
-      )}
     </>
   );
 
