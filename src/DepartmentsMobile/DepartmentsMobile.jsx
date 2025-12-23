@@ -60,8 +60,6 @@ function DepartmentMobile(){
         </div>
     </>
   );
-
-
 }
 
 export default DepartmentMobile;
