@@ -7,7 +7,7 @@
 }
 
 .hero{
-  height:60vh;
+  height:90vh;
   position: relative;}
 
 .hero img{
@@ -78,4 +78,17 @@
   stroke:#ee7104 !important;   
   fill: none !important;
   stroke-width: 3px;
+}
+
+@media (max-width: 70rem) {
+  .hero {
+    height: 100vh;
+    position: relative;
+  }
+
+  .hero img {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+  }
 }
