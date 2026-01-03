@@ -10,128 +10,124 @@ import {
   FaThLarge,
   FaEnvelope
 } from "react-icons/fa";
+
 import trevo from "../imgs/bebe2.png";
 import "./NavMobile.css";
-import { useState } from "react";
-function NavMobile({ menuOpen, closeMenu ,onLoginClick}) {
-  const [showDeparments,setShowDeparments] = useState(false)
+
+function NavMobile({
+  menuOpen,
+  closeMenu,
+  onLoginClick,
+  onDepartmentsClick
+}) {
+
   const mobileMenu = [
     {
-      icon: <FaHome className="icon" />,
+      icon: <FaHome />,
       title: "Início",
-      desc: "Acesse nossa loja",
-      link: "#"
+      desc: "Acesse nossa loja"
     },
-
     {
-
-    icon: <FaThLarge className="icon" />,
-    title: "Departamentos",
-    desc: "Produtos separados por departamentos",
-    link: "#"
+      icon: <FaThLarge />,
+      title: "Departamentos",
+      desc: "Produtos separados por departamentos"
     },
-     {
-    icon: <FaGift className="icon" />,
-    title: "Combos",
-    desc: "Combos de produtos",
-    link: "#"
-    },
-     {
-    icon: <FaTag className="icon" />,
-    title: "Ofertas",
-    desc: "Descontos imperdíveis para você",
-    link: "#"
-  },
-  {
-    icon: <FaLeaf className="icon" />,
-    title: "Coleções",
-    desc: "Produtos veganos, fitness e muito mais",
-    link: "#"
-  },
-  {
-    icon: <FaUtensils className="icon" />,
-    title: "Receitas",
-    desc: "Aprenda a fazer as melhores receitas",
-    link: "#"
-  },
-   {
-    icon: <FaEnvelope className="icon" />,
-    title: "Fale Conosco",
-    desc: "Entre em contato com nosso time",
-    link: "#"
-  },
     {
-    icon: <FaInfoCircle className="icon" />,
-    title: "Institucional",
-    desc: "Saiba um pouco mais sobre nós",
-    link: "#"
-  },
-  {
-    icon: <FaFileAlt className="icon" />,
-    title: "Termos de Uso",
-    desc: "Confira nossos termos de uso",
-    link: "#"
-  }
+      icon: <FaGift />,
+      title: "Combos",
+      desc: "Combos de produtos"
+    },
+    {
+      icon: <FaTag />,
+      title: "Ofertas",
+      desc: "Descontos imperdíveis para você"
+    },
+    {
+      icon: <FaLeaf />,
+      title: "Coleções",
+      desc: "Produtos veganos, fitness e muito mais"
+    },
+    {
+      icon: <FaUtensils />,
+      title: "Receitas",
+      desc: "Aprenda a fazer as melhores receitas"
+    },
+    {
+      icon: <FaEnvelope />,
+      title: "Fale Conosco",
+      desc: "Entre em contato com nosso time"
+    },
+    {
+      icon: <FaInfoCircle />,
+      title: "Institucional",
+      desc: "Saiba um pouco mais sobre nós"
+    },
+    {
+      icon: <FaFileAlt />,
+      title: "Termos de Uso",
+      desc: "Confira nossos termos de uso"
+    }
+  ];
 
-  ]
   return (
     <header className="mobile__header">
       <div className={`mobile__menu ${menuOpen ? "open" : ""}`}>
+
         {/* Header */}
         <div className="mobile__menu-header">
           <FaArrowLeft className="close__icon" onClick={closeMenu} />
+
           <div className="mobile__user">
-            <h3>
-              Olá, <span>Visitante</span>
-            </h3>
+            <h3>Olá, <span>Visitante</span></h3>
             <p>Entre ou cadastre-se</p>
           </div>
         </div>
+
         {/* Logo */}
         <div className="mobile__logo">
           <img src={trevo} alt="Logo Trevo" />
         </div>
-        {/* Menu Links */}
-        <ul className="mobile__nav">
-          {mobileMenu.map((item,index)=>{
-            return(
-            <li 
-            key={index}
-          onClick={() => {
-            if (item.title === "Departamentos") {
-              setShowDeparments(!showDeparments);
 
-              console.log("test it coding")
-            } 
-  }}
+        {/* Menu */}
+        <ul className="mobile__nav">
+          {mobileMenu.map((item, index) => (
+            <li
+              key={index}
+              onClick={() => {
+                if (item.title === "Departamentos") {
+                  closeMenu();
+                  onDepartmentsClick();
+                }
+              }}
             >
-              <a href={item.link}>
-                  {item.icon}
+                <a href={item.link}>
+                  <div className="icon">{item.icon}</div>
                   <div className="text">
                     <span>{item.title}</span>
                     <p>{item.desc}</p>
                   </div>
               </a>
-          </li>
-           )
-          })}
-         
+            </li>
+          ))}
         </ul>
-        {/* Extra Options */}
+
+        {/* Buttons */}
         <div className="mobile__button">
-             <button
-              onClick={() => {
-                closeMenu();
-                setTimeout(() => onLoginClick()); // pequeno delay
-              }}
-            >Já tenho uma conta
-            </button>
-            <button>Ainda nao tenho uma Conta </button>
+          <button
+            onClick={() => {
+              closeMenu();
+              onLoginClick();
+            }}
+          >
+            Já tenho uma conta
+          </button>
+
+          <button>Ainda não tenho uma conta</button>
         </div>
+
       </div>
     </header>
   );
-
 }
 
 export default NavMobile;

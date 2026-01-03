@@ -14,19 +14,17 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
-function Navbar({ onLoginClick }) {
+function Navbar({ onLoginClick, onDepartmentsClick }) { // ✅ CORREÇÃO
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDelivery, setShowDelivery] = useState(false);
-  const [Departaments,setDepartaments] = useState(false)
+  const [Departaments, setDepartaments] = useState(false);
   const deliveryRef = useRef(null);
 
-  // 🔹 Puxar endereço salvo ou usar padrão
   const [currentAddress, setCurrentAddress] = useState(
     localStorage.getItem("selectedAddress") ||
     "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE"
   );
 
-  // 🔹 Fechar dropdown quando clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (deliveryRef.current && !deliveryRef.current.contains(event.target)) {
@@ -81,7 +79,9 @@ function Navbar({ onLoginClick }) {
                   </div>
                   <div className="actions__address">{currentAddress}</div>
                 </span>
-                <FaChevronDown className={`arrow ${showDelivery ? "rotate" : ""}`} />
+                <FaChevronDown
+                  className={`arrow ${showDelivery ? "rotate" : ""}`}
+                />
               </div>
 
               {showDelivery && (
@@ -89,7 +89,7 @@ function Navbar({ onLoginClick }) {
                   <DeliveryOptions
                     onSelectStore={(address) => {
                       setCurrentAddress(address);
-                      localStorage.setItem("selectedAddress", address); 
+                      localStorage.setItem("selectedAddress", address);
                     }}
                   />
                 </div>
@@ -120,12 +120,17 @@ function Navbar({ onLoginClick }) {
       <div className="nav__down">
         <div className="row">
           <ul className="main__nav">
-            <li className="departamentos" onClick={() => setDepartaments(prev => !prev)}>
+            <li
+              className="departamentos"
+              onClick={() => setDepartaments((prev) => !prev)}
+            >
               <FaTh className="fath" />
               <span>Departamentos</span>
-              <FaChevronDown className={`arrow ${Departaments ? "rotate" : ""}`}/>
+              <FaChevronDown
+                className={`arrow ${Departaments ? "rotate" : ""}`}
+              />
             </li>
-            
+
             <div className="divider"></div>
             <li><a href="#">Mais Vendidos</a></li>
             <li><a href="#">Ofertas</a></li>
@@ -138,17 +143,19 @@ function Navbar({ onLoginClick }) {
         </div>
       </div>
 
-      {Departaments && (<DepartmentsDropdown/>)}
+      {Departaments && <DepartmentsDropdown />}
 
       <NavMobile
         menuOpen={menuOpen}
         closeMenu={() => setMenuOpen(false)}
         onLoginClick={onLoginClick}
+        onDepartmentsClick={onDepartmentsClick} 
       />
-     
-      {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)}></div>}
+
+      {menuOpen && (
+        <div className="overlay" onClick={() => setMenuOpen(false)}></div>
+      )}
     </header>
-     
   );
 }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+/*import { useState } from 'react'
 import './App.css'
 import Navbar from './Navbar/Navbar'
 import HeroSlider from './Hero Slider/HeroSlider'
@@ -20,3 +20,33 @@ function App() {
   )
 }
 export default App
+*/
+
+
+import { useState } from 'react'
+import './App.css'
+import Navbar from './Navbar/Navbar'
+import HeroSlider from './Hero Slider/HeroSlider'
+import Subscription from './Subscription/Subscription'
+import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
+
+function App() {
+  const [screen, setScreen] = useState('home')
+
+  return (
+    <>
+      <Navbar 
+        onLoginClick={() => setScreen('login')}
+        onDepartmentsClick={() => setScreen('departments')}
+      />
+
+      {screen === 'home' && <HeroSlider />}
+      {screen === 'departments' && <DepartmentMobile />}
+      {screen === 'login' && <Subscription />}
+    </>
+  )
+}
+
+export default App
+
+
