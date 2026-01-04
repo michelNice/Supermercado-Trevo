@@ -29,7 +29,7 @@ import Navbar from './Navbar/Navbar'
 import HeroSlider from './Hero Slider/HeroSlider'
 import Subscription from './Subscription/Subscription'
 import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
-
+import Departments from './Departments/Departments'
 function App() {
   const [screen, setScreen] = useState('home')
 
@@ -43,6 +43,8 @@ function App() {
       {screen === 'home' && <HeroSlider />}
       {screen === 'departments' && <DepartmentMobile />}
       {screen === 'login' && <Subscription />}
+
+      <Departments />
     </>
   )
 }

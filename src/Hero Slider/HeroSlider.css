@@ -1,94 +1,96 @@
+/* PAGINAÇÃO */
 .custom-pagination{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap:0.5rem;
-    margin-top:0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.625rem;
 }
 
+/* HERO */
 .hero{
-  height:90vh;
-  position: relative;}
+  width: 100%;
+  height: auto;              /* 🔥 remove espaço fantasma */
+  position: relative;
+}
 
+/* IMAGEM DO HERO */
 .hero img{
   width: 100%;
-  height: 100%;
-  
+  height: 40vh;              /* controla a altura real */
+  object-fit: cover;         /* preenche sem distorcer */
+  display: block;            /* evita espaço extra */
 }
 
+/* SWIPER */
+.mySwiper {
+  z-index: 1;
+}
+
+/* PAGINAÇÃO */
 .custom-pagination .swiper-pagination-bullet {
-    width:35px;
-    height: 4px;
-    border-radius:0.625rem;
-    background: #ccc;
-    transition: all 0.3s ease;
-    opacity: 1;
+  width: 35px;
+  height: 4px;
+  border-radius: 0.625rem;
+  background: #ccc;
+  transition: all 0.3s ease;
+  opacity: 1;
 }
+
 .custom-pagination .swiper-pagination-bullet-active {
-  background:#ee7104; 
-  width: 55px; 
+  background: #ee7104;
+  width: 55px;
 }
 
-.mySwiper {z-index: 1;}
-
-
+/* BOTÕES */
 .swiper-button-prev,
 .swiper-button-next {
-  width: 5px;
-  height: 5px;
-  background-color: rgba(255, 255, 255, 0.2); 
+  width: 28px;
+  height: 28px;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  color:#ee7104;
+  color: #ee7104;
   transition: all 0.3s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  font-size:0.313rem;
 }
-
 
 .swiper-button-prev::after,
 .swiper-button-next::after {
-  font-size:12px;
+  font-size: 12px;
   font-weight: bold;
-  width: 5px;
-  height: 5px;
 }
 
-/* Efeito hover — mesma vibe do Arco-Mix */
+/* HOVER */
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  background-color:#fff;
+  background-color: #fff;
   color: #7a5a5a;
   transform: scale(1.05);
-  font-size: 1rem;
 }
 
-/* Posicionamento */
-.swiper-button-prev {left: 10px;}
-
-.swiper-button-next {right: 10px;}
-
+/* POSIÇÃO */
+.swiper-button-prev { left: 10px; }
+.swiper-button-next { right: 10px; }
 
 .swiper-button-prev svg,
 .swiper-button-next svg {
-  width:15px !important;   
-  height:15px !important;
-  stroke:#ee7104 !important;   
+  width: 15px !important;
+  height: 15px !important;
+  stroke: #ee7104 !important;
   fill: none !important;
   stroke-width: 3px;
 }
 
+/* MOBILE */
 @media (max-width: 70rem) {
   .hero {
-    height: 100vh;
-    position: relative;
+    height: auto;            /* 🔥 remove 100vh */
   }
 
   .hero img {
-    width: 100%;
-    height: 40vh;
-    object-fit: cover;
+    height: 35vh;
   }
 }
