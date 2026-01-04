@@ -24,10 +24,10 @@ function HeroSlider(){
                 className='mySwiper' // <- O ">" fecha a abertura aqui
             >
                 <SwiperSlide>
-                    <img src={imgSlider1} alt="Slide 1" />
+                    <img src={imgSlider2} alt="Slide 1" />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src={imgSlider2} alt="Slide 2" />
+                    <img src={imgSlider1} alt="Slide 2" />
                 </SwiperSlide>
                 <SwiperSlide>
                     <img src={imgSlider3} alt="Slide 3" />
