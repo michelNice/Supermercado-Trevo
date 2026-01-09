@@ -87,10 +87,10 @@
 /* MOBILE */
 @media (max-width: 70rem) {
   .hero {
-    height: auto;            /* 🔥 remove 100vh */
+    height: auto;            
   }
 
   .hero img {
-    height: 35vh;
+    height: 15vh;
   }
 }

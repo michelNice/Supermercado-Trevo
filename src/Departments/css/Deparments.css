@@ -1,36 +1,51 @@
 .imgs{
   display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  gap: 1rem;
-}
 
-.imgs img{
-  width: 300px;
-  flex-shrink: 0; /* MUITO IMPORTANTE */
-}
-
-@media (max-width: 700px){
-  .imgs{
-  display: flex;
-  justify-content: flex-start;
-  overflow-x: auto;
-  overflow-y: hidden;
+  gap: 0px; /* 🔥 COLADAS */
   padding: 0;
   margin: 0;
-  gap: 0;
+
+  overflow-x: auto;
   max-width: 100vw;
+
   -webkit-overflow-scrolling: touch;
 }
 
-.imgs > *{
-  flex-shrink: 0;
-  margin: 0;
-  padding: 0;
-}
-
+/* ZERA QUALQUER CSS GLOBAL */
 .imgs img{
-  display: block; /* remove espaço invisível */
-   width:200px;
+  all: unset; /* ⚠️ REMOVE TUDO herdado */
+  display: block;
+
+  width: 210px;
+  height: auto;
+  margin:3rem .4rem;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
+
+
+  @media (max-width: 600px){
+    .imgs{
+    display: flex;
+    align-items: center;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    /* 🔥 TRUQUE PRINCIPAL */
+    padding-left: calc((100vw - (210px * 2) - 12px) / 2);
+    padding-right: 16px;
+
+    width: 100vw;
+    -webkit-overflow-scrolling: touch;
+  }
 }
+
+
