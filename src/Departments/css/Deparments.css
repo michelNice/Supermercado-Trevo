@@ -46,6 +46,14 @@
     width: 100vw;
     -webkit-overflow-scrolling: touch;
   }
+
+
+  .imgs img{
+
+  width: 185px;
+
+}
+
 }
 
 
