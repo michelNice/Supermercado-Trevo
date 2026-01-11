@@ -11,7 +11,7 @@ function Products(){
 
         const productData = async ()=> {
 
-            const url = 'https://world.openfoodfacts.org/cgi/search.pl?search_terms=banana&search_simple=1&json=1';
+            const url = 'https://world.openfoodfacts.org/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=20';
 
             try{
                 
@@ -51,13 +51,18 @@ function Products(){
 
         <>
 
-        return{
-
-        }
             {product.products.map(item => {
-                    <p key={item.code}>
+
+                return(
+                    <div>
+                        <p key={item.code}>
                         {item.product_name}
                     </p>
+                        <img  src={item.image_front_url} alt="From API" style={{ maxWidth: '100%' }} />
+
+                    </div>
+                     
+                )
             })}
         </>
     )
