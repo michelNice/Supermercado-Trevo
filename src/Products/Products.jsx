@@ -1,7 +1,5 @@
 import './Products.css';
 import React, { useState, useEffect } from 'react';
-
-
 function Products(){
     const [product,setProduct] = useState(null)
     const [isLoading,setIsLoading] = useState(true)
