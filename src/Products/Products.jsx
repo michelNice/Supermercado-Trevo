@@ -1,84 +1,44 @@
 import './Products.css'
 import React, {useState,useEffect} from 'react';
-
+import {supabase} from '../Supabase/supabaseClient';
 function Products(){
-
-      const [instruments, setInstruments] = useState([])
-      const [Loading, setLoading] = useState(true)
+      const [products,setProducts] = useState([])
+      const [loading, setLoading] = useState(true)
 
       useEffect(()=> {
-         getInstruments();
+          async function getProducts(){
+            const  {data,error} = await supabase.from('product').select('*')
+
+          console.log(data)
+          if(error){
+            console.log(error)
+          }else{
+            setProducts(data)
+            setLoading(false)
+          }
+          }
+          getProducts()
       }, [])
 
-
-      async function getInstruments(){
-
-        const {data,error} = supabase.from('instruments').select();
+      if(loading){
+        return <p>Carregando...</p>
       }
-}
 
-export default Products;
-
-/*
-import './Products.css';
-import React, { useState, useEffect } from 'react';
-
-function Products() {
-  const [product, setProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-
-    const productData = async () => {
-      const url = 'https://world.openfoodfacts.org/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=20';
-
-      try {
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`HTTP ERROR ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        setProduct(result);
-        setError(null);
-
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    productData();
-
-  }, []);
-
-  if (isLoading) {
-    return <p>Loading data...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
-  return (
-    <>
-      {product?.products?.map(item => (
-        <div key={item.code}>
-          <p>{item.product_name}</p>
-          <img
-            src={item.image_front_url}
-            alt={item.product_name}
-            style={{ maxWidth: '200px' }}
-          />
+      return(
+        <div>
+          <h1>Product</h1>
+          {products.map((product) => (
+          <div key={product.id}>
+          <img src={product.image_url}/>
+          <p>{product.description}</p>
+          <p>{product.name}</p>
+          <p>R$ {product.price}</p>
         </div>
       ))}
-    </>
-  );
+        </div>
+      );
+
 }
 
 export default Products;
-*/
+
