@@ -19,8 +19,8 @@ function Products(){
 
 export default Products;
 
-
-/*import './Products.css';
+/*
+import './Products.css';
 import React, { useState, useEffect } from 'react';
 
 function Products() {

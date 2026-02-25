@@ -5,7 +5,7 @@ import HeroSlider from './Hero Slider/HeroSlider'
 import Subscription from './Subscription/Subscription'
 import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
 import Departments from './Departments/Departments'
-import Products from './Products/Products'
+//import Products from './Products/Products'
 
 function App() {
   const [screen, setScreen] = useState('home')
@@ -23,7 +23,8 @@ function App() {
         <>
           <HeroSlider />
           <Departments />
-          <Products/>
+          
+          {/*<Products/>*/}
         </>
       )}
 
