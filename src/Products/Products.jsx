@@ -8,6 +8,7 @@ function Products(){
       useEffect(()=> {
           async function getProducts(){
             const  {data,error} = await supabase.from('product').select('*')
+            
 
           console.log(data)
           if(error){
@@ -30,8 +31,8 @@ function Products(){
           {products.map((product) => (
           <div key={product.id}>
           <img src={product.image_url}/>
-          <p>{product.description}</p>
           <p>{product.name}</p>
+          <p>{product.description}</p>
           <p>R$ {product.price}</p>
         </div>
       ))}
