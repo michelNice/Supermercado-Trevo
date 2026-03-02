@@ -1,4 +1,4 @@
-/*import './Products.css'
+import './Products.css'
 import React, {useState,useEffect} from 'react';
 import {supabase} from '../Supabase/supabaseClient';
 function Products(){
@@ -7,7 +7,7 @@ function Products(){
 
       useEffect(()=> {
           async function getProducts(){
-            const  {data,error} = await supabase.from('product').select('*')
+            const  {data,error} = await supabase.from('product').select('*').eq('category_id', '99114d6e-6207-4fbc-81fc-793ec4f2f215')
             
 
           console.log(data)
@@ -26,23 +26,39 @@ function Products(){
       }
 
       return(
-        <div>
-          <h1>Product</h1>
-          {products.map((product) => (
-          <div key={product.id}>
-          <img src={product.image_url}/>
-          <p>{product.name}</p>
-          <p>{product.description}</p>
-          <p>R$ {product.price}</p>
-        </div>
-      ))}
-        </div>
-      );
+        <div className="products">
+      {products.map((product) => (
+      <div className="product-card" key={product.id}>
+        <div className="offer">Superoferta</div>
+        <div className="product-img">
+         <img src={product.image_url} alt={product.name} />
+      </div>
+      <button className="add-btn">+</button>
+
+      <div className="product-info">
+        <p className="name">{product.name}</p>
+
+         <div className="price">
+            <span className="current">R$ {product.price}</span>
+            <span className="unit">/un</span>
+          </div>
+
+         <div className="discount">
+            <span className="off">29% OFF</span>
+            <span className="old">R$ 16,99</span>
+          </div>
+
+      </div>
+  
+    </div>
+  ))}
+</div>
+);
 
 }
 
 export default Products;
-*/
+/*
 
 
 
@@ -123,3 +139,4 @@ function Products() {
 }
 
 export default Products
+*/
