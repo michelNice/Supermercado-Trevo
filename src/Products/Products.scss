@@ -1,0 +1,62 @@
+@use '../Styles/variables' as *;
+.products{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.product-card{
+    position: relative;
+    background:$bg-light;
+    border-radius: 12px;
+    padding:5px;
+    border: 2px solid #916d6d;
+    text-align: center;
+    transition: 0.2s;
+    &:hover{
+         box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+}
+
+.offer{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background:$primary;
+  color:$bg-light;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.product-image {
+  img {
+    width: 100px;
+    
+    margin-bottom: 15px;
+  }
+}
+
+
+.add-btn {
+  position: absolute;
+  bottom: 110px;
+  right: 20px;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+
+  background: $primary;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
