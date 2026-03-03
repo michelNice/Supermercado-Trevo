@@ -1,7 +1,8 @@
 import './Products.css'
 import React, {useState,useEffect} from 'react';
 import {supabase} from '../Supabase/supabaseClient';
-function Products(){
+import { FiList } from "react-icons/fi";
+function Products({setScreen, setShowCep}){
       const [products,setProducts] = useState([])
       const [loading, setLoading] = useState(true)
 
@@ -26,14 +27,28 @@ function Products(){
       }
 
       return(
+      <>
+      <div className='products-container'>
+      <div className="hr"></div>
+      <h2>CORRE QUE É SÓ HOJE ✨</h2>
         <div className="products">
       {products.map((product) => (
       <div className="product-card" key={product.id}>
+        
         <div className="offer">Superoferta</div>
+        <div 
+  className="filter-icon" 
+ onClick={() => setShowCep(true)}
+>
+  <FiList />
+</div>
         <div className="product-img">
          <img src={product.image_url} alt={product.name} />
       </div>
-      <button className="add-btn">+</button>
+      <button className="add-btn"
+      onClick={()=> setScreen("login")}
+      
+      >+</button>
 
       <div className="product-info">
         <p className="name">{product.name}</p>
@@ -47,12 +62,13 @@ function Products(){
             <span className="off">29% OFF</span>
             <span className="old">R$ 16,99</span>
           </div>
-
       </div>
-  
+
     </div>
   ))}
 </div>
+</div>
+</>
 );
 
 }

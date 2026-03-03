@@ -6,9 +6,10 @@ import Subscription from './Subscription/Subscription'
 import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
 import Departments from './Departments/Departments'
 import Products from './Products/Products'
+import CepModal from './CepModal/CepModal'
 function App() {
   const [screen, setScreen] = useState('home')
-
+  const [showCep, setShowCep] = useState(false)
   return (
     <>
       <Navbar 
@@ -22,7 +23,7 @@ function App() {
         <>
           <HeroSlider />
           <Departments />
-          <Products/>
+           <Products setScreen={setScreen} setShowCep={setShowCep}/>
         </>
       )}
 
@@ -32,6 +33,7 @@ function App() {
       {/* LOGIN / SUBSCRIPTION */}
       {screen === 'login' && <Subscription />}
 
+      {showCep && <CepModal onClose={() => setShowCep(false)} />}
       
     </>
   )
