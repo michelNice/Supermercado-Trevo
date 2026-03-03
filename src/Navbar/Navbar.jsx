@@ -14,7 +14,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
-function Navbar({ onLoginClick, onDepartmentsClick }) { // ✅ CORREÇÃO
+function Navbar({ onLoginClick, onDepartmentsClick }) { 
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDelivery, setShowDelivery] = useState(false);
   const [Departaments, setDepartaments] = useState(false);
