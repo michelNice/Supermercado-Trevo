@@ -33,7 +33,11 @@ function App() {
       {/* LOGIN / SUBSCRIPTION */}
       {screen === 'login' && <Subscription />}
 
-      {showCep && <CepModal onClose={() => setShowCep(false)} />}
+      
+        <CepModal
+  show={showCep}
+  onClose={() => setShowCep(false)}
+/>
       
     </>
   )
