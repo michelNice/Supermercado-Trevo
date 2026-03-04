@@ -38,6 +38,7 @@ function Products({setScreen, setShowCep}){
         <div className="offer">Superoferta</div>
         <div 
   className="filter-icon" 
+ //onClick={() => setScreen('showcep')}
  onClick={() => setShowCep(true)}
 >
   <FiList />

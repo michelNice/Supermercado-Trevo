@@ -24,7 +24,6 @@ function Navbar({ onLoginClick, onDepartmentsClick }) {
     localStorage.getItem("selectedAddress") ||
     "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE"
   );
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (deliveryRef.current && !deliveryRef.current.contains(event.target)) {
