@@ -96,8 +96,11 @@ function Products({ setScreen }) {
 
           ))}
 
-        </div>
+        
 
+        </div>
+          <div className="hr"></div>
+          <h2>OFERTAS IMPERDÍVEIS SÓ ATÉ DOMINGO ❤️</h2>
       </div>
 
       {/* CEP MODAL */}
