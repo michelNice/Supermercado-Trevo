@@ -6,7 +6,6 @@ import CepModal from '../CepModal/CepModal'
 import UnavailableModal from '../UnavailableModal/UnavailableModal'
 
 function Products({ setScreen }) {
-
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
