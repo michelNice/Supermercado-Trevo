@@ -4,14 +4,11 @@ import { supabase } from '../Supabase/supabaseClient'
 import { FiList } from "react-icons/fi"
 import CepModal from '../CepModal/CepModal'
 import UnavailableModal from '../UnavailableModal/UnavailableModal'
-
 function Products({ setScreen }) {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-
   const [showCep, setShowCep] = useState(false)
   const [cep, setCep] = useState("")
-
   const [showUnavailable, setShowUnavailable] = useState(false)
 
   useEffect(() => {
