@@ -13,11 +13,11 @@ import { useState } from "react";
 const Navbar: React.FC = () => {
   const [menuOpen,setMenuOpen] = useState<boolean>(false)
   const [showDelivery, setShowDelivery] = useState<boolean>(false)
-  const [Departaments, setDepartaments] = useState<boolean>(false)
+  const [departaments, setDepartaments] = useState<boolean>(false)
   //const deliveryRef = useRef<HTMLDivElement | null>(null);
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
   const [currentAddress, setCurrentAddress] = useState<string>(
-    localStorage.getItem("selectedAddress") || defaultAddress
+    localStorage.getItem("selectedAddress") ?? defaultAddress
   )
   return (
     <>
@@ -31,26 +31,48 @@ const Navbar: React.FC = () => {
       </div>
       <nav className="navbar">
           <div className="row">
-                  <a className="logo" href="/">
+            <a className="logo" href="/">
             <img src={trevo} alt="Trevo" />
           </a>
           <div className="search__box">
             <input type="text" placeholder="O que você precisa?" aria-label="Buscar produtos"/>
              <FaSearch className="icon seacher" />
          </div>
-         <div className="actions">
-              <div className="store__wrapper">
-                  <div className="store">
-                    <FaStore className="icon" />
-                  <span>
+
+
+           <div className="actions">
+            <div className="store__wrapper">
+              <div
+                className="store"
+                onClick={() => setShowDelivery(!showDelivery)}
+              >
+                <FaStore className="icon" />
+                <span>
                   <div className="actions__address2">
                     Retirar na loja: <br />
                   </div>
                   <div className="actions__address">{currentAddress}</div>
                 </span>
-                  </div>
+                
               </div>
-         </div>
+            </div>
+
+            <div
+              className="store"
+              //onClick={onLoginClick}
+              style={{ cursor: "pointer" }}
+            >
+              <FaUser className="icon" />
+              <span>
+                <div className="actions__address2">
+                  Olá, faça seu login <br />
+                </div>
+                <div className="actions__address"> ou cadastre-se</div>
+              </span>
+            </div>
+            
+          </div>
+        
          <a className="cart" href="#">
             <FaShoppingCart className="icon" />
           </a>
