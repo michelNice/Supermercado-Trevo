@@ -10,7 +10,7 @@ import {
   FaThLarge,
   FaEnvelope
 } from "react-icons/fa";
-import '../NavMobile/NavMobile.css';
+//import '../NavMobile/NavMobile.css';
 import trevo from '../imgs/trevo_logo.png';
 interface NavMobileProps {
     menuOpen:boolean
@@ -22,7 +22,6 @@ type MobileMenuItems = {
   icon: React.ReactNode;
   title: string;
   desc: string;
-  
 }
 const NavMobile:React.FC<NavMobileProps> = ({
     menuOpen,
@@ -105,14 +104,13 @@ const NavMobile:React.FC<NavMobileProps> = ({
                 }
               }}
               >
-                 <a>
+                 <a href="#">
                   <div className="icon">{item.icon}</div>
                   <div className="text">
                     <span>{item.title}</span>
                     <p>{item.desc}</p>
                   </div>
               </a>
-
               </li>
             )
           })}
@@ -127,5 +125,4 @@ const NavMobile:React.FC<NavMobileProps> = ({
       </header>
     )
 }
-
 export default NavMobile;

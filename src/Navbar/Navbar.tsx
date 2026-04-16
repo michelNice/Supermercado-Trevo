@@ -10,8 +10,13 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import { useState } from "react";
-import NavMobile from "../NavMobile/NavMobile.js";
-const Navbar: React.FC = () => {
+import NavMobile from "../NavMobile/NavMobile";
+import '../NavMobile/NavMobile.css'
+interface NavbarProps {
+  onLoginClick:()=> void
+  onDepartmentsClick: () => void
+}
+const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick }) => {
   const [menuOpen,setMenuOpen] = useState<boolean>(false)
   const [showDelivery, setShowDelivery] = useState<boolean>(false)
   const [departments, setDepartments] = useState(false)
@@ -21,7 +26,6 @@ const Navbar: React.FC = () => {
     localStorage.getItem("selectedAddress") ?? defaultAddress
   )
   return (
-    <>
     <header className="header">
       <div className="promo__bar">
         <div className="promo__track">
@@ -42,8 +46,6 @@ const Navbar: React.FC = () => {
             <input type="text" placeholder="O que você precisa?" aria-label="Buscar produtos"/>
              <FaSearch className="icon seacher" />
          </div>
-
-
            <div className="actions">
             <div className="store__wrapper">
               <div
@@ -62,10 +64,9 @@ const Navbar: React.FC = () => {
                 />
               </div>
             </div>
-
             <div
               className="store"
-              //onClick={onLoginClick}
+              onClick={onLoginClick}
               style={{ cursor: "pointer" }}
             >
               <FaUser className="icon" />
@@ -88,12 +89,12 @@ const Navbar: React.FC = () => {
           <ul className="main__nav">
             <li
               className="departamentos"
-             // onClick={() => setDepartaments((prev) => !prev)}
+              onClick={() => setDepartments((prev) => !prev)}
             >
               <FaTh className="fath" />
               <span>Departamentos</span>
               <FaChevronDown
-                //className={`arrow ${Departaments ? "rotate" : ""}`}
+                className={`arrow ${departments ? "rotate" : ""}`}
               />
             </li>
             <div className="divider"></div>
@@ -107,8 +108,16 @@ const Navbar: React.FC = () => {
           </ul>
         </div>
       </div>
+        <NavMobile
+        menuOpen={menuOpen}
+        closeMenu={() => setMenuOpen(false)}
+        onLoginClick={onLoginClick}
+        onDepartmentsClick={onDepartmentsClick} 
+      />
+      {menuOpen && (
+        <div className="overlay" onClick={() => setMenuOpen(false)}></div>
+      )}
       </header>
-    </>
   );
 };
 
