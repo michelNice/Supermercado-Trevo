@@ -10,10 +10,11 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import { useState } from "react";
+import NavMobile from "../NavMobile/NavMobile.js";
 const Navbar: React.FC = () => {
   const [menuOpen,setMenuOpen] = useState<boolean>(false)
   const [showDelivery, setShowDelivery] = useState<boolean>(false)
-  const [departaments, setDepartaments] = useState<boolean>(false)
+  const [departments, setDepartments] = useState(false)
   //const deliveryRef = useRef<HTMLDivElement | null>(null);
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
   const [currentAddress, setCurrentAddress] = useState<string>(
@@ -31,6 +32,9 @@ const Navbar: React.FC = () => {
       </div>
       <nav className="navbar">
           <div className="row">
+           <div className="hamburger" onClick={() => setMenuOpen(true)}>
+            <FaBars />
+          </div>
             <a className="logo" href="/">
             <img src={trevo} alt="Trevo" />
           </a>
@@ -53,7 +57,9 @@ const Navbar: React.FC = () => {
                   </div>
                   <div className="actions__address">{currentAddress}</div>
                 </span>
-                
+                 <FaChevronDown
+                  className={`arrow ${showDelivery ? "rotate" : ""}`}
+                />
               </div>
             </div>
 
@@ -72,7 +78,6 @@ const Navbar: React.FC = () => {
             </div>
             
           </div>
-        
          <a className="cart" href="#">
             <FaShoppingCart className="icon" />
           </a>
@@ -91,7 +96,6 @@ const Navbar: React.FC = () => {
                 //className={`arrow ${Departaments ? "rotate" : ""}`}
               />
             </li>
-
             <div className="divider"></div>
             <li><a href="#">Mais Vendidos</a></li>
             <li><a href="#">Ofertas</a></li>
