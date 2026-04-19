@@ -11,12 +11,11 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import NavMobile from "../NavMobile/NavMobile";
-import '../NavMobile/NavMobile.css'
 interface NavbarProps {
   onLoginClick:()=> void
   onDepartmentsClick: () => void
 }
-const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick }) => {
+const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
   const [menuOpen,setMenuOpen] = useState<boolean>(false)
   const [showDelivery, setShowDelivery] = useState<boolean>(false)
   const [departments, setDepartments] = useState(false)
@@ -108,7 +107,7 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick }) => {
           </ul>
         </div>
       </div>
-        <NavMobile
+        <NavMobile 
         menuOpen={menuOpen}
         closeMenu={() => setMenuOpen(false)}
         onLoginClick={onLoginClick}

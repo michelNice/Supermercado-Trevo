@@ -1,11 +1,9 @@
 import './App.css'
-import Navbar from './Navbar/Navbar.tsx'
+import Navbar from './Navbar/Navbar'
+
 function App() {
   return (
-    <>
-      <Navbar />
-      
-    </>
+    <Navbar/>
   )
 }
 

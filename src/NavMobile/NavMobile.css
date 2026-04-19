@@ -156,4 +156,11 @@
   z-index: 998;
 }
 
+.mobile__nav li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
 /*# sourceMappingURL=NavMobile.css.map */
