@@ -1,14 +1,17 @@
 import {useState } from 'react';
-import {handleUserChange} from '../Subscription/Subscription'
+import {handleUserChange} from './handlers.ts'
+import './Subscription.scss'
+import ReCAPTCHA from "react-google-recaptcha";
 type MyProps = {
   message: string;
 };
 const Subscription = ({ message }: MyProps) => {
-  const [showPassword,setShowPassword] = useState(false)
-  const [password,setPasswordError] = useState(false)
-  const [showModal,setShowModal] = useState('')
-  const [user, setUser] = useState("");
-  const [userError, setUserError] = useState("");
+ const [showPassword, setShowPassword] = useState(false);
+ const [password, setPassword] = useState("");
+ const [passwordError, setPasswordError] = useState("");
+ const [user, setUser] = useState("");
+ const [userError, setUserError] = useState("");
+ const [showModal, setShowModal] = useState(false);
  return (
   <>
     <section className="login__wrapper">
@@ -27,7 +30,6 @@ const Subscription = ({ message }: MyProps) => {
               placeholder=" "
               value={user}
               onChange={(e) => handleUserChange(e, setUser, setUserError)}
-
             />
             <label htmlFor="user">Email, CPF ou CNPJ*</label>
           </div>
@@ -37,8 +39,9 @@ const Subscription = ({ message }: MyProps) => {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              placeholder=" "
-            
+              placeholder=""
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
             />
 
             <label htmlFor="password">Senha*</label>
@@ -57,9 +60,11 @@ const Subscription = ({ message }: MyProps) => {
 
           <a href="#">Esqueceu sua senha?</a>
 
-          <div id="recaptcha-container"></div>
+                        <ReCAPTCHA
+              sitekey="6Ld1X8UsAAAAABZzQNQla3yd4t-6oMDVm5YgCNYX"
+              onChange={(token)=>console.log(token)}
+              />
 
-          {/* BOTÕES DEVEM FICAR DENTRO DO FORM */}
           <button type="submit" className="btn__subscription">
             Entrar
           </button>
@@ -69,7 +74,7 @@ const Subscription = ({ message }: MyProps) => {
           <button
             type="button"
             className="btn__subscriptionTrans"
-            //onClick={() => setShowModal(true)}
+          onClick={() => setShowModal(true)}
           >
             Criar uma conta
           </button>

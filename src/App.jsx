@@ -6,8 +6,8 @@ import Subscription from './Subscription/Subscription'
 function App() {
   return (
     <>
-    <Navbar />
-      <Subscription />
+      <Navbar />
+       <Subscription />
     </>
    
   )
