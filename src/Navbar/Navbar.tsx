@@ -1,4 +1,4 @@
-import "./Navbar.css";
+import "./Navbar.scss";
 import trevo from "../imgs/trevo_logo.png";
 import {
   FaSearch,
@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import NavMobile from "../NavMobile/NavMobile";
+import Subscription from "../Subscription/Subscription";
 interface NavbarProps {
   onLoginClick:()=> void
   onDepartmentsClick: () => void
