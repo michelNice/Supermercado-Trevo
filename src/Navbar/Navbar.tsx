@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import NavMobile from "../NavMobile/NavMobile";
-import Subscription from "../Subscription/Subscription";
+import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
 interface NavbarProps {
   onLoginClick:()=> void
   onDepartmentsClick: () => void
@@ -20,6 +20,7 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
   const [menuOpen,setMenuOpen] = useState<boolean>(false)
   const [showDelivery, setShowDelivery] = useState<boolean>(false)
   const [departments, setDepartments] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   //const deliveryRef = useRef<HTMLDivElement | null>(null);
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
   const [currentAddress, setCurrentAddress] = useState<string>(
