@@ -26,3 +26,5 @@ const DeliveryOptions: React.FC = () => {
         </div>
     )
 }
+
+export default DeliveryOptions;
