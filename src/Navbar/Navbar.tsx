@@ -17,13 +17,13 @@ interface NavbarProps {
   onDepartmentsClick: () => void
 }
 const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
-  const [menuOpen,setMenuOpen] = useState<boolean>(false)
-  const [showDelivery, setShowDelivery] = useState<boolean>(false)
+  const [menuOpen,setMenuOpen] = useState(false)
+  const [showDelivery, setShowDelivery] = useState(false)
   const [departments, setDepartments] = useState(false)
   const [showModal, setShowModal] = useState(false);
   //const deliveryRef = useRef<HTMLDivElement | null>(null);
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
-  const [currentAddress, setCurrentAddress] = useState<string>(
+  const [currentAddress, setCurrentAddress] = useState(
     localStorage.getItem("selectedAddress") ?? defaultAddress
   )
   return (
@@ -64,6 +64,16 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
                   className={`arrow ${showDelivery ? "rotate" : ""}`}
                 />
               </div>
+              {showDelivery && (
+                <div className="delivery__dropdown">
+                    <DeliveryOptions 
+                        onSelectStore={(address) => {
+                      setCurrentAddress(address);
+
+                    }}
+                    />
+                </div>
+              )}
             </div>
             <div
               className="store"
