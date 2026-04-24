@@ -2,6 +2,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 const DeliveryOptions: React.FC = () => {
     const [selected, setSelected] = useState<string>("home");
+    
     return(
         <div className="delivery">
                 <div className="delivery__container">
@@ -22,6 +23,13 @@ const DeliveryOptions: React.FC = () => {
                 <span>Retirar na Loja</span>
               </button>
                 </div>
+            </div>
+
+            <div className="store__conteiner">
+                   <h4>Em qual loja deseja retirar sua compra?</h4>
+                   <div className="store__list">
+
+                   </div>
             </div>
         </div>
     )

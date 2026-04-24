@@ -10,7 +10,7 @@ import {
   FaThLarge,
   FaEnvelope
 } from "react-icons/fa";
-import '../NavMobile/NavMobile.css';
+import './NavMobile.scss'
 import trevo from '../imgs/trevo_logo.png';
 interface NavMobileProps {
     menuOpen:boolean
