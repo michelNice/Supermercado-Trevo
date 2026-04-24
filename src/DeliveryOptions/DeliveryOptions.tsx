@@ -9,6 +9,7 @@ type props = {
 const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [selected, setSelected] = useState("home");
     const [showModal,setShowModal] = useState(false)
+      const [selectedStore, setSelectedStore] = useState(null);
     
     return(
         <div className="delivery">
@@ -37,15 +38,21 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
             </div>
             <div className="store__conteiner">
                    <h4>Em qual loja deseja retirar sua compra?</h4>
-                   <ul className="store__list">
-                       {trevoAddress.map((store) => (
-                            <div key={store.id}>
-                                <h3>{store.name}</h3>
-                                <p>{store.address}</p>
-                                
-                            </div>
-                         ))}
-                   </ul>
+                <ul className="store__list">
+                    {trevoAddress.map((store) => {
+                        const isSelected = selectedStore === store.id;
+                        
+                        return (
+                        <li key={store.id} className={isSelected ? "selected" : ""}>
+                            <i className="fas fa-map-marker-alt store-icon"></i>
+                            <div className="store-info">
+                            <strong>{store.name}</strong>
+                            <p>{store.address}</p>
+                    </div>
+                  </li>
+        );
+  })}
+</ul>
             </div>
         </div>
     )
