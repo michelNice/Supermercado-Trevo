@@ -5,12 +5,13 @@ import { trevoAddress } from "./AdressDelivery";
 import './DeliveryOptions.scss'
 type props = {
     onSelectStore:(adress:string)=> void
+    
 }
 const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [selected, setSelected] = useState("home");
     const [showModal,setShowModal] = useState(false)
-      const [selectedStore, setSelectedStore] = useState(null);
-    
+    const [selectedStore, setSelectedStore] = useState<number | null>(null);
+    const [store, setStore] = useState<TrevoAddress | null>(null);
     return(
         <div className="delivery">
                 <div className="delivery__container">
@@ -41,15 +42,23 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
                 <ul className="store__list">
                     {trevoAddress.map((store) => {
                         const isSelected = selectedStore === store.id;
-                        
+                         
                         return (
-                        <li key={store.id} className={isSelected ? "selected" : ""}>
-                            <i className="fas fa-map-marker-alt store-icon"></i>
-                            <div className="store-info">
-                            <strong>{store.name}</strong>
-                            <p>{store.address}</p>
-                    </div>
-                  </li>
+                        <li key={store.id} className={isSelected ? "selected" : ""}
+                         onClick={() => { 
+                     setSelectedStore(store.id);
+                     onSelectStore(store.address);
+                    localStorage.setItem("selectedAddress", store.address);
+                     }}>
+                          <i className="fas fa-map-marker-alt store-icon"></i>
+
+                  <div className="store-info">
+                    <strong>{store.name}</strong>
+                    <p>{store.address}</p>
+                  </div>
+
+                  <i className={`fas fa-check check-icon ${isSelected ? "visible" : ""}`}></i>
+                </li>
         );
   })}
 </ul>
