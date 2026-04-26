@@ -33,37 +33,51 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
               </button>
                 </div>
             </div>
-            <div className="delivery__home">
-                 <h3>Em qual endereço deseja receber?</h3>
-                 <button onClick={()=> setShowModal(true)}>Informar um CEP</button>
+            {selected === 'home' ? (
+  <div className="delivery__home">
+    <h3>Em qual endereço deseja receber?</h3>
+    <button onClick={() => setShowModal(true)}>
+      Informar um CEP
+    </button>
+  </div>
+) : (
+  <div className="store__conteiner">
+    <h4>Em qual loja deseja retirar sua compra?</h4>
+
+    <ul className="store__list">
+      {trevoAddress.map((store) => {
+        const isSelected = selectedStore === store.id;
+
+        return (
+          <li
+            key={store.id}
+             className={`store__item ${isSelected ? "selected" : ""}`}
+            onClick={() => {
+              setSelectedStore(store.id);
+              onSelectStore(store.address);
+              localStorage.setItem("selectedAddress", store.address);
+            }}
+          >
+            <i className="fas fa-map-marker-alt store-icon"></i>
+
+            <div className="store-info">
+              <strong>{store.name}</strong>
+              <p>{store.address}</p>
             </div>
-            <div className="store__conteiner">
-                   <h4>Em qual loja deseja retirar sua compra?</h4>
-                <ul className="store__list">
-                    {trevoAddress.map((store) => {
-                        const isSelected = selectedStore === store.id;
-                         
-                        return (
-                        <li key={store.id} className={isSelected ? "selected" : ""}
-                         onClick={() => { 
-                     setSelectedStore(store.id);
-                     onSelectStore(store.address);
-                    localStorage.setItem("selectedAddress", store.address);
-                     }}>
-                          <i className="fas fa-map-marker-alt store-icon"></i>
 
-                  <div className="store-info">
-                    <strong>{store.name}</strong>
-                    <p>{store.address}</p>
-                  </div>
-
-                  <i className={`fas fa-check check-icon ${isSelected ? "visible" : ""}`}></i>
-                </li>
+            <i
+              className={`fas fa-check check-icon ${
+                isSelected ? "visible" : ""
+              }`}
+            ></i>
+          </li>
         );
-  })}
-</ul>
-            </div>
-        </div>
+      })}
+    </ul>
+  </div>
+)}
+             
+ </div>
     )
 }
 
