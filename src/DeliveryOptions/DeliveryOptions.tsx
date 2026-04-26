@@ -5,13 +5,23 @@ import { trevoAddress } from "./AdressDelivery";
 import './DeliveryOptions.scss'
 type props = {
     onSelectStore:(adress:string)=> void
-    
 }
 const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [selected, setSelected] = useState("home");
     const [showModal,setShowModal] = useState(false)
     const [selectedStore, setSelectedStore] = useState<number | null>(null);
     const [store, setStore] = useState<TrevoAddress | null>(null);
+    useEffect(()=> {
+      const savedStore = localStorage.getItem('selectedStore')
+      const savedAdress = localStorage.getItem('selectedAddress')
+      if (savedStore) setSelectedStore(Number(savedStore));
+      if (savedAdress) onSelectStore(savedAdress)
+    },[])
+    useEffect(() => {
+    if (selectedStore !== null) {
+      localStorage.setItem("selectedStore", String(selectedStore));
+    }
+  }, [selectedStore]);
     return(
         <div className="delivery">
                 <div className="delivery__container">
