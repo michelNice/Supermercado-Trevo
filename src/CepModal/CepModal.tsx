@@ -1,5 +1,5 @@
 import { useState } from "react";
-const CepModal:React.FC = ()=> {
+const CepModal:React.FC = ({})=> {
   
     const [cepError,setCepError] = useState('')
 
@@ -9,6 +9,29 @@ const CepModal:React.FC = ()=> {
                 <div className="modal modal_trans">
                      <button className="modal__close">×</button>
                        <h2 className="modal__title">Qual o seu CEP?</h2>
+                       <p className="modal_descripition">
+                             Precisamos validar seu CEP para saber se o nosso serviço atende a sua região.
+                       </p>
+                       <div className="modal__input">
+                            <input 
+                            className={`modal__input ${cepError ? "input--error" : ""}`}
+                            type="text"
+                            placeholder=""
+                            maxLength={9}
+                            />
+                            <label htmlFor="" className={`$modal__label ${cepError ? "label--error" : ""}`}>
+                                Digite seu CEP*
+                            </label>
+                       </div>
+                       <div className="error__space">
+                           {cepError && <p className="error__text">{cepError}</p>}
+                       </div>
+
+                       <div className="modal__footer">
+                         <button className="modal__button">
+                            Verificar Disponibilidade
+                         </button>
+                       </div>
                 </div>
             </div>
         </section>
