@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Navbar from './Navbar/Navbar'
 import HeroSlider from './HeroSlider/HeroSlider'
 import Subscription from './Subscription/Subscription'
-
+import CepModal from './CepModal/CepModal'
 function App() {
   const [screen,setScreen] = useState('home')
   return (
@@ -17,6 +17,7 @@ function App() {
       )}
       {screen === 'login' && <Subscription />}
       
+      <CepModal />
     </>
   )
 }
