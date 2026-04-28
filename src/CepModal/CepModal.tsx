@@ -1,5 +1,20 @@
 import { useState } from "react";
-const CepModal:React.FC = ({})=> {
+import './CepModal.scss'
+
+type CepModalProps = {
+    show:boolean;
+    onClose:()=> void
+    cep:string
+    setCep: React.Dispatch<React.SetStateAction<string>>;
+    onSubmit:()=> void
+}
+const CepModal: React.FC<CepModalProps> = ({
+  show,
+  onClose,
+  cep,
+  setCep,
+  onSubmit
+}) => {
   
     const [cepError,setCepError] = useState('')
 

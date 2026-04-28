@@ -17,7 +17,7 @@ function App() {
       )}
       {screen === 'login' && <Subscription />}
       
-      <CepModal />
+       <CepModal />
     </>
   )
 }
