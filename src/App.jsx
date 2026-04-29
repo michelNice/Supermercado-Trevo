@@ -1,4 +1,4 @@
-import './App.css'
+/*import './App.css'
 import { useState } from 'react'
 import Navbar from './Navbar/Navbar'
 import HeroSlider from './HeroSlider/HeroSlider'
@@ -23,3 +23,46 @@ function App() {
 }
 
 export default App
+*/
+
+import "./App.css";
+import { useState } from "react";
+import Navbar from "./Navbar/Navbar";
+import HeroSlider from "./HeroSlider/HeroSlider";
+import Subscription from "./Subscription/Subscription";
+import CepModal from "./CepModal/CepModal";
+
+function App() {
+  const [screen, setScreen] = useState("home");
+  const [showModal, setShowModal] = useState(true);
+  const [cep, setCep] = useState("");
+
+  const handleCepSubmit = () => {
+    console.log("CEP enviado:", cep);
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <Navbar
+        onLoginClick={() => setScreen("login")}
+        onHomeClick={() => setScreen("home")}
+      />
+
+      {screen === "home" && <HeroSlider />}
+      {screen === "login" && <Subscription />}
+
+      <CepModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        cep={cep}
+        setCep={setCep}
+        onSubmit={handleCepSubmit}
+      />
+    </>
+  );
+}
+
+export default App;
+
+
