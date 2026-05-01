@@ -3,6 +3,7 @@ import {handleUserChange} from './handlers.ts'
 import './Subscription.scss'
 import ReCAPTCHA from "react-google-recaptcha";
 import CepModal from '../CepModal/CepModal'
+import UnavailableModal from '../UnavailableModal/UnavailableModal.js';
 import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
 type MyProps = {
   message: string;
@@ -14,6 +15,7 @@ const Subscription = ({ message }: MyProps) => {
  const [user, setUser] = useState("");
  const [userError, setUserError] = useState("");
  const [showModal, setShowModal] = useState(false);
+ const [showUnavailable,setShowUnavailable] = useState(false)
  const [cep,setCep] = useState('')
  
  const handleCepSubmit = ()=>{
@@ -91,11 +93,18 @@ const Subscription = ({ message }: MyProps) => {
       </div>
       <CepModal 
         show={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={() => {
+        setShowModal(false)
+        setShowUnavailable(true)}}
         cep={cep}
         setCep={setCep}
         onSubmit={handleCepSubmit}
+        
       />
+      <UnavailableModal
+      show={showUnavailable}
+      onClose={() => setShowUnavailable(false)}
+/>
     </section>
     
   </>
