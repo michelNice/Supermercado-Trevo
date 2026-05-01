@@ -20,8 +20,7 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)
   const [departments, setDepartments] = useState(false)
-  const [showModal, setShowModal] = useState(false);
-  //const deliveryRef = useRef<HTMLDivElement | null>(null);
+  //const [showModal, setShowModal] = useState(false);
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
   const [currentAddress, setCurrentAddress] = useState(
     localStorage.getItem("selectedAddress") ?? defaultAddress
