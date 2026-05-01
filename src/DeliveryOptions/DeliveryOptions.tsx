@@ -1,16 +1,20 @@
 import type React from "react";
 import { useState, useEffect } from "react";
-import type { TrevoAddress } from "./AdressDelivery";
 import { trevoAddress } from "./AdressDelivery";
+import CepModal from "../CepModal/CepModal";
+import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
 import './DeliveryOptions.scss'
 type props = {
     onSelectStore:(adress:string)=> void
 }
 const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [selected, setSelected] = useState("home");
+
     const [showModal,setShowModal] = useState(false)
+
     const [selectedStore, setSelectedStore] = useState<number | null>(null);
-    const [store, setStore] = useState<TrevoAddress | null>(null);
+
+    const [cep,setCep] = useState('')
     useEffect(()=> {
       const savedStore = localStorage.getItem('selectedStore')
       const savedAdress = localStorage.getItem('selectedAddress')
@@ -22,7 +26,14 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
       localStorage.setItem("selectedStore", String(selectedStore));
     }
   }, [selectedStore]);
+
+  
+  const handleCepSubmit = ()=>{
+   setShowModal(false)
+ }
+ useLockBodyScroll(showModal)
     return(
+      <>
         <div className="delivery">
                 <div className="delivery__container">
                       <h2 className="delivery__title">Você deseja:</h2>
@@ -46,8 +57,10 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
             {selected === 'home' ? (
   <div className="delivery__home">
     <h3>Em qual endereço deseja receber?</h3>
-    <button onClick={() => setShowModal(true)}>
-      Informar um CEP
+    <button
+      onClick={() => setShowModal(true)}
+      >
+      Informar um CEPP
     </button>
   </div>
 ) : (
@@ -84,11 +97,23 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
         );
       })}
     </ul>
+    
   </div>
+  
 )}
              
  </div>
+ <CepModal 
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        cep={cep}
+        setCep={setCep}
+        onSubmit={handleCepSubmit}
+      />
+ </>
+ 
     )
+    
 }
 
 export default DeliveryOptions;

@@ -18,7 +18,7 @@ const CepModal: React.FC<CepModalProps> = ({
 }) => {
   
     const [cepError,setCepError] = useState('')
-     //if (!show) return null;
+     if (!show) return null;
 
     const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
         const value = formatCep(e.target.value)
@@ -33,6 +33,7 @@ const CepModal: React.FC<CepModalProps> = ({
         setCepError("")
         onSubmit()
     }
+    
     return(
        <section className="modal__overlay" onClick={onClose}>
       <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>

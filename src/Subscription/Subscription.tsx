@@ -2,6 +2,8 @@ import {useState } from 'react';
 import {handleUserChange} from './handlers.ts'
 import './Subscription.scss'
 import ReCAPTCHA from "react-google-recaptcha";
+import CepModal from '../CepModal/CepModal'
+import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
 type MyProps = {
   message: string;
 };
@@ -12,6 +14,13 @@ const Subscription = ({ message }: MyProps) => {
  const [user, setUser] = useState("");
  const [userError, setUserError] = useState("");
  const [showModal, setShowModal] = useState(false);
+ const [cep,setCep] = useState('')
+ 
+ const handleCepSubmit = ()=>{
+   setShowModal(false)
+ }
+ useLockBodyScroll(showModal)
+ 
  return (
   <>
     <section className="login__wrapper">
@@ -74,13 +83,21 @@ const Subscription = ({ message }: MyProps) => {
           <button
             type="button"
             className="btn__subscriptionTrans"
-          onClick={() => setShowModal(true)}
+             onClick={() => setShowModal(true)}
           >
             Criar uma conta
           </button>
         </form>
       </div>
+      <CepModal 
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        cep={cep}
+        setCep={setCep}
+        onSubmit={handleCepSubmit}
+      />
     </section>
+    
   </>
 );
 };
