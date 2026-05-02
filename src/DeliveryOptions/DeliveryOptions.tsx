@@ -4,6 +4,7 @@ import { trevoAddress } from "./AdressDelivery";
 import CepModal from "../CepModal/CepModal";
 import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
 import './DeliveryOptions.scss'
+import UnavailableModal from "../UnavailableModal/UnavailableModal";
 type props = {
     onSelectStore:(adress:string)=> void
 }
@@ -13,6 +14,8 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [showModal,setShowModal] = useState(false)
 
     const [selectedStore, setSelectedStore] = useState<number | null>(null);
+
+    const [showUnavailable,setShowUnavailable] = useState(false)
 
     const [cep,setCep] = useState('')
     useEffect(()=> {
@@ -30,8 +33,10 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
   
   const handleCepSubmit = ()=>{
    setShowModal(false)
+   setShowUnavailable(true)
  }
- useLockBodyScroll(showModal)
+ useLockBodyScroll(showModal || showUnavailable)
+
     return(
       <>
         <div className="delivery">
@@ -60,7 +65,7 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     <button
       onClick={() => setShowModal(true)}
       >
-      Informar um CEPP
+      Informar um CEP
     </button>
   </div>
 ) : (
@@ -110,9 +115,14 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
         setCep={setCep}
         onSubmit={handleCepSubmit}
       />
+
+    <UnavailableModal 
+       show={showUnavailable}
+       onClose={() => setShowUnavailable(false)}
+    />
  </>
  
-    )
+)
     
 }
 

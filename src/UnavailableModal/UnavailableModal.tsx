@@ -1,5 +1,5 @@
 import React from "react"
-import '../CepModal.scss'
+import '../CepModal/CepModal.scss'
 type UnavailableModalProp = {
     show:boolean
     onClose:()=> void
@@ -7,13 +7,14 @@ type UnavailableModalProp = {
 const UnavailableModal: React.FC<UnavailableModalProp> = ({
  show,
  onClose
-    
 })=> {
     if(!show)return null
+
+
     return(
         <>
-            <section className="overlay__modal" onClick={onClose}>
-                    <div className="modal__wrapper">
+            <section className="modal__overlay" onClick={onClose}>
+                    <div className="modal__wrapper" onClick={(e)=> e.stopPropagation()}>
                             <div className="modal">
                                   <button className="modal__close" onClick={onClose}>×</button>
 

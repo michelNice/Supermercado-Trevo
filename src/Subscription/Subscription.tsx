@@ -20,8 +20,9 @@ const Subscription = ({ message }: MyProps) => {
  
  const handleCepSubmit = ()=>{
    setShowModal(false)
+   setShowUnavailable(true)
  }
- useLockBodyScroll(showModal)
+ useLockBodyScroll(showModal || showUnavailable)
  
  return (
   <>
@@ -95,7 +96,8 @@ const Subscription = ({ message }: MyProps) => {
         show={showModal}
         onClose={() => {
         setShowModal(false)
-        setShowUnavailable(true)}}
+        setShowUnavailable(true)
+        }}
         cep={cep}
         setCep={setCep}
         onSubmit={handleCepSubmit}
@@ -104,7 +106,7 @@ const Subscription = ({ message }: MyProps) => {
       <UnavailableModal
       show={showUnavailable}
       onClose={() => setShowUnavailable(false)}
-/>
+      />
     </section>
     
   </>
