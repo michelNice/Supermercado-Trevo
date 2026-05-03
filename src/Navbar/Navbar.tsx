@@ -12,15 +12,15 @@ import {
 import { useState } from "react";
 import NavMobile from "../NavMobile/NavMobile";
 import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
+import DepartmentsDropdown from "../DepartmentsDropdown/DepartmentsDropdown";
 interface NavbarProps {
-  onLoginClick:()=> void
-  onDepartmentsClick: () => void
+  onLoginClick:()=> void;
+  onDepartmentsClick: () => void;
 }
 const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)
   const [departments, setDepartments] = useState(false)
-  //const [showModal, setShowModal] = useState(false);
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
   const [currentAddress, setCurrentAddress] = useState(
     localStorage.getItem("selectedAddress") ?? defaultAddress
@@ -118,6 +118,8 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
           </ul>
         </div>
       </div>
+       
+       {departments && <DepartmentsDropdown />}
         <NavMobile 
         menuOpen={menuOpen}
         closeMenu={() => setMenuOpen(false)}
