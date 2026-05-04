@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Navbar from './Navbar/Navbar'
 import HeroSlider from './HeroSlider/HeroSlider'
 import Subscription from './Subscription/Subscription'
-//import CepModal from './CepModal/CepModal'
+import CepModal from './CepModal/CepModal'
 function App() {
   const [screen,setScreen] = useState('home')
   return (
@@ -25,16 +25,18 @@ function App() {
 export default App
 /*
 
+
 import "./App.css";
 import { useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import HeroSlider from "./HeroSlider/HeroSlider";
 import Subscription from "./Subscription/Subscription";
 import CepModal from "./CepModal/CepModal";
+import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
 
 function App() {
   const [screen, setScreen] = useState("home");
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
 
   const handleCepSubmit = () => {
@@ -47,6 +49,7 @@ function App() {
       <Navbar
         onLoginClick={() => setScreen("login")}
         onHomeClick={() => setScreen("home")}
+        onDepartmentsClick={()=> setScreen('departments')}
       />
 
       {screen === "home" && <HeroSlider />}
@@ -59,10 +62,11 @@ function App() {
         setCep={setCep}
         onSubmit={handleCepSubmit}
       />
+      {screen === 'departments' && <DepartmentMobile />}
     </>
   );
 }
 
 export default App;
-
 */
+
