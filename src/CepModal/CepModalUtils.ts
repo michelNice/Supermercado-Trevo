@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect } from "react";
 export const formatCep = (value:string) => {
      let clean = value.replace(/\D/g, "").slice(0, 8);
     if(clean.length > 5){
