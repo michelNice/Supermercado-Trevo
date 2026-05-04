@@ -87,7 +87,19 @@ const DepartmentMobile:React.FC = ()=> {
     ]
     return(
         <>
-
+            <div className="DepartmentMobile">
+                <h3>epartaments</h3>
+                <ul>
+                {departaments.map((item, index) => (
+                    <li key={index}>
+                        <a href="">
+                            {item.name}
+                            {item.icon}
+                        </a>
+                    </li>
+                ))}
+                </ul>
+            </div>
         </>
     )
 }
