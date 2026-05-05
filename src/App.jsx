@@ -1,4 +1,4 @@
-import './App.css'
+/*import './App.css'
 import { useState } from 'react'
 import Navbar from './Navbar/Navbar'
 import HeroSlider from './HeroSlider/HeroSlider'
@@ -11,6 +11,7 @@ function App() {
       <Navbar 
         onLoginClick={()=> setScreen('login')}
         onHomeClick={()=> setScreen('home')}
+        onDepartmentsClick={()=> setScreen('departments')} // 🔥 AQUI
       />
       {screen === 'home' && (
           <HeroSlider />
@@ -23,7 +24,7 @@ function App() {
 }
 
 export default App
-/*
+*/
 
 
 import "./App.css";
@@ -68,5 +69,5 @@ function App() {
 }
 
 export default App;
-*/
+
 

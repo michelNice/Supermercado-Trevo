@@ -107,7 +107,15 @@ const NavMobile:React.FC<NavMobileProps> = ({
 
     <ul className="mobile__nav">
       {menuMobile.map((item, index) => (
-        <li key={index}>
+        <li key={index}
+         onClick={(e) => {
+                if (item.title === "Departamentos") {
+                  closeMenu();
+                  onDepartmentsClick();
+                  e.preventDefault(); 
+                }
+              }}
+        >
           <a href={item.link}>
             <div className="icon">{item.icon}</div>
             <div className="text">
