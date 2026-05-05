@@ -88,7 +88,7 @@ const DepartmentMobile:React.FC = ()=> {
     return(
         <>
             <div className="DepartmentMobile">
-                <h3>epartaments</h3>
+                <h3>Departaments</h3>
                 <ul>
                 {departaments.map((item, index) => (
                     <li key={index}>
