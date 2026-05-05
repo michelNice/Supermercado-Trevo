@@ -54,8 +54,12 @@ function App() {
         onDepartmentsClick={()=> setScreen('departments')}
       />
 
-      {screen === "home" && <HeroSlider />}
-      <ShowcaseDeparments />
+      {screen === "home" && (<>
+    <HeroSlider />
+    <ShowcaseDeparments />
+  </>
+)}
+  
       {screen === "login" && <Subscription />}
 
       <CepModal
