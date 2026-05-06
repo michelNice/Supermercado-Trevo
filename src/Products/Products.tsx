@@ -7,20 +7,24 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 type productApi = {
-    something:boolean
-    id:string
-    name:number
+     price:  number
+     id:string 
+    description?: string
+     image_url :string 
+     name : string 
+
 }
-const Product: React.FC<productApi> = (
-    something
+const Product: React.FC = (
+
 )=> {
-    const [product,setProduct] = useState(false)
+    //const [product,setProduct] = useState(false)
     const [cep,setCep] = useState(false)
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
     useEffect(()=> { 
       const Getproduct =  async  ()=> {
+        setLoading(true)
          try {
             const {data,error} = await supabase.from('product').select('*')
             if(error){
@@ -39,7 +43,7 @@ const Product: React.FC<productApi> = (
     }, [])
 
     if(loading){
-
+        return <p>Carregando...</p>
     }
     return(
         <>
@@ -64,13 +68,30 @@ const Product: React.FC<productApi> = (
                             <div className="product-card">
                                 <div className="offer">Superoferta</div>
                                 <div className="filter-icon" onClick={()=> setCep(true)}> <FiList /></div>
-                                <div className="product-img"></div>
+                                <div className="product-img">
+                                     <img src={product.image_url} alt={product.name} />
+                                </div>
                                 <button
                                     className="add-btn"
                                     //onClick={() => something("login")}
                                 >
                                     +
                                 </button>
+                                <div className="product-info">
+
+                                    <p className="name">{product.name}</p>
+
+                                    <div className="price">
+                                    <span className="current">R$ {product.price}</span>
+                                    <span className="unit">/un</span>
+                                    </div>
+
+                                    <div className="discount">
+                                    <span className="off">29% OFF</span>
+                                    <span className="old">R$ 16,99</span>
+                                    </div>
+
+                                </div>
                             </div>
                         </SwiperSlide>
                       )
