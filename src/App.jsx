@@ -35,6 +35,7 @@ import Subscription from "./Subscription/Subscription";
 import CepModal from "./CepModal/CepModal";
 import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
 import ShowcaseDeparments from './ShowcaseDeparments/ShowcaseDeparments'
+import Product from './Products/Products'
 
 function App() {
   const [screen, setScreen] = useState("home");
@@ -57,9 +58,9 @@ function App() {
       {screen === "home" && (<>
     <HeroSlider />
     <ShowcaseDeparments />
+    <Product />
   </>
 )}
-  
       {screen === "login" && <Subscription />}
 
       <CepModal
