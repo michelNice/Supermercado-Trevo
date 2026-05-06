@@ -50,7 +50,8 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
             <div className="store__wrapper">
               <div
                 className="store"
-                onClick={() => setShowDelivery(!showDelivery)}
+                 onClick={() => setShowDelivery(!showDelivery)}
+                //onClick={() => setShowDelivery((prev) => !prev)}
               >
                 <FaStore className="icon" />
                 <span>

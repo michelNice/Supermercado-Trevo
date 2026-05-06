@@ -57,15 +57,27 @@ const Product: React.FC<productApi> = (
                     1024: { slidesPerView: 5 },
                     }}
                     className="products-swiper"
-                ></Swiper>
+                >
                 {products.map((product) => {
                     return (
-                        <div key={product.id}>
-                        {product.name}
-                        </div>
-                    )
+                        <SwiperSlide key={product.id}>
+                            <div className="product-card">
+                                <div className="offer">Superoferta</div>
+                                <div className="filter-icon" onClick={()=> setCep(true)}> <FiList /></div>
+                                <div className="product-img"></div>
+                                <button
+                                    className="add-btn"
+                                    //onClick={() => something("login")}
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </SwiperSlide>
+                      )
                     })}
+                </Swiper>
             </div>
+            
         </>
     )
 }
