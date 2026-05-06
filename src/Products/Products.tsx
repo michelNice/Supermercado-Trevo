@@ -42,9 +42,13 @@ const Product: React.FC = (
        Getproduct()
     }, [])
 
-    if(loading){
-        return <p>Carregando...</p>
-    }
+   if (loading) {
+  return (
+    <div className="loading">
+      <span className="spinner"></span>
+    </div>
+  )
+}
     return(
         <>
             <div className="products-container">
