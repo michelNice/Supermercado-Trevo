@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { trevoAddress } from "./AdressDelivery";
 import CepModal from "../CepModal/CepModal";
 import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
+import {useModal} from '../CepModal/CepModalUtils'
 import './DeliveryOptions.scss'
 import UnavailableModal from "../UnavailableModal/UnavailableModal";
 type props = {
@@ -11,7 +12,7 @@ type props = {
 const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [selected, setSelected] = useState("home");
 
-    const [showModal,setShowModal] = useState(false)
+    const {openModal,closeModal,showModal} = useModal()
 
     const [selectedStore, setSelectedStore] = useState<number | null>(null);
 
@@ -32,7 +33,7 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
 
   
   const handleCepSubmit = ()=>{
-   setShowModal(false)
+   closeModal()
    setShowUnavailable(true)
  }
  useLockBodyScroll(showModal || showUnavailable)
@@ -63,7 +64,7 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
   <div className="delivery__home">
     <h3>Em qual endereço deseja receber?</h3>
     <button
-      onClick={() => setShowModal(true)}
+      onClick={openModal}
       >
       Informar um CEP
     </button>
@@ -110,7 +111,7 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
  </div>
  <CepModal 
         show={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={closeModal}
         cep={cep}
         setCep={setCep}
         onSubmit={handleCepSubmit}

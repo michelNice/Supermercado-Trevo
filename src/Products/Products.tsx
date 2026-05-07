@@ -12,7 +12,9 @@ type productApi = {
     description?: string
      image_url :string 
      name : string 
-
+     old_price:number
+     new_price:number
+     price_discount: string
 }
 const Product: React.FC = (
 
@@ -91,8 +93,9 @@ const Product: React.FC = (
                                     </div>
 
                                     <div className="discount">
-                                    <span className="off">29% OFF</span>
-                                    <span className="old">R$ 16,99</span>
+                                    <span className="off">{product.price_discount}</span>
+                                    <span className="old">R${product.old_price.toFixed(2).replace(".", ",")}</span>
+                                    
                                     </div>
 
                                 </div>

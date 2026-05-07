@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 export const formatCep = (value:string) => {
      let clean = value.replace(/\D/g, "").slice(0, 8);
     if(clean.length > 5){
@@ -24,5 +25,24 @@ export const useLockBodyScroll = (locked: boolean): void => {
   }, [locked]);
 };
 
+
+
+export const useModal = ()=> {
+
+  const [showModal,setShowModal] = useState(false)
+
+    function openModal(){
+        setShowModal(true)
+    }
+    function closeModal(){
+       setShowModal(false)
+    }
+
+    return{
+      showModal,
+      closeModal,
+      openModal,
+    }
+}
 
 
