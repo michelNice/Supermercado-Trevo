@@ -94,7 +94,7 @@ const Product: React.FC = (
 
                                     <div className="discount">
                                     <span className="off">{product.price_discount}</span>
-                                    <span className="old">R${product.old_price.toFixed(2).replace(".", ",")}</span>
+                                    <span className="old">R$ {product.old_price}</span>
                                     
                                     </div>
 
