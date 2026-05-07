@@ -15,7 +15,6 @@ const imgsShowcase = [
     imgDepartments5
    
 ]
-
 const ShowcaseDeparments: React.FC = () => {
     return (
         <>
@@ -25,7 +24,9 @@ const ShowcaseDeparments: React.FC = () => {
                         <img key={index} src={img}/>
                     )
                 })}
+                 
             </div>
+            <div className="linha"></div>
         </>
     )
 }

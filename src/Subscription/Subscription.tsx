@@ -4,25 +4,27 @@ import './Subscription.scss'
 import ReCAPTCHA from "react-google-recaptcha";
 import CepModal from '../CepModal/CepModal'
 import UnavailableModal from '../UnavailableModal/UnavailableModal.js';
-import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
+import { useModal } from '../CepModal/CepModalUtils';
+ import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
 type MyProps = {
   message: string;
 };
 const Subscription = ({ message }: MyProps) => {
  const [showPassword, setShowPassword] = useState(false);
  const [password, setPassword] = useState("");
- const [passwordError, setPasswordError] = useState("");
  const [user, setUser] = useState("");
  const [userError, setUserError] = useState("");
- const [showModal, setShowModal] = useState(false);
+ 
+ //const [showModal, setShowModal] = useState(false);
+  const {openModal,closeModal,showModal} = useModal()
  const [showUnavailable,setShowUnavailable] = useState(false)
  const [cep,setCep] = useState('')
  
  const handleCepSubmit = ()=>{
-   setShowModal(false)
+   closeModal()
    setShowUnavailable(true)
  }
- useLockBodyScroll(showModal || showUnavailable)
+  useLockBodyScroll(showModal || showUnavailable)
  
  return (
   <>
@@ -86,7 +88,7 @@ const Subscription = ({ message }: MyProps) => {
           <button
             type="button"
             className="btn__subscriptionTrans"
-             onClick={() => setShowModal(true)}
+             onClick={openModal}
           >
             Criar uma conta
           </button>
@@ -95,7 +97,7 @@ const Subscription = ({ message }: MyProps) => {
       <CepModal 
         show={showModal}
         onClose={() => {
-        setShowModal(false)
+         closeModal
         setShowUnavailable(true)
         }}
         cep={cep}
