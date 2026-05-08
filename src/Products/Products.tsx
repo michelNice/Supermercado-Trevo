@@ -9,17 +9,17 @@ import "swiper/css/navigation";
 type productApi = {
      price:  number
      id:string 
-    description?: string
+     description?: string
      image_url :string 
      name : string 
      old_price:number
      new_price:number
      price_discount: string
+     offer?:string
 }
 const Product: React.FC = (
 
 )=> {
-    //const [product,setProduct] = useState(false)
     const [cep,setCep] = useState(false)
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
@@ -54,6 +54,7 @@ const Product: React.FC = (
     return(
         <>
             <div className="products-container">
+                <div className="hr"></div>
                 <h2>CORRE QUE É SÓ HOJE ✨</h2>
                 <Swiper
                     modules={[Navigation]}
@@ -79,7 +80,6 @@ const Product: React.FC = (
                                 </div>
                                 <button
                                     className="add-btn"
-                                    //onClick={() => something("login")}
                                 >
                                     +
                                 </button>
@@ -104,8 +104,10 @@ const Product: React.FC = (
                       )
                     })}
                 </Swiper>
+                  <h2>QUARTA-FEIRA DA CARNE 🥩</h2>
+                 <div className="hr"></div>
             </div>
-            
+           
         </>
     )
 }

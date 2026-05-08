@@ -24,9 +24,6 @@ export const useLockBodyScroll = (locked: boolean): void => {
     };
   }, [locked]);
 };
-
-
-
 export const useModal = ()=> {
 
   const [showModal,setShowModal] = useState(false)
