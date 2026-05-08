@@ -14,9 +14,7 @@ const Subscription = ({ message }: MyProps) => {
  const [password, setPassword] = useState("");
  const [user, setUser] = useState("");
  const [userError, setUserError] = useState("");
- 
- //const [showModal, setShowModal] = useState(false);
-  const {openModal,closeModal,showModal} = useModal()
+ const {openModal,closeModal,showModal} = useModal()
  const [showUnavailable,setShowUnavailable] = useState(false)
  const [cep,setCep] = useState('')
  
