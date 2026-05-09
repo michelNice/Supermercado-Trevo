@@ -3,6 +3,7 @@ import imgDepartments2 from '../imgs/dec2.png'
 import imgDepartments3 from '../imgs/dec3.png'
 import imgDepartments4 from '../imgs/dec4.png'
 import imgDepartments5 from '../imgs/dec5.png'
+import imgDepartments6 from '../imgs/dec6 (2).png'
 import './ShowcaseDeparments.scss'
 const imgsShowcase = [
     imgDepartments1,
@@ -10,7 +11,7 @@ const imgsShowcase = [
     imgDepartments3,
     imgDepartments4,
     imgDepartments5,
-    imgDepartments5
+    imgDepartments6
    
 ]
 const ShowcaseDeparments: React.FC = () => {

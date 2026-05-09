@@ -106,6 +106,58 @@ const Product: React.FC = (
                 </Swiper>
                   <h2>QUARTA-FEIRA DA CARNE 🥩</h2>
                  <div className="hr"></div>
+                 <Swiper 
+                    modules={[Navigation]}
+                    spaceBetween={16}
+                    slidesPerView={2.2}
+                    navigation
+                    grabCursor={true}
+                    breakpoints={{
+                    640: { slidesPerView: 2.2 },
+                    768: { slidesPerView: 3 },
+                    1024: { slidesPerView: 5 },
+                    }}
+                     className="products-swiper"
+                  >
+                     {products.map((product)=> {
+                        return(
+                             <SwiperSlide key={product.id}>
+                                 <div className="product-card">
+                                          <div
+                                                className="filter-icon"
+                                                onClick={() => setCep(true)}
+                                            >
+                                                <FiList />
+                                            </div>
+                                                 <button className="add-btn">
+                                                     +
+                                                 </button>
+                                                 <div className="product-img">
+                                                   <img src={product.image_url} alt={product.name} />
+                                                </div>
+                                                   <div className="product-info">
+                                                        <p className="name">{product.name}</p>
+                                                        <div className="price">
+                                                                <span className="current">
+                                                                    R$ {product.price}
+                                                                </span>
+
+                                                                <span className="unit">/un</span>
+                                                        </div>
+                                                        <div className="discount">
+                                                                <span className="off">
+                                                                    {product.price_discount}
+                                                                </span>
+                                                                <span className="old">
+                                                                    R$ {product.old_price}
+                                                                </span>
+                                                         </div>
+                                                   </div>
+                                          </div>
+                             </SwiperSlide>
+                        )
+                     })}
+                 </Swiper>
             </div>
            
         </>
