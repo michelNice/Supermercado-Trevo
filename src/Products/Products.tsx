@@ -4,6 +4,7 @@ import { supabase } from '../Supabase/supabaseClient'
 import { FiList } from "react-icons/fi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
 import "swiper/css";
 import "swiper/css/navigation";
 import img from '../imgs/imgS.png';
@@ -22,14 +23,15 @@ type productApi = {
      offer?:string
      category:string
      unit_type:string
+     setScreen: React.Dispatch<React.SetStateAction<string>>
+     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+     showModal: boolean
 }
-const Product: React.FC = (
-
-)=> {
-    const [cep,setCep] = useState(false)
+const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => {
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
+    useLockBodyScroll(showModal) 
     const imgs = [img,img1,img2]
     useEffect(()=> { 
       const Getproduct =  async  ()=> {
@@ -101,12 +103,13 @@ const Product: React.FC = (
                                 >
                                 {product?.offer}
                             </div>
-                                <div className="filter-icon" onClick={()=> setCep(true)}> <FiList /></div>
+                                <div className="filter-icon" onClick={()=> setShowModal(true)}> <FiList /></div>
                                 <div className="product-img">
                                      <img src={product.image_url} alt={product.name} />
                                 </div>
                                 <button
                                     className="add-btn"
+                                    onClick={()=> setScreen('login')}
                                 >
                                     +
                                 </button>
@@ -161,7 +164,7 @@ const Product: React.FC = (
                                     </div>
                                           <div
                                                 className="filter-icon"
-                                                onClick={() => setCep(true)}
+                                                
                                             >
                                                 <FiList />
                                             </div>
@@ -223,7 +226,7 @@ const Product: React.FC = (
                                  <div className="product-card">
                                           <div
                                                 className="filter-icon"
-                                                onClick={() => setCep(true)}
+                                              
                                             >
                                                 <FiList />
                                             </div>
