@@ -6,6 +6,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import img from '../imgs/imgS.png';
+import img1 from '../imgs/imgS1.png';
+import img2 from '../imgs/imgS2.png'
+import ship from '../imgs/shop.png'
 type productApi = {
      price:  number
      id:string 
@@ -16,6 +20,8 @@ type productApi = {
      new_price:number
      price_discount: string
      offer?:string
+     category:string
+     unit_type:string
 }
 const Product: React.FC = (
 
@@ -24,6 +30,7 @@ const Product: React.FC = (
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
+    const imgs = [img,img1,img2]
     useEffect(()=> { 
       const Getproduct =  async  ()=> {
         setLoading(true)
@@ -51,6 +58,18 @@ const Product: React.FC = (
     </div>
   )
 }
+
+    const mixedProducts = products.filter(
+       (product) => product.category !== "meat" && 'horti' !== product.category
+    )
+
+    const meatProducts = products.filter(
+       (product) => product.category === "meat"
+    )
+    const hortiProducts = products.filter(
+        (products)=> products.category == 'horti'
+    )
+
     return(
         <>
             <div className="products-container">
@@ -69,11 +88,19 @@ const Product: React.FC = (
                     }}
                     className="products-swiper"
                 >
-                {products.map((product) => {
+                {mixedProducts.map((product) => {
                     return (
                         <SwiperSlide key={product.id}>
                             <div className="product-card">
-                                <div className="offer">Superoferta</div>
+                            <div
+                                className={`offer ${
+                                    product?.offer?.trim().toLowerCase() === 'exclusivo'
+                                    ? 'offer__colorDark'
+                                    : 'offer__colorLight'
+                                }`}
+                                >
+                                {product?.offer}
+                            </div>
                                 <div className="filter-icon" onClick={()=> setCep(true)}> <FiList /></div>
                                 <div className="product-img">
                                      <img src={product.image_url} alt={product.name} />
@@ -89,7 +116,7 @@ const Product: React.FC = (
 
                                     <div className="price">
                                     <span className="current">R$ {product.price}</span>
-                                    <span className="unit">/un</span>
+                                    <span className="unit">/{product.unit_type}</span>
                                     </div>
 
                                     <div className="discount">
@@ -105,7 +132,7 @@ const Product: React.FC = (
                     })}
                 </Swiper>
                   <h2>QUARTA-FEIRA DA CARNE 🥩</h2>
-                 <div className="hr"></div>
+                 
                  <Swiper 
                     modules={[Navigation]}
                     spaceBetween={16}
@@ -119,7 +146,78 @@ const Product: React.FC = (
                     }}
                      className="products-swiper"
                   >
-                     {products.map((product)=> {
+                     {meatProducts.map((product)=> {
+                        return(
+                             <SwiperSlide key={product.id}>
+                                 <div className="product-card">
+                                    <div
+                                        className={`offer ${
+                                            product?.offer?.trim().toLowerCase() === 'exclusivo'
+                                            ? 'offer__colorDark'
+                                            : 'offer__colorLight'
+                                        }`}
+                                        >
+                                        {product?.offer}
+                                    </div>
+                                          <div
+                                                className="filter-icon"
+                                                onClick={() => setCep(true)}
+                                            >
+                                                <FiList />
+                                            </div>
+                                                 <button className="add-btn">
+                                                     +
+                                                 </button>
+                                                 <div className="product-img">
+                                                   <img src={product.image_url} alt={product.name} />
+                                                </div>
+                                                   <div className="product-info">
+                                                        <p className="name">{product.name}</p>
+                                                        <div className="price">
+                                                                <span className="current">
+                                                                    R$ {product.price}
+                                                                </span>
+                                                                <span className="unit">/{product.unit_type}</span>
+                                                        </div>
+                                                        <div className="discount">
+                                                                <span className="off">
+                                                                    {product.price_discount}
+                                                                </span>
+                                                                <span className="old">
+                                                                    R$ {product.old_price}
+                                                                </span>
+                                                         </div>
+                                                   </div>
+                                          </div>
+                             </SwiperSlide>
+                        )
+                     })}
+                 </Swiper>
+                 {/*
+                 <div className="brands-container">
+                    {imgs.map((img, index) => (
+                        <div className="brand-card" key={index}>
+                        <img src={img} alt="marca" />
+                        </div>
+                    ))}
+                </div>
+                */}
+                <img src={ship} className='ship' alt="" />
+                 <h2>HORTIFRUTI DE QUINTA A DOMINGO 🥬🍎</h2>
+                 <Swiper 
+                    modules={[Navigation]}
+                    spaceBetween={16}
+                    slidesPerView={2.2}
+                    navigation
+                    grabCursor={true}
+                    breakpoints={{
+                    640: { slidesPerView: 2.2 },
+                    768: { slidesPerView: 3 },
+                    1024: { slidesPerView: 5 },
+                    }}
+                     className="products-swiper"
+                  >
+                     {hortiProducts.map((product)=> {
                         return(
                              <SwiperSlide key={product.id}>
                                  <div className="product-card">
@@ -141,17 +239,9 @@ const Product: React.FC = (
                                                                 <span className="current">
                                                                     R$ {product.price}
                                                                 </span>
-
-                                                                <span className="unit">/un</span>
+                                                                <span className="unit">/{product.unit_type}</span>
                                                         </div>
-                                                        <div className="discount">
-                                                                <span className="off">
-                                                                    {product.price_discount}
-                                                                </span>
-                                                                <span className="old">
-                                                                    R$ {product.old_price}
-                                                                </span>
-                                                         </div>
+                                                        
                                                    </div>
                                           </div>
                              </SwiperSlide>
