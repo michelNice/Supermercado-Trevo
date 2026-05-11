@@ -1,32 +1,3 @@
-/*import './App.css'
-import { useState } from 'react'
-import Navbar from './Navbar/Navbar'
-import HeroSlider from './HeroSlider/HeroSlider'
-import Subscription from './Subscription/Subscription'
-import CepModal from './CepModal/CepModal'
-function App() {
-  const [screen,setScreen] = useState('home')
-  return (
-    <>
-      <Navbar 
-        onLoginClick={()=> setScreen('login')}
-        onHomeClick={()=> setScreen('home')}
-        onDepartmentsClick={()=> setScreen('departments')} // 🔥 AQUI
-      />
-      {screen === 'home' && (
-          <HeroSlider />
-      )}
-      {screen === 'login' && <Subscription />}
-      
-      
-    </>
-  )
-}
-
-export default App
-*/
-
-
 import "./App.css";
 import { useState } from "react";
 import Navbar from "./Navbar/Navbar";
@@ -58,7 +29,7 @@ function App() {
       {screen === "home" && (<>
     <HeroSlider />
     <ShowcaseDeparments />
-    <Product />
+    <Product setScreen={setScreen}   setCep={setCep} setShowModal={setShowModal}  showModal={showModal}/>
   </>
 )}
       {screen === "login" && <Subscription />}
