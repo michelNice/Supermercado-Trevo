@@ -31,13 +31,11 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     }
   }, [selectedStore]);
 
-  
   const handleCepSubmit = ()=>{
    closeModal()
    setShowUnavailable(true)
  }
  useLockBodyScroll(showModal || showUnavailable)
-
     return(
       <>
         <div className="delivery">
@@ -103,11 +101,8 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
         );
       })}
     </ul>
-    
   </div>
-  
 )}
-             
  </div>
  <CepModal 
         show={showModal}

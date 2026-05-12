@@ -21,7 +21,6 @@ type deparmentMobile = {
     name:string;
     icon:React.ReactNode;
 }
-
 const DepartmentMobile:React.FC = ()=> {
     const  departaments:deparmentMobile[] = [
                 {
@@ -103,5 +102,4 @@ const DepartmentMobile:React.FC = ()=> {
         </>
     )
 }
-
 export default DepartmentMobile

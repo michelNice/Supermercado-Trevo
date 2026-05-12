@@ -12,8 +12,6 @@
   padding: 10px 0;
   border: 1px solid #ddd;
   border-radius: 5px;
-
-
 }
 
 .dropdown-menu li a {
@@ -21,11 +19,7 @@
   cursor: pointer;
 }
 
-
-
-.dropdown-menu li:hover {
-  color: rgb(99, 101, 200);
-}
+.dropdown-menu li:hover {color: rgb(99, 101, 200);}
 
 .item {
   display: flex;

@@ -19,7 +19,6 @@
   flex-shrink: 0;
   cursor: pointer;
 }
-
   @media (max-width:37.5rem){
     .imgs{
     display: flex;
@@ -28,16 +27,12 @@
     overflow-y: hidden;
     justify-content: flex-start;
     gap: 12px;
-    /*  TRUQUE PRINCIPAL */
     padding-left: calc((100vw - (210px * 2) - 12px) / 2);
     padding-right:1rem;
-
     width: 100vw;
     -webkit-overflow-scrolling: touch;
   }
-
   .imgs img{width: 140px;}
-
 }
 
 

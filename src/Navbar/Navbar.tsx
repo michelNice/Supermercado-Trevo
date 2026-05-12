@@ -51,7 +51,6 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
               <div
                 className="store"
                  onClick={() => setShowDelivery(!showDelivery)}
-                //onClick={() => setShowDelivery((prev) => !prev)}
               >
                 <FaStore className="icon" />
                 <span>
@@ -69,7 +68,6 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
                     <DeliveryOptions 
                         onSelectStore={(address) => {
                       setCurrentAddress(address);
-
                     }}
                     />
                 </div>
@@ -119,7 +117,6 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
           </ul>
         </div>
       </div>
-       
        {departments && <DepartmentsDropdown />}
         <NavMobile 
         menuOpen={menuOpen}
@@ -133,5 +130,4 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
       </header>
   );
 };
-
 export default Navbar;
