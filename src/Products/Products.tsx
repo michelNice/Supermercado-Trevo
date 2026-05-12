@@ -2,6 +2,7 @@ import './Products.scss'
 import React, { useState,useEffect } from 'react'
 import { supabase } from '../Supabase/supabaseClient'
 import { FiList } from "react-icons/fi";
+import { FaCheckCircle } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
@@ -230,6 +231,13 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                         )
                      })}
                  </Swiper>
+                 <div className="brands">
+                   <FaCheckCircle className="brands__icon" />
+                        <div>
+                            <h2>COLEÇÕES POR MARCAS</h2>
+                            <p>Clique e confira os produtos dos nossos parceiros.</p>
+                        </div>
+                        </div>
                  <div className="brands-container">
                     {imgs.map((img, index) => (
                         <div className="brand-card" key={index}>
