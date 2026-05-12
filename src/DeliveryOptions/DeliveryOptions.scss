@@ -53,9 +53,7 @@
           border-radius: $radius-round;
         }
 
-        .pickup__icon {
-          font-size: 1rem;
-        }
+        .pickup__icon {font-size: 1rem;}
       }
     }
   }
@@ -90,9 +88,7 @@
   }
 
   .store__conteiner {
-    h4 {
-      margin-top: 2rem;
-    }
+    h4 {margin-top: 2rem;}
   }
 
   .store__list {
@@ -102,9 +98,8 @@
     scrollbar-width: thin;
     scrollbar-color: $primary $gray-soft;
 
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
+    &::-webkit-scrollbar {width: 6px;}
+
     &::-webkit-scrollbar-thumb {
       background-color: $primary;
       border-radius: 4px;
@@ -123,9 +118,7 @@
       transition: background 0.2s ease, border 0.2s ease;
       border: 1px solid transparent;
 
-      &:hover {
-        background: $bg-hover-light;
-      }
+      &:hover {background: $bg-hover-light;}
 
       &.selected {
         background: $bg-selected;

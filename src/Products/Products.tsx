@@ -71,7 +71,6 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
     const hortiProducts = products.filter(
         (products)=> products.category == 'horti'
     )
-
     return(
         <>
             <div className="products-container">
@@ -121,13 +120,10 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                                     <span className="current">R$ {product.price}</span>
                                     <span className="unit">/{product.unit_type}</span>
                                     </div>
-
                                     <div className="discount">
                                     <span className="off">{product.price_discount}</span>
                                     <span className="old">R$ {product.old_price}</span>
-                                    
                                     </div>
-
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -135,7 +131,6 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                     })}
                 </Swiper>
                   <h2>QUARTA-FEIRA DA CARNE 🥩</h2>
-                 
                  <Swiper 
                     modules={[Navigation]}
                     spaceBetween={16}
@@ -192,19 +187,12 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                                                          </div>
                                                    </div>
                                           </div>
-                             </SwiperSlide>
+                        </SwiperSlide>
                         )
                      })}
                  </Swiper>
-                 {/*
-                 <div className="brands-container">
-                    {imgs.map((img, index) => (
-                        <div className="brand-card" key={index}>
-                        <img src={img} alt="marca" />
-                        </div>
-                    ))}
-                </div>
-                */}
+                 
+                 
                 <img src={ship} className='ship' alt="" />
                  <h2>HORTIFRUTI DE QUINTA A DOMINGO 🥬🍎</h2>
                  <Swiper 
@@ -251,6 +239,14 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                         )
                      })}
                  </Swiper>
+                 <div className="brands-container">
+                    {imgs.map((img, index) => (
+                        <div className="brand-card" key={index}>
+                        <img src={img} alt="marca" />
+                        </div>
+                    ))}
+                </div>
+                
             </div>
            
         </>
