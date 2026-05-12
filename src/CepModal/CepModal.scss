@@ -37,14 +37,12 @@
   border: none;
   @include transition();
 }
-
 .modal__title {
   font-size: 1.625rem;
   font-weight: 300;
   margin-bottom:0.625;
   color: $primary;
 }
-
 .modal__description {
   color: $text-medium;
   font-size: 1rem;
@@ -58,7 +56,6 @@
   width: 100%;
   margin-bottom: 0;
 }
-
 .modal__input {
   width: 100%;
   padding: 1rem 0.875rem 0.375rem;
@@ -69,7 +66,6 @@
   background: $white;
   @include transition(0.2s);
 }
-
 .modal__input:focus {
   border-color: $primary;
 }
@@ -89,13 +85,11 @@
   font-size:0.938rem;
   opacity: 0.8;
 }
-
 /* ERROR STATE — RED BORDER + RED LABEL */
 .input--error {
   border-color: $error !important;
 
 }
-
 .label--error {
   color: $error !important;
   opacity: 1 !important;
@@ -163,13 +157,9 @@
     text-align: center;
   }
 
-  .modal__trans {
-    animation: slideUp 0.35s ease-out forwards;
-  }
+  .modal__trans {animation: slideUp 0.35s ease-out forwards;}
 
-  .modal__footer {
-    justify-content: center;
-  }
+  .modal__footer {justify-content: center;}
 
   .modal__close {
     top: -40px;
@@ -179,10 +169,6 @@
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from {transform: translateY(100%);}
+  to {transform: translateY(0);}
 }

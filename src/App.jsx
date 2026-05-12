@@ -7,7 +7,7 @@ import CepModal from "./CepModal/CepModal";
 import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
 import ShowcaseDeparments from './ShowcaseDeparments/ShowcaseDeparments'
 import Product from './Products/Products'
-
+import Footer from '../src/Footer/Footer'
 function App() {
   const [screen, setScreen] = useState("home");
   const [showModal, setShowModal] = useState(false);
@@ -42,6 +42,7 @@ function App() {
         onSubmit={handleCepSubmit}
       />
       {screen === 'departments' && <DepartmentMobile />}
+      <Footer />
     </>
   );
 }

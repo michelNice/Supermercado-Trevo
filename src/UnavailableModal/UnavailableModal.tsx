@@ -9,8 +9,6 @@ const UnavailableModal: React.FC<UnavailableModalProp> = ({
  onClose
 })=> {
     if(!show)return null
-
-
     return(
         <>
             <section className="modal__overlay" onClick={onClose}>

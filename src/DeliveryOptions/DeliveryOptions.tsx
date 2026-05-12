@@ -30,8 +30,6 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
       localStorage.setItem("selectedStore", String(selectedStore));
     }
   }, [selectedStore]);
-
-  
   const handleCepSubmit = ()=>{
    closeModal()
    setShowUnavailable(true)
@@ -105,7 +103,6 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     </ul>
     
   </div>
-  
 )}
              
  </div>
