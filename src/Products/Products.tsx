@@ -11,6 +11,7 @@ import img from '../imgs/imgS.png';
 import img1 from '../imgs/imgS1.png';
 import img2 from '../imgs/imgS2.png'
 import ship from '../imgs/shop.png'
+import img3 from '../imgs/imgS3.png'
 type productApi = {
      price:  number
      id:string 
@@ -26,13 +27,15 @@ type productApi = {
      setScreen: React.Dispatch<React.SetStateAction<string>>
      setShowModal: React.Dispatch<React.SetStateAction<boolean>>
      showModal: boolean
+     showUnavailable: React.Dispatch<React.SetStateAction<boolean>>
+     setShowUnavailable: React.Dispatch<React.SetStateAction<boolean>>
 }
 const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => {
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
     useLockBodyScroll(showModal) 
-    const imgs = [img,img1,img2]
+    const imgs = [img,img1,img2,img3]
     useEffect(()=> { 
       const Getproduct =  async  ()=> {
         setLoading(true)
@@ -64,7 +67,6 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
     const mixedProducts = products.filter(
        (product) => product.category !== "meat" && 'horti' !== product.category
     )
-
     const meatProducts = products.filter(
        (product) => product.category === "meat"
     )
@@ -113,7 +115,6 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                                     +
                                 </button>
                                 <div className="product-info">
-
                                     <p className="name">{product.name}</p>
 
                                     <div className="price">
@@ -157,13 +158,8 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                                         >
                                         {product?.offer}
                                     </div>
-                                          <div
-                                                className="filter-icon"
-                                                
-                                            >
-                                                <FiList />
-                                            </div>
-                                                 <button className="add-btn">
+                                         <div className="filter-icon" onClick={()=> setShowModal(true)}> <FiList /></div>
+                                                 <button className="add-btn"   onClick={()=> setScreen('login')}>
                                                      +
                                                  </button>
                                                  <div className="product-img">
@@ -212,13 +208,8 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
                         return(
                              <SwiperSlide key={product.id}>
                                  <div className="product-card">
-                                          <div
-                                                className="filter-icon"
-                                              
-                                            >
-                                                <FiList />
-                                            </div>
-                                                 <button className="add-btn">
+                                           <div className="filter-icon" onClick={()=> setShowModal(true)}> <FiList /></div>
+                                                 <button className="add-btn" onClick={()=> setScreen('login')}>
                                                      +
                                                  </button>
                                                  <div className="product-img">

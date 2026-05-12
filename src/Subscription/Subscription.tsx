@@ -17,13 +17,11 @@ const Subscription = ({ message }: MyProps) => {
  const {openModal,closeModal,showModal} = useModal()
  const [showUnavailable,setShowUnavailable] = useState(false)
  const [cep,setCep] = useState('')
- 
  const handleCepSubmit = ()=>{
    closeModal()
    setShowUnavailable(true)
  }
   useLockBodyScroll(showModal || showUnavailable)
- 
  return (
   <>
     <section className="login__wrapper">
