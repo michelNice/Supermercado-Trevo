@@ -61,6 +61,7 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
   return (
     <div className="loading">
       <span className="spinner"></span>
+      {error && <p className="error-message">{error}</p>}
     </div>
   )
 }
@@ -73,8 +74,9 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
     )
     const hortiProducts = products.filter(
         (products)=> products.category == 'horti'
-    )
+    ) 
     return(
+       
         <>
             <div className="products-container">
                 <div className="hr"></div>
