@@ -25,6 +25,7 @@ type productApi = {
      offer?:string
      category:string
      unit_type:string
+     /////outro type
      setScreen: React.Dispatch<React.SetStateAction<string>>
      setShowModal: React.Dispatch<React.SetStateAction<boolean>>
      showModal: boolean
