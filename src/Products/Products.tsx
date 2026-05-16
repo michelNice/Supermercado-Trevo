@@ -25,14 +25,17 @@ type productApi = {
      offer?:string
      category:string
      unit_type:string
-     /////outro type
+}
+
+type productSectetion = {
+   /////outro type
      setScreen: React.Dispatch<React.SetStateAction<string>>
      setShowModal: React.Dispatch<React.SetStateAction<boolean>>
      showModal: boolean
      showUnavailable: React.Dispatch<React.SetStateAction<boolean>>
      setShowUnavailable: React.Dispatch<React.SetStateAction<boolean>>
 }
-const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => {
+const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal}) => {
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
@@ -70,12 +73,15 @@ const Product: React.FC<productApi> = ({ setScreen,setShowModal ,showModal}) => 
     const mixedProducts = products.filter(
        (product) => product.category !== "meat" && 'horti' !== product.category
     )
-    const meatProducts = products.filter(
-       (product) => product.category === "meat"
+   
+    const filterProductsByCategory = (category:string)=> {
+        return  products.filter(
+        (products)=> products.category == category
     )
-    const hortiProducts = products.filter(
-        (products)=> products.category == 'horti'
-    ) 
+    }
+
+    const hortiProducts =  filterProductsByCategory('horti')
+    const meatProducts = filterProductsByCategory('meat')
     return(
        
         <>
