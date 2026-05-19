@@ -6,6 +6,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
+import ProductCard from './ProductCard';
 import "swiper/css";
 import "swiper/css/navigation";
 import img from '../imgs/imgS.png';
@@ -26,13 +27,15 @@ export type productApi = {
      category:string
      unit_type:string
 }
-
 type productSectetion = {
      setScreen: React.Dispatch<React.SetStateAction<string>>
      setShowModal: React.Dispatch<React.SetStateAction<boolean>>
      showModal: boolean
      showUnavailable: React.Dispatch<React.SetStateAction<boolean>>
      setShowUnavailable: React.Dispatch<React.SetStateAction<boolean>>
+
+     offer:boolean
+     price_discount:boolean
 }
 const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal}) => {
     const [products, setProducts] = useState<productApi[]>([]);
@@ -78,16 +81,15 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
         (products)=> products.category == category
     )
     }
-
     const hortiProducts =  filterProductsByCategory('horti')
     const meatProducts = filterProductsByCategory('meat')
     return(
        
         <>
             <div className="products-container">
-                <div className="hr"></div>
+             <div className="hr"></div>
                 <h2>CORRE QUE É SÓ HOJE ✨</h2>
-                <Swiper
+             <Swiper
                     modules={[Navigation]}
                     spaceBetween={16}
                     slidesPerView={2.2}
@@ -100,46 +102,16 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                     }}
                     className="products-swiper"
                 >
-                {mixedProducts.map((product) => {
-                    return (
-                        <SwiperSlide key={product.id}>
-                            <div className="product-card">
-                            <div
-                                className={`offer ${
-                                    product?.offer?.trim().toLowerCase() === 'exclusivo'
-                                    ? 'offer__colorDark'
-                                    : 'offer__colorLight'
-                                }`}
-                                >
-                                {product?.offer}
-                            </div>
-                                <div className="filter-icon" onClick={()=> setShowModal(true)}> <FiList /></div>
-                                <div className="product-img">
-                                     <img src={product.image_url} alt={product.name} />
-                                </div>
-                                <button
-                                    className="add-btn"
-                                    onClick={()=> setScreen('login')}
-                                >
-                                    +
-                                </button>
-                                <div className="product-info">
-                                    <p className="name">{product.name}</p>
-
-                                    <div className="price">
-                                    <span className="current">R$ {product.price}</span>
-                                    <span className="unit">/{product.unit_type}</span>
-                                    </div>
-                                    <div className="discount">
-                                    <span className="off">{product.price_discount}</span>
-                                    <span className="old">R$ {product.old_price}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                      )
-                    })}
-                </Swiper>
+                {mixedProducts.map((product) => (
+                     <SwiperSlide key={product.id}>
+                        <ProductCard
+                            product={product}
+                            setScreen={setScreen}
+                            setShowModal={setShowModal}
+                        />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
                   <h2>QUARTA-FEIRA DA CARNE 🥩</h2>
                  <Swiper 
                     modules={[Navigation]}
@@ -157,46 +129,15 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                      {meatProducts.map((product)=> {
                         return(
                              <SwiperSlide key={product.id}>
-                                 <div className="product-card">
-                                    <div
-                                        className={`offer ${
-                                            product?.offer?.trim().toLowerCase() === 'exclusivo'
-                                            ? 'offer__colorDark'
-                                            : 'offer__colorLight'
-                                        }`}
-                                        >
-                                        {product?.offer}
-                                    </div>
-                                         <div className="filter-icon" onClick={()=> setShowModal(true)}> <FiList /></div>
-                                                 <button className="add-btn"   onClick={()=> setScreen('login')}>
-                                                     +
-                                                 </button>
-                                                 <div className="product-img">
-                                                   <img src={product.image_url} alt={product.name} />
-                                                </div>
-                                                   <div className="product-info">
-                                                        <p className="name">{product.name}</p>
-                                                        <div className="price">
-                                                                <span className="current">
-                                                                    R$ {product.price}
-                                                                </span>
-                                                                <span className="unit">/{product.unit_type}</span>
-                                                        </div>
-                                                        <div className="discount">
-                                                                <span className="off">
-                                                                    {product.price_discount}
-                                                                </span>
-                                                                <span className="old">
-                                                                    R$ {product.old_price}
-                                                                </span>
-                                                         </div>
-                                                   </div>
-                                          </div>
-                        </SwiperSlide>
+                                <ProductCard 
+                                    product={product}
+                                    setScreen={setScreen}
+                                    setShowModal={setShowModal}
+                                />
+                            </SwiperSlide>
                         )
                      })}
                  </Swiper>
-                 
                  
                 <img src={ship} className='ship' alt="" />
                  <h2>HORTIFRUTI DE QUINTA A DOMINGO 🥬🍎</h2>
@@ -216,25 +157,12 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                      {hortiProducts.map((product)=> {
                         return(
                              <SwiperSlide key={product.id}>
-                                 <div className="product-card">
-                                           <div className="filter-icon" onClick={()=> setShowModal(true)}> <FiList /></div>
-                                                 <button className="add-btn" onClick={()=> setScreen('login')}>
-                                                     +
-                                                 </button>
-                                                 <div className="product-img">
-                                                   <img src={product.image_url} alt={product.name} />
-                                                </div>
-                                                   <div className="product-info">
-                                                        <p className="name">{product.name}</p>
-                                                        <div className="price">
-                                                                <span className="current">
-                                                                    R$ {product.price}
-                                                                </span>
-                                                                <span className="unit">/{product.unit_type}</span>
-                                                        </div>
-                                                        
-                                                   </div>
-                                          </div>
+                                 <ProductCard 
+                                    product={product}
+                                    setScreen={setScreen}
+                                    setShowModal={setShowModal}
+                                    showDiscount={false}
+                                 />
                              </SwiperSlide>
                         )
                      })}
