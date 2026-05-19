@@ -1,8 +1,4 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import Product from "./Products";
+import { type productApi } from "./Products";
 import { FiList } from "react-icons/fi";
 type ProductSectionProps = {
         setScreen: React.Dispatch<React.SetStateAction<string>>
@@ -10,10 +6,10 @@ type ProductSectionProps = {
         showModal: boolean
         showUnavailable: React.Dispatch<React.SetStateAction<boolean>>
         setShowUnavailable: React.Dispatch<React.SetStateAction<boolean>>
-    
+        product:productApi;
 }
 
-const ProductSwiper: React.FC<ProductSectionProps> = ({setShowModal,showModal,products,setScreen}) => {
+const ProductCard: React.FC<ProductSectionProps> = ({setShowModal,showModal,product,setScreen}) => {
 return (
     <>
          <div className="product-card">
@@ -53,4 +49,4 @@ return (
 )
 }
 
-export default ProductSwiper
+export default ProductCard
