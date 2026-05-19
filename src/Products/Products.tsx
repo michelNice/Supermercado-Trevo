@@ -13,7 +13,7 @@ import img1 from '../imgs/imgS1.png';
 import img2 from '../imgs/imgS2.png'
 import ship from '../imgs/shop.png'
 import img3 from '../imgs/imgS3.png'
-type productApi = {
+export type productApi = {
      price:  number
      id:string 
      description?: string
@@ -28,7 +28,6 @@ type productApi = {
 }
 
 type productSectetion = {
-   /////outro type
      setScreen: React.Dispatch<React.SetStateAction<string>>
      setShowModal: React.Dispatch<React.SetStateAction<boolean>>
      showModal: boolean
