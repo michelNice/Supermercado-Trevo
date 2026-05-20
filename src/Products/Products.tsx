@@ -1,7 +1,6 @@
 import './Products.scss'
 import React, { useState,useEffect } from 'react'
 import { supabase } from '../Supabase/supabaseClient'
-import { FiList } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -34,10 +33,8 @@ type productSectetion = {
      showUnavailable: React.Dispatch<React.SetStateAction<boolean>>
      setShowUnavailable: React.Dispatch<React.SetStateAction<boolean>>
 
-     offer:boolean
-     price_discount:boolean
 }
-const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal}) => {
+const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal,setShowUnavailable}) => {
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
@@ -71,11 +68,9 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
     </div>
   )
 }
-
     const mixedProducts = products.filter(
        (product) => product.category !== "meat" && 'horti' !== product.category
     )
-   
     const filterProductsByCategory = (category:string)=> {
         return  products.filter(
         (products)=> products.category == category
@@ -161,9 +156,12 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                                     product={product}
                                     setScreen={setScreen}
                                     setShowModal={setShowModal}
-                                    showDiscount={false}
-                                 />
-                             </SwiperSlide>
+                                     showDiscount={
+                                    product.name.includes('Mamão') ||
+                                    product.name.includes('Banana')
+                                    }
+                                                        />
+                        </SwiperSlide>
                         )
                      })}
                  </Swiper>
