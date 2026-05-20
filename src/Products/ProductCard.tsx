@@ -4,8 +4,7 @@ type ProductSectionProps = {
         setScreen: React.Dispatch<React.SetStateAction<string>>
         setShowModal: React.Dispatch<React.SetStateAction<boolean>>
         product:productApi;
-         showDiscount?: boolean
-      
+        showDiscount?: boolean
 }
 
 const ProductCard: React.FC<ProductSectionProps> = ({setShowModal,product,setScreen,showDiscount = true}) => {
@@ -29,7 +28,10 @@ return (
                                         </div>
                                         <button
                                             className="add-btn"
-                                            onClick={()=> setScreen('login')}
+                                            onClick={() => {
+                                                setScreen('login')
+                                             
+                                            }}
                                         >
                                             +
                                         </button>

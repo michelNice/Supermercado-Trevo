@@ -6,10 +6,8 @@ import CepModal from '../CepModal/CepModal'
 import UnavailableModal from '../UnavailableModal/UnavailableModal.js';
 import { useModal } from '../CepModal/CepModalUtils';
  import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
-type MyProps = {
-  message: string;
-};
-const Subscription = ({ message }: MyProps) => {
+
+const Subscription = () => {
  const [showPassword, setShowPassword] = useState(false);
  const [password, setPassword] = useState("");
  const [user, setUser] = useState("");
