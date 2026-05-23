@@ -25,19 +25,20 @@ export type productApi = {
      offer?:string
      category:string
      unit_type:string
-}
-type productSectetion = {
-     setScreen: React.Dispatch<React.SetStateAction<string>>
-     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-     showModal: boolean
-     showUnavailable: React.Dispatch<React.SetStateAction<boolean>>
-     setShowUnavailable: React.Dispatch<React.SetStateAction<boolean>>
+       
 
 }
-const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal,setShowUnavailable}) => {
+type productSectetion = {
+  setScreen: React.Dispatch<React.SetStateAction<string>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  showModal: boolean
+  setSelectedProduct: React.Dispatch<React.SetStateAction<productApi | null>>
+}
+const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal, setSelectedProduct}) => {
     const [products, setProducts] = useState<productApi[]>([]);
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
+   
     useLockBodyScroll(showModal) 
     const imgs = [img,img1,img2,img3]
     useEffect(()=> { 
@@ -69,7 +70,9 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
   )
 }
     const mixedProducts = products.filter(
-       (product) => product.category !== "meat" && 'horti' !== product.category
+       (product) =>
+    product.category !== "meat" &&
+    product.category !== "horti"
     )
     const filterProductsByCategory = (category:string)=> {
         return  products.filter(
@@ -103,6 +106,8 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                             product={product}
                             setScreen={setScreen}
                             setShowModal={setShowModal}
+                            setSelectedProduct={setSelectedProduct}
+                            
                         />
                     </SwiperSlide>
                 ))}
@@ -128,6 +133,8 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                                     product={product}
                                     setScreen={setScreen}
                                     setShowModal={setShowModal}
+                                    setSelectedProduct={setSelectedProduct}
+                                   
                                 />
                             </SwiperSlide>
                         )
@@ -156,6 +163,8 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                                     product={product}
                                     setScreen={setScreen}
                                     setShowModal={setShowModal}
+                                    setSelectedProduct={setSelectedProduct}
+                                   
                                      showDiscount={
                                     product.name.includes('Mamão') ||
                                     product.name.includes('Banana')
@@ -179,7 +188,6 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                         </div>
                     ))}
                 </div>
-                
             </div>
            
         </>

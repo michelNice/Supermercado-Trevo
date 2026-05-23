@@ -1,16 +1,22 @@
 import { type productApi } from "./Products";
 import { FiList } from "react-icons/fi";
 type ProductSectionProps = {
-        setScreen: React.Dispatch<React.SetStateAction<string>>
-        setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-        product:productApi;
-        showDiscount?: boolean
+  setScreen: React.Dispatch<React.SetStateAction<string>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  product: productApi
+  showDiscount?: boolean
+  setSelectedProduct: React.Dispatch<
+    React.SetStateAction<productApi | null>
+  >
 }
-
-const ProductCard: React.FC<ProductSectionProps> = ({setShowModal,product,setScreen,showDiscount = true}) => {
+const ProductCard: React.FC<ProductSectionProps> = ({setShowModal,product,setScreen,showDiscount = true,setSelectedProduct} ) => {
 return (
     <>
-         <div className="product-card">
+         <div className="product-card"  onClick={() => {
+  setSelectedProduct(product)
+  setScreen("productDetails")
+}}>
+            
                                 { showDiscount && (
                                     <div
                                         className={`offer ${
@@ -22,15 +28,23 @@ return (
                                         {product?.offer}
                                     </div>
                                     )}
-                                        <div className="filter-icon" onClick={()=> setShowModal(true)}> <FiList /></div>
+                                    
+                                        <div className="filter-icon"  onClick={(e) => {
+                                                e.stopPropagation()
+                                                setShowModal(true)
+                                            }}
+                                                                                        
+                                            
+                                            > <FiList /></div>
                                         <div className="product-img">
                                              <img src={product.image_url} alt={product.name} />
                                         </div>
                                         <button
                                             className="add-btn"
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                    e.stopPropagation()
                                                 setScreen('login')
-                                             
+                                               
                                             }}
                                         >
                                             +
