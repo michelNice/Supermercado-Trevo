@@ -1,5 +1,4 @@
 @use '../Styles/variables' as *;
-
 .productDetails__container{
     display: flex;
     justify-content: space-evenly;
@@ -19,7 +18,6 @@
             object-fit: contain;
         }
     }
-
     .mobile__icons{  display: none;}
 
     .product__buy {
@@ -66,7 +64,6 @@
             align-items: end;
             gap: .3rem;
         }
-
         .product_price {
             display: flex;
             align-items: baseline;
@@ -76,15 +73,12 @@
                 font-size: 1.3rem;
                 font-weight: 700;
             }
-
             .cur{font-size: 2rem;}
-
             .unit {
                 font-size: 1.5rem;
-                color: #555;
+                color:$text-medium;
             }
         }
-
         .discount {
             display: flex;
             align-items: center;
@@ -107,7 +101,6 @@
                 font-size: 1.8rem;
             }
         }
-
         .btn__addCarrinho {
             border: none;
             background:$primary;
@@ -162,7 +155,6 @@
         gap: 1rem;
         padding: 0;
     }
-
     .productDetails__container .product__details{
         position: relative;
         display: flex;
@@ -178,7 +170,6 @@
             display: block;
         }
     }
-
     .productDetails__container .mobile__icons{
         display: flex;
         position: absolute;
@@ -198,18 +189,14 @@
         font-size: 1.3rem;
         color: #333;
     }
-
-
     .productDetails__container .buttons-infor{display: none !important;}
 
     .productDetails__container .product__info{
         margin-top: 0;
         padding: 0 1rem;
 }
-
     .productDetails__container .product__buy{padding: 0 1rem 1rem;}
 
-    /* SOMENTE AQUI */
     .productDetails__container .product__buy .current{font-size: 2rem; }
 
     .productDetails__container .product__buy .old{font-size: 1rem;}
