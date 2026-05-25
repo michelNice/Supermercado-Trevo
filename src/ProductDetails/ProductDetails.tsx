@@ -1,41 +1,57 @@
 import React, { useState } from 'react'
+import { FiShare2 ,FiPlus} from "react-icons/fi";
 import './ProductDetails.scss'
 import '../Products/Products.scss'
 import { type productApi } from '../Products/Products'
 type Props ={
     product:productApi | null
 }
-
 const ProductDetails: React.FC<Props>  =({product})=> {
     if(!product)return null
     return(
     <>
     <div className="productDetails__container">
-        
-        {/* COLUNA 1 */}
         <div className="product__details">
-        <img src={product.image_url} alt="" />
-        </div>
 
-        {/* COLUNA 2 */}
+    <div className="mobile__icons">
+        <button>
+        <FiShare2 />
+        </button>
+        <button>
+        <FiPlus />
+        </button>
+   </div>
+       <img src={product.image_url} alt="" />
+  </div>
         <div className="product__info">
         <div>
             <span>{product.description}</span>
         </div>
+        <div className='buttons-infor'>
+            <button className='btn__share'>
+             <FiShare2 />
+              Compartilhar
+        </button>
+        <button className='btn__list'>
+                <FiPlus />
+             Adicionar lista
 
-        <button>Compartilhar</button>
-        <button>Adicionar lista</button>
+        </button>
         </div>
-
-        {/* COLUNA 3 */}
-        <div className="product__buy">
         
-        <div className={`offer`}>
-
         </div>
-
+        <div className="product__buy">
+          <div
+                className={`offerr ${
+                    product?.offer?.trim().toLowerCase() === 'exclusivo'
+                         ? 'offer__colorDark'
+                         : 'offer__colorLight'
+                                        }`}
+                >
+               {product?.offer}
+        </div>
         <div className="price">
-            <span className="current cur">{product.price}</span>
+            <span className="current">{product.price}</span>
             <span className="unit">/{product.unit_type}</span>
         </div>
 
