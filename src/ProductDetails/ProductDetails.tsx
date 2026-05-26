@@ -65,6 +65,7 @@ const ProductDetails: React.FC<Props>  =({product})=> {
         </div>
 
   </div>
+  
 </>
     )
 }
