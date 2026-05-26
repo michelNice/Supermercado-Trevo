@@ -26,7 +26,6 @@ export type productApi = {
      category:string
      unit_type:string
        
-
 }
 type productSectetion = {
   setScreen: React.Dispatch<React.SetStateAction<string>>
