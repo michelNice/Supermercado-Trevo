@@ -3,11 +3,26 @@ import { FiShare2 ,FiPlus} from "react-icons/fi";
 import './ProductDetails.scss'
 import '../Products/Products.scss'
 import { type productApi } from '../Products/Products'
+import ProductCard from '../Products/ProductCard';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import img from '../imgs/test card.png'
 type Props ={
     product:productApi | null
+     products: productApi[]
+     setSelectedProduct: React.Dispatch<
+    React.SetStateAction<productApi | null>
+  >
 }
-const ProductDetails: React.FC<Props>  =({product})=> {
+const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct})=> {
     if(!product)return null
+    if (!product) return null
+
+const relatedProducts = products.filter(
+  (p) =>
+    p.category === product.category &&
+    p.id !== product.id
+)
     return(
     <>
     <div className="productDetails__container">
@@ -64,7 +79,33 @@ const ProductDetails: React.FC<Props>  =({product})=> {
         </div>
 
   </div>
-  
+
+  <div className="related-products">
+  <h2>Produtos Relacionados</h2>
+
+  <Swiper
+    modules={[Navigation]}
+    spaceBetween={16}
+    slidesPerView={2.2}
+    navigation
+    breakpoints={{
+      640: { slidesPerView: 2.2 },
+      768: { slidesPerView: 3 },
+      1024: { slidesPerView: 5 },
+    }}
+  >
+    {relatedProducts.map((item) => (
+      <SwiperSlide key={item.id}>
+        <ProductCard
+          product={item}
+          setScreen={() => {}}
+          setShowModal={() => {}}
+          setSelectedProduct={setSelectedProduct}
+        />
+      </SwiperSlide>
+    ))}
+  </Swiper>
+</div>
 </>
     )
 }
