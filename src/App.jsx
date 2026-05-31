@@ -48,7 +48,10 @@ function App() {
           />
           {screen === 'departments' && <DepartmentMobile />}
           {screen === "productDetails" && (
-            <ProductDetails product={selectedProduct}/>
+            <ProductDetails
+            product={selectedProduct}
+            setSelectedProduct={setSelectedProduct}
+          />
           )}
           <Footer />
 
