@@ -12,7 +12,6 @@ const ProductDetails: React.FC<Props>  =({product})=> {
     <>
     <div className="productDetails__container">
         <div className="product__details">
-
     <div className="mobile__icons">
         <button>
         <FiShare2 />
