@@ -6,19 +6,19 @@ import { type productApi } from '../Products/Products'
 import ProductCard from '../Products/ProductCard';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import img from '../imgs/test card.png'
-type Props ={
-    product:productApi | null
-     products: productApi[]
-     setSelectedProduct: React.Dispatch<
+type Props = {
+  product: productApi | null
+  products?: productApi[]
+  setSelectedProduct: React.Dispatch<
     React.SetStateAction<productApi | null>
   >
 }
 const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct})=> {
     if(!product)return null
-    if (!product) return null
+    
+    console.log(products)
 
-const relatedProducts = products.filter(
+const relatedProducts = (products ?? []).filter(
   (p) =>
     p.category === product.category &&
     p.id !== product.id
@@ -80,8 +80,9 @@ const relatedProducts = products.filter(
 
   </div>
 
-  <div className="related-products">
-  <h2>Produtos Relacionados</h2>
+  <div className=" products-container">
+   <div className='related__products'>
+  <h2 className="products-container">Produtos Relacionados</h2>
 
   <Swiper
     modules={[Navigation]}
@@ -105,9 +106,16 @@ const relatedProducts = products.filter(
       </SwiperSlide>
     ))}
   </Swiper>
+  </div>
 </div>
 </>
     )
 }
 
 export default ProductDetails
+
+
+
+
+
+
