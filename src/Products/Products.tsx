@@ -28,13 +28,14 @@ export type productApi = {
        
 }
 type productSectetion = {
+  products: productApi[]
+  setProducts: React.Dispatch<React.SetStateAction<productApi[]>>
   setScreen: React.Dispatch<React.SetStateAction<string>>
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
   showModal: boolean
   setSelectedProduct: React.Dispatch<React.SetStateAction<productApi | null>>
 }
-const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal, setSelectedProduct}) => {
-    const [products, setProducts] = useState<productApi[]>([]);
+const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
    

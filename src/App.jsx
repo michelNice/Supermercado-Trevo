@@ -14,6 +14,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null)
+  const [products, setProducts] = useState([])
   const handleCepSubmit = () => {
     setShowModal(false);
   };
@@ -30,6 +31,8 @@ function App() {
         <HeroSlider />
         <ShowcaseDeparments />
        <Product
+        setProducts={setProducts}
+         products={products}
           setScreen={setScreen}
           setShowModal={setShowModal}
           showModal={showModal}
@@ -49,6 +52,7 @@ function App() {
           {screen === 'departments' && <DepartmentMobile />}
           {screen === "productDetails" && (
             <ProductDetails
+            products={products}
             product={selectedProduct}
             setSelectedProduct={setSelectedProduct}
           />
