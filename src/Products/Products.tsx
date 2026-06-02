@@ -2,39 +2,18 @@ import './Products.scss'
 import React, { useState,useEffect } from 'react'
 import { supabase } from '../Supabase/supabaseClient'
 import { FaCheckCircle } from "react-icons/fa";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import {SwiperSlide } from "swiper/react";
 import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
 import ProductCard from './ProductCard';
-import "swiper/css";
-import "swiper/css/navigation";
 import img from '../imgs/imgS.png';
 import img1 from '../imgs/imgS1.png';
 import img2 from '../imgs/imgS2.png'
 import ship from '../imgs/shop.png'
 import img3 from '../imgs/imgS3.png'
-export type productApi = {
-     price:  number
-     id:string 
-     description?: string
-     image_url :string 
-     name : string 
-     old_price:number
-     new_price:number
-     price_discount: string
-     offer?:string
-     category:string
-     unit_type:string
-       
-}
-type productSectetion = {
-  products: productApi[]
-  setProducts: React.Dispatch<React.SetStateAction<productApi[]>>
-  setScreen: React.Dispatch<React.SetStateAction<string>>
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-  showModal: boolean
-  setSelectedProduct: React.Dispatch<React.SetStateAction<productApi | null>>
-}
+import ProductSwiper from './ProductSwiper';
+import type { productApi } from '../Types/Types'
+import type { productSectetion } from '../Types/Types';
+
 const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
@@ -87,19 +66,7 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
             <div className="products-container">
              <div className="hr"></div>
                 <h2>CORRE QUE É SÓ HOJE ✨</h2>
-             <Swiper
-                    modules={[Navigation]}
-                    spaceBetween={16}
-                    slidesPerView={2.2}
-                    navigation
-                    grabCursor={true}
-                    breakpoints={{
-                    640: { slidesPerView: 2.2 },
-                    768: { slidesPerView: 3 },
-                    1024: { slidesPerView: 5 },
-                    }}
-                    className="products-swiper"
-                >
+              <ProductSwiper>
                 {mixedProducts.map((product) => (
                      <SwiperSlide key={product.id}>
                         <ProductCard
@@ -111,21 +78,9 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                         />
                     </SwiperSlide>
                 ))}
-            </Swiper>
+             </ProductSwiper>
                   <h2>QUARTA-FEIRA DA CARNE 🥩</h2>
-                 <Swiper 
-                    modules={[Navigation]}
-                    spaceBetween={16}
-                    slidesPerView={2.2}
-                    navigation
-                    grabCursor={true}
-                    breakpoints={{
-                    640: { slidesPerView: 2.2 },
-                    768: { slidesPerView: 3 },
-                    1024: { slidesPerView: 5 },
-                    }}
-                     className="products-swiper"
-                  >
+                 <ProductSwiper>
                      {meatProducts.map((product)=> {
                         return(
                              <SwiperSlide key={product.id}>
@@ -139,23 +94,11 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                             </SwiperSlide>
                         )
                      })}
-                 </Swiper>
+                 </ProductSwiper>
                  
                 <img src={ship} className='ship' alt="" />
                  <h2>HORTIFRUTI DE QUINTA A DOMINGO 🥬🍎</h2>
-                 <Swiper 
-                    modules={[Navigation]}
-                    spaceBetween={16}
-                    slidesPerView={2.2}
-                    navigation
-                    grabCursor={true}
-                    breakpoints={{
-                    640: { slidesPerView: 2.2 },
-                    768: { slidesPerView: 3 },
-                    1024: { slidesPerView: 5 },
-                    }}
-                     className="products-swiper"
-                  >
+                 <ProductSwiper>
                      {hortiProducts.map((product)=> {
                         return(
                              <SwiperSlide key={product.id}>
@@ -173,7 +116,7 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                         </SwiperSlide>
                         )
                      })}
-                 </Swiper>
+                 </ProductSwiper>
                  <div className="brands">
                    <FaCheckCircle className="brands__icon" />
                         <div>
@@ -195,3 +138,6 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
 }
 
 export default Product;
+
+
+
