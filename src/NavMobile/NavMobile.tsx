@@ -12,18 +12,14 @@ import {
 } from "react-icons/fa";
 import './NavMobile.scss'
 import trevo from '../imgs/trevo_logo.png';
+import  type{ MobileMenuItems } from "../Types/Types";
 interface NavMobileProps {
     menuOpen:boolean
     closeMenu:()=> void
     onLoginClick: () => void
     onDepartmentsClick: () => void
 }
-type MobileMenuItems = {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-   link?: string
-}
+
 const NavMobile:React.FC<NavMobileProps> = ({
     menuOpen,
     closeMenu,

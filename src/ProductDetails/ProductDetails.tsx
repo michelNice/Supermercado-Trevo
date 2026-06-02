@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { FiShare2 ,FiPlus} from "react-icons/fi";
 import './ProductDetails.scss'
 import '../Products/Products.scss'
-import { type productApi } from '../Products/Products'
+import { type productApi } from '../Types/Types'
 import ProductCard from '../Products/ProductCard';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import {SwiperSlide } from "swiper/react";
+import ProductSwiper from '../Products/ProductSwiper';
 type Props = {
   product: productApi | null
   products?: productApi[]
@@ -49,7 +49,6 @@ const relatedProducts = (products ?? []).filter(
         <button className='btn__list'>
                 <FiPlus />
              Adicionar lista
-
         </button>
         </div>
         
@@ -60,7 +59,7 @@ const relatedProducts = (products ?? []).filter(
                     product?.offer?.trim().toLowerCase() === 'exclusivo'
                          ? 'offer__colorDark'
                          : 'offer__colorLight'
-                                        }`}
+                    }`}
                 >
                {product?.offer}
         </div>
@@ -77,24 +76,13 @@ const relatedProducts = (products ?? []).filter(
             + Adicionar ao carrinho
         </button>
         </div>
-
   </div>
 
   <div className=" products-container">
    <div className='related__products'>
   <h2 className="products-container">Produtos Relacionados</h2>
 
-  <Swiper
-    modules={[Navigation]}
-    spaceBetween={16}
-    slidesPerView={2.2}
-    navigation
-    breakpoints={{
-      640: { slidesPerView: 2.2 },
-      768: { slidesPerView: 3 },
-      1024: { slidesPerView: 5 },
-    }}
-  >
+  <ProductSwiper>
     {relatedProducts.map((item) => (
       <SwiperSlide key={item.id}>
         <ProductCard
@@ -105,7 +93,7 @@ const relatedProducts = (products ?? []).filter(
         />
       </SwiperSlide>
     ))}
-  </Swiper>
+  </ProductSwiper>
   </div>
 </div>
 </>
