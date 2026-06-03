@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FiShare2 ,FiPlus} from "react-icons/fi";
 import './ProductDetails.scss'
 import '../Products/Products.scss'
-import { type productApi } from '../Types/Types'
+import { type productApi } from '../Types/Product'
 import ProductCard from '../Products/ProductCard';
 import {SwiperSlide } from "swiper/react";
 import ProductSwiper from '../Products/ProductSwiper';
