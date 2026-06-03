@@ -21,11 +21,3 @@ export type productSectetion = {
   showModal: boolean
   setSelectedProduct: React.Dispatch<React.SetStateAction<productApi | null>>
 }
-
-//mobileNav
-export type MobileMenuItems = {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-   link?: string
-}
