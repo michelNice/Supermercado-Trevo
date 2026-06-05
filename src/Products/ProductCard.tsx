@@ -1,4 +1,4 @@
-import { type productApi } from "./Products";
+import { type productApi } from "../Types/Product";
 import { FiList } from "react-icons/fi";
 type ProductSectionProps = {
   setScreen: React.Dispatch<React.SetStateAction<string>>

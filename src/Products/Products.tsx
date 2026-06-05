@@ -112,7 +112,7 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                                     product.name.includes('Mamão') ||
                                     product.name.includes('Banana')
                                     }
-                                                        />
+                                     />
                         </SwiperSlide>
                         )
                      })}

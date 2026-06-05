@@ -1,5 +1,5 @@
 import {useState } from 'react';
-import {handleUserChange} from './handlers.ts'
+import {handleUserChange} from './handlers'
 import './Subscription.scss'
 import ReCAPTCHA from "react-google-recaptcha";
 import CepModal from '../CepModal/CepModal'
@@ -91,7 +91,7 @@ const Subscription = () => {
       <CepModal 
         show={showModal}
         onClose={() => {
-         closeModal
+         closeModal()
         setShowUnavailable(true)
         }}
         cep={cep}

@@ -2,7 +2,6 @@ import './Footer.scss'
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { FiMail, FiPhone } from "react-icons/fi";
 import { FaXTwitter } from "react-icons/fa6";
-import { FaCheckCircle } from "react-icons/fa";
 function Footer() {
 
   return (

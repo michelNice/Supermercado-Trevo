@@ -4,17 +4,19 @@ import Navbar from "./Navbar/Navbar";
 import HeroSlider from "./HeroSlider/HeroSlider";
 import Subscription from "./Subscription/Subscription";
 import Product from './Products/Products'
+import type { productApi } from './Types/Product'
 import CepModal from "./CepModal/CepModal";
 import DepartmentMobile from './DepartmentsMobile/DepartmentsMobile'
 import ShowcaseDeparments from './ShowcaseDeparments/ShowcaseDeparments'
-import Footer from '../src/Footer/Footer'
-import ProductDetails from '../src/ProductDetails/ProductDetails'
+import Footer from './Footer/Footer'
+import ProductDetails from './ProductDetails/ProductDetails'
 function App() {
   const [screen, setScreen] = useState("home");
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null)
-  const [products, setProducts] = useState([])
+  const [selectedProduct, setSelectedProduct] =
+  useState<productApi | null>(null)
+  const [products, setProducts] = useState<productApi[]>([])
   const handleCepSubmit = () => {
     setShowModal(false);
   };
@@ -23,7 +25,6 @@ function App() {
     <>
           <Navbar
             onLoginClick={() => setScreen("login")}
-            onHomeClick={() => setScreen("home")}
             onDepartmentsClick={()=> setScreen('departments')}
           />
 
