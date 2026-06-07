@@ -24,5 +24,4 @@ const ProductSwiper = ({ children }: Props) => {
     </Swiper>
   );
 }
-
 export default ProductSwiper;
