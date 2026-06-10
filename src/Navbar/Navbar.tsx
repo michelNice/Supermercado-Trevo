@@ -13,11 +13,11 @@ import { useState } from "react";
 import NavMobile from "../NavMobile/NavMobile";
 import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
 import DepartmentsDropdown from "../DepartmentsDropdown/DepartmentsDropdown";
-interface NavbarProps {
-  onLoginClick:()=> void;
-  onDepartmentsClick: () => void;
-}
-const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
+import { useNavigate } from "react-router-dom";
+
+
+
+const Navbar = () => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)
   const [departments, setDepartments] = useState(false)
@@ -25,6 +25,7 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
   const [currentAddress, setCurrentAddress] = useState(
     localStorage.getItem("selectedAddress") ?? defaultAddress
   )
+  const navigate = useNavigate();
   return (
     <header className="header">
       <div className="promo__bar">
@@ -75,7 +76,7 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
             </div>
             <div
               className="store"
-              onClick={onLoginClick}
+              onClick={() => navigate("/login")}
               style={{ cursor: "pointer" }}
             >
               <FaUser className="icon" />
@@ -118,11 +119,11 @@ const Navbar: React.FC<NavbarProps> =({ onLoginClick, onDepartmentsClick}) => {
         </div>
       </div>
        {departments && <DepartmentsDropdown />}
-        <NavMobile 
+      <NavMobile 
         menuOpen={menuOpen}
         closeMenu={() => setMenuOpen(false)}
-        onLoginClick={onLoginClick}
-        onDepartmentsClick={onDepartmentsClick} 
+        onLoginClick={() => navigate("/login")}
+        onDepartmentsClick={() => navigate("/departments")}
       />
       {menuOpen && (
         <div className="overlay" onClick={() => setMenuOpen(false)}></div>

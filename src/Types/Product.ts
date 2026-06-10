@@ -16,7 +16,7 @@ export type productApi = {
 export type productSectetion = {
   products: productApi[]
   setProducts: React.Dispatch<React.SetStateAction<productApi[]>>
-  setScreen: React.Dispatch<React.SetStateAction<string>>
+  //setScreen: React.Dispatch<React.SetStateAction<string>>
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
   showModal: boolean
   setSelectedProduct: React.Dispatch<React.SetStateAction<productApi | null>>
