@@ -6,98 +6,115 @@ import { type productApi } from '../Types/Product'
 import ProductCard from '../Products/ProductCard';
 import {SwiperSlide } from "swiper/react";
 import ProductSwiper from '../Products/ProductSwiper';
+import { TRUE } from 'sass';
 type Props = {
   product: productApi | null
   products?: productApi[]
+  showOffer?: boolean
+  showDiscount?: boolean
   setSelectedProduct: React.Dispatch<
     React.SetStateAction<productApi | null>
+    
   >
 }
-const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct})=> {
+const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct,showDiscount = true,showOffer = true,})=> {
     if(!product)return null
     
-    console.log(products)
-
 const relatedProducts = (products ?? []).filter(
   (p) =>
     p.category === product.category &&
     p.id !== product.id
 )
-    return(
-    <>
+   return (
+  <>
     <div className="productDetails__container">
-        <div className="product__details">
-    <div className="mobile__icons">
-        <button>
-        <FiShare2 />
-        </button>
-        <button>
-        <FiPlus />
-        </button>
-   </div>
-       <img src={product.image_url} alt="" />
-  </div>
-        <div className="product__info">
+      <div className="product__details">
+        <div className="mobile__icons">
+          <button>
+            <FiShare2 />
+          </button>
+          <button>
+            <FiPlus />
+          </button>
+        </div>
+
+        <img src={product.image_url} alt="" />
+      </div>
+
+      <div className="product__info">
         <div>
-            <span>{product.description}</span>
-        </div>
-        <div className='buttons-infor'>
-            <button className='btn__share'>
-             <FiShare2 />
-              Compartilhar
-        </button>
-        <button className='btn__list'>
-                <FiPlus />
-             Adicionar lista
-        </button>
-        </div>
-        
-        </div>
-        <div className="product__buy">
-          <div
-                className={`offerr ${
-                    product?.offer?.trim().toLowerCase() === 'exclusivo'
-                         ? 'offer__colorDark'
-                         : 'offer__colorLight'
-                    }`}
-                >
-               {product?.offer}
-        </div>
-        <div className="price">
-            <span className="current">{product.price}</span>
-            <span className="unit">/{product.unit_type}</span>
+          <span>{product.description}</span>
         </div>
 
-        <div className="discount">
-            <span className="off">{product.price_discount}</span>
-            <span className="old">R$ {product.old_price}</span>
+        <div className="buttons-infor">
+          <button className="btn__share">
+            <FiShare2 />
+            Compartilhar
+          </button>
+
+          <button className="btn__list">
+            <FiPlus />
+            Adicionar lista
+          </button>
         </div>
-         <button className="btn__addCarrinho">
-            + Adicionar ao carrinho
-        </button>
-        </div>
+      </div>
+
+      <div className="product__buy">
+
+  {showOffer && product.offer && (
+    <div
+      className={`offerr ${
+        product.offer.trim().toLowerCase() === "exclusivo"
+          ? "offer__colorDark"
+          : "offer__colorLight"
+      }`}
+    >
+      {product.offer}
+    </div>
+  )}
+
+  <div className="price">
+    <span className="current">R$ {product.price}</span>
+    <span className="unit">/{product.unit_type}</span>
   </div>
 
-  <div className=" products-container">
-   <div className='related__products'>
-  <h2 className="products-container">Produtos Relacionados</h2>
+  {showDiscount && product.price_discount && (
+    <div className="discount">
+      <span className="off">{product.price_discount}</span>
+      <span className="old">R$ {product.old_price}</span>
+    </div>
+  )}
 
-  <ProductSwiper>
-    {relatedProducts.map((item) => (
-      <SwiperSlide key={item.id}>
-        <ProductCard
-          product={item}
-          setScreen={() => {}}
-          setShowModal={() => {}}
-          setSelectedProduct={setSelectedProduct}
-        />
-      </SwiperSlide>
-    ))}
-  </ProductSwiper>
-  </div>
+  <button className="btn__addCarrinho">
+    + Adicionar ao carrinho
+  </button>
+
 </div>
-</>
-    )
+    </div>
+
+    <div className="products-container">
+      <div className="related__products">
+        <h2 className="products-container">
+          Produtos Relacionados
+        </h2>
+
+        <ProductSwiper>
+          {relatedProducts.map((item) => (
+            <SwiperSlide key={item.id}>
+              <ProductCard
+                product={item}
+                setShowModal={() => {}}
+                setSelectedProduct={setSelectedProduct}
+                showDiscount={true}
+                
+              />
+            </SwiperSlide>
+          ))}
+        </ProductSwiper>
+      </div>
+    </div>
+  </>
+);
 }
 
 export default ProductDetails

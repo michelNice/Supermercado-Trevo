@@ -13,11 +13,13 @@ import img3 from '../imgs/imgS3.png'
 import ProductSwiper from './ProductSwiper';
 import type { productApi } from '../Types/Product'
 import type { productSectetion } from '../Types/Product';
+import { useNavigate } from "react-router-dom";
 
-const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
+
+const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
-   
+    const navigate = useNavigate();
     useLockBodyScroll(showModal) 
     const imgs = [img,img1,img2,img3]
     useEffect(()=> { 
@@ -71,7 +73,6 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                      <SwiperSlide key={product.id}>
                         <ProductCard
                             product={product}
-                            setScreen={setScreen}
                             setShowModal={setShowModal}
                             setSelectedProduct={setSelectedProduct}
                             
@@ -86,7 +87,6 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                              <SwiperSlide key={product.id}>
                                 <ProductCard 
                                     product={product}
-                                    setScreen={setScreen}
                                     setShowModal={setShowModal}
                                     setSelectedProduct={setSelectedProduct}
                                    
@@ -104,10 +104,8 @@ const Product: React.FC<productSectetion> = ({ setScreen,setShowModal ,showModal
                              <SwiperSlide key={product.id}>
                                  <ProductCard 
                                     product={product}
-                                    setScreen={setScreen}
                                     setShowModal={setShowModal}
                                     setSelectedProduct={setSelectedProduct}
-                                   
                                      showDiscount={
                                     product.name.includes('Mamão') ||
                                     product.name.includes('Banana')

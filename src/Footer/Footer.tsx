@@ -12,7 +12,7 @@ function Footer() {
 
         <ul>
           <li>
-            A Rede Arco-Mix faz parte de uma família genuinamente
+            A Rede Trevo Supermercado faz parte de uma família genuinamente
             pernambucana, que teve início com o casal Armínio Guilherme
             dos Santos e Dona Antônia Santos.
           </li>
