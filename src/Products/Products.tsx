@@ -11,7 +11,6 @@ import img2 from '../imgs/imgS2.png'
 import ship from '../imgs/shop.png'
 import img3 from '../imgs/imgS3.png'
 import ProductSwiper from './ProductSwiper';
-import type { productApi } from '../Types/Product'
 import type { productSectetion } from '../Types/Product';
 import { useNavigate } from "react-router-dom";
 

@@ -14,9 +14,6 @@ import NavMobile from "../NavMobile/NavMobile";
 import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
 import DepartmentsDropdown from "../DepartmentsDropdown/DepartmentsDropdown";
 import { useNavigate } from "react-router-dom";
-
-
-
 const Navbar = () => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)

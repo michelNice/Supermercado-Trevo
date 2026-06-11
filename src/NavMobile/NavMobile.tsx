@@ -12,7 +12,6 @@ import {
 } from "react-icons/fa";
 import './NavMobile.scss'
 import trevo from '../imgs/trevo_logo.png';
-//import  type{ MobileMenuItems } from "../Types/Types";
 interface NavMobileProps {
     menuOpen:boolean
     closeMenu:()=> void
