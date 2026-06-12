@@ -13,8 +13,9 @@ type Props = {
   setSelectedProduct: React.Dispatch<
     React.SetStateAction<productApi | null>
   >
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct,showDiscount = true,showOffer = true,})=> {
+const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct,showDiscount = true,showOffer = true,setShowModal})=> {
     if(!product)return null
 const relatedProducts = (products ?? []).filter(
   (p) =>
@@ -91,7 +92,7 @@ const relatedProducts = (products ?? []).filter(
             <SwiperSlide key={item.id}>
               <ProductCard
                 product={item}
-                setShowModal={() => {}}
+                setShowModal={setShowModal}
                 setSelectedProduct={setSelectedProduct}
                 showDiscount={true}
               />

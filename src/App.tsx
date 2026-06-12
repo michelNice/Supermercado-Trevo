@@ -60,6 +60,7 @@ function App() {
               products={products}
               product={selectedProduct}
               setSelectedProduct={setSelectedProduct}
+              setShowModal={setShowModal}
             />
           }
         />
