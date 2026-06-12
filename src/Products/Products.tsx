@@ -13,8 +13,6 @@ import img3 from '../imgs/imgS3.png'
 import ProductSwiper from './ProductSwiper';
 import type { productSectetion } from '../Types/Product';
 import { useNavigate } from "react-router-dom";
-
-
 const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
@@ -40,7 +38,6 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
        }
        Getproduct()
     }, [])
-
    if (loading) {
   return (
     <div className="loading">
