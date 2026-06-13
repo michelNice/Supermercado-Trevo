@@ -1,17 +1,16 @@
 import "./App.css";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./Navbar/Navbar";
-import HeroSlider from "./HeroSlider/HeroSlider";
-import Subscription from "./Subscription/Subscription";
-import Product from "./Products/Products";
+import Navbar from "./components/Navbar/Navbar";
+import HeroSlider from "./components/HeroSlider/HeroSlider";
+import Subscription from "./components/Subscription/Subscription";
+import Product from "./components/Products/Products";
 import type { productApi } from "./Types/Product";
-import CepModal from "./CepModal/CepModal";
-import DepartmentMobile from "./DepartmentsMobile/DepartmentsMobile";
-import ShowcaseDeparments from "./ShowcaseDeparments/ShowcaseDeparments";
-import Footer from "./Footer/Footer";
-import ProductDetails from "./ProductDetails/ProductDetails";
-
+import CepModal from "./modals/CepModal/CepModal";
+import DepartmentMobile from "./components/DepartmentsMobile/DepartmentsMobile";
+import ShowcaseDeparments from "./components/ShowcaseDeparments/ShowcaseDeparments";
+import Footer from "./components/Footer/Footer";
+import ProductDetails from "./components/ProductDetails/ProductDetails";
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");

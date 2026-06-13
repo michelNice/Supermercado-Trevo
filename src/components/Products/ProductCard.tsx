@@ -1,4 +1,4 @@
-import { type productApi } from "../Types/Product";
+import { type productApi } from "../../Types/Product";
 import { FiList } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 type ProductSectionProps = {

@@ -11,7 +11,7 @@ import {
   FaEnvelope
 } from "react-icons/fa";
 import './NavMobile.scss'
-import trevo from '../imgs/trevo_logo.png';
+import trevo from '../../assets/imgs/trevo_logo.png'
 interface NavMobileProps {
     menuOpen:boolean
     closeMenu:()=> void

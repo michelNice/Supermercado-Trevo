@@ -2,11 +2,11 @@ import {useState } from 'react';
 import {handleUserChange} from './handlers'
 import './Subscription.scss'
 import ReCAPTCHA from "react-google-recaptcha";
-import CepModal from '../CepModal/CepModal'
-import UnavailableModal from '../UnavailableModal/UnavailableModal.js';
-import { useModal } from '../CepModal/CepModalUtils';
- import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
+import CepModal from '../../modals/CepModal/CepModal';
 
+import UnavailableModal from '../../modals/UnavailableModal/UnavailableModal.js';
+import { useModal } from '../../modals/CepModal/CepModalUtils';
+ import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 const Subscription = () => {
  const [showPassword, setShowPassword] = useState(false);
  const [password, setPassword] = useState("");
