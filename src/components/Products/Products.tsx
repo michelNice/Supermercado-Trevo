@@ -1,17 +1,18 @@
 import './Products.scss'
 import React, { useState,useEffect } from 'react'
-import { supabase } from '../Supabase/supabaseClient'
+
+import {supabase} from '../../services/Supabase/supabaseClient'
 import { FaCheckCircle } from "react-icons/fa";
 import {SwiperSlide } from "swiper/react";
-import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
+import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 import ProductCard from './ProductCard';
-import img from '../imgs/imgS.png';
-import img1 from '../imgs/imgS1.png';
-import img2 from '../imgs/imgS2.png'
-import ship from '../imgs/shop.png'
-import img3 from '../imgs/imgS3.png'
+import img from '../../assets/imgs/imgS1.png';
+import img1 from '../../assets/imgs/imgS1.png';
+import img2 from '../../assets/imgs/imgS2.png'
+import ship from '../../assets/imgs/shop.png'
+import img3 from '../../assets/imgs/imgS3.png'
 import ProductSwiper from './ProductSwiper';
-import type { productSectetion } from '../Types/Product';
+import type { productSectetion } from '../../Types/Product';
 import { useNavigate } from "react-router-dom";
 const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
     const [error,setError] = useState<string | null>(null)

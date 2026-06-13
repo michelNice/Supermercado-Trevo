@@ -1,10 +1,12 @@
 import { FiShare2 ,FiPlus} from "react-icons/fi";
 import './ProductDetails.scss'
 import '../Products/Products.scss'
-import { type productApi } from '../Types/Product'
+import '../Products/Products.scss'
+import { type productApi } from "../../Types/Product";
 import ProductCard from '../Products/ProductCard';
 import {SwiperSlide } from "swiper/react";
 import ProductSwiper from '../Products/ProductSwiper';
+import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 type Props = {
   product: productApi | null
   products?: productApi[]
@@ -17,6 +19,8 @@ type Props = {
 }
 const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct,showDiscount = true,showOffer = true,setShowModal})=> {
     if(!product)return null
+
+    //useLockBodyScroll()
 const relatedProducts = (products ?? []).filter(
   (p) =>
     p.category === product.category &&

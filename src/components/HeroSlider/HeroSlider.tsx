@@ -4,12 +4,12 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import './HeroSlider.css'
-import img1 from "../imgs/imgSlider1.jpg";
-import img2 from "../imgs/imgSlider2.jpg";
-import img3 from "../imgs/imgSlider3.jpg";
-import img4 from "../imgs/imgSlider4.jpg";
-import img5 from "../imgs/imgSlider5.png";
-import img6 from "../imgs/imgSlider6.png";
+import img1 from '../../assets/imgs/imgSlider1.jpg'
+import img2 from "../../assets/imgs/imgSlider2.jpg";
+import img3 from "../../assets/imgs/imgSlider3.jpg";
+import img4 from "../../assets/imgs/imgSlider4.jpg";
+import img5 from "../../assets/imgs/imgSlider5.png";
+import img6 from "../../assets/imgs/imgSlider6.png";
 const imgSlider: string[] = [img1, img2, img3, img4, img5, img6];
 
 const HeroSlider: React.FC = () => {

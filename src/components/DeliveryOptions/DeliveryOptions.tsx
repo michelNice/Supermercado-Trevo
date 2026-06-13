@@ -1,11 +1,11 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { trevoAddress } from "./AdressDelivery";
-import CepModal from "../CepModal/CepModal";
-import {useLockBodyScroll}  from '../CepModal/CepModalUtils'
-import {useModal} from '../CepModal/CepModalUtils'
+import CepModal from "../../modals/CepModal/CepModal";
+import { useLockBodyScroll } from "../../modals/CepModal/CepModalUtils";
+import { useModal } from "../../modals/CepModal/CepModalUtils";
 import './DeliveryOptions.scss'
-import UnavailableModal from "../UnavailableModal/UnavailableModal";
+import UnavailableModal from "../../modals/UnavailableModal/UnavailableModal";
 type props = {
     onSelectStore:(adress:string)=> void
 }
