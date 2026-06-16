@@ -3,7 +3,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import './HeroSlider.css'
+import './HeroSlider.scss'
 import img1 from '../../assets/imgs/imgSlider1.jpg'
 import img2 from "../../assets/imgs/imgSlider2.jpg";
 import img3 from "../../assets/imgs/imgSlider3.jpg";

@@ -6,7 +6,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import {SwiperSlide } from "swiper/react";
 import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 import ProductCard from './ProductCard';
-import img from '../../assets/imgs/imgS1.png';
+import img from '../../assets/imgs/imgS.png';
 import img1 from '../../assets/imgs/imgS1.png';
 import img2 from '../../assets/imgs/imgS2.png'
 import ship from '../../assets/imgs/shop.png'

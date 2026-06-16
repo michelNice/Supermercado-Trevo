@@ -22,7 +22,6 @@ function App() {
   const handleCepSubmit = () => {
     setShowModal(false);
   };
-
   return (
     <>
       <Navbar />
@@ -58,6 +57,7 @@ function App() {
             <ProductDetails
               products={products}
               product={selectedProduct}
+              showModal={showModal}
               setSelectedProduct={setSelectedProduct}
               setShowModal={setShowModal}
             />

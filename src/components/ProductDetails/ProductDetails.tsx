@@ -9,6 +9,7 @@ import ProductSwiper from '../Products/ProductSwiper';
 import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 type Props = {
   product: productApi | null
+   showModal:boolean
   products?: productApi[]
   showOffer?: boolean
   showDiscount?: boolean
@@ -17,10 +18,13 @@ type Props = {
   >
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const ProductDetails: React.FC<Props>  =({product, products,setSelectedProduct,showDiscount = true,showOffer = true,setShowModal})=> {
-    if(!product)return null
+const ProductDetails: React.FC<Props>  =({product, showModal,products,setSelectedProduct,showDiscount = true,showOffer = true,setShowModal})=> {
+      useLockBodyScroll(showModal)
+  if(!product)return null
 
-    //useLockBodyScroll()
+  
+
+  
 const relatedProducts = (products ?? []).filter(
   (p) =>
     p.category === product.category &&

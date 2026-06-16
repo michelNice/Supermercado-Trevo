@@ -9,19 +9,40 @@ import {
   FaTh,
   FaChevronDown,
 } from "react-icons/fa";
-import { useState } from "react";
+import { useState,useRef,useEffect} from "react";
 import NavMobile from "../NavMobile/NavMobile";
 import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
 import DepartmentsDropdown from "../DepartmentsDropdown/DepartmentsDropdown";
 import { useNavigate } from "react-router-dom";
+import { getSelectedAddress } from "../../utils/storage.ts";
 const Navbar = () => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)
   const [departments, setDepartments] = useState(false)
+ 
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
+   const deliveryRef = useRef<HTMLDivElement>(null);
   const [currentAddress, setCurrentAddress] = useState(
-    localStorage.getItem("selectedAddress") ?? defaultAddress
+     getSelectedAddress() ?? defaultAddress
   )
+
+  useEffect(()=> {
+    const handleClickOutside = (event:MouseEvent)=> {
+      if(
+        deliveryRef.current &&
+        !deliveryRef.current.contains(event.target as Node)
+      ){
+         setShowDelivery(false);
+      }
+      
+    }
+      document.addEventListener('mousedown',handleClickOutside)
+
+      return ()=>{
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+  }, [])
+
   const navigate = useNavigate();
   return (
     <header className="header">
@@ -62,11 +83,12 @@ const Navbar = () => {
                 />
               </div>
               {showDelivery && (
-                <div className="delivery__dropdown">
+                <div className="delivery__dropdown"  ref={deliveryRef}>
                     <DeliveryOptions 
                         onSelectStore={(address) => {
                       setCurrentAddress(address);
                     }}
+                     onClose={() => setShowDelivery(false)}
                     />
                 </div>
               )}

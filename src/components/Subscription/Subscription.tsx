@@ -3,7 +3,6 @@ import {handleUserChange} from './handlers'
 import './Subscription.scss'
 import ReCAPTCHA from "react-google-recaptcha";
 import CepModal from '../../modals/CepModal/CepModal';
-
 import UnavailableModal from '../../modals/UnavailableModal/UnavailableModal.js';
 import { useModal } from '../../modals/CepModal/CepModalUtils';
  import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
