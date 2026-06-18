@@ -21,27 +21,30 @@ const Navbar = () => {
   const [departments, setDepartments] = useState(false)
  
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
-   const deliveryRef = useRef<HTMLDivElement>(null);
+  const deliveryRef = useRef<HTMLDivElement>(null);
   const [currentAddress, setCurrentAddress] = useState(
      getSelectedAddress() ?? defaultAddress
   )
+  
+  useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    console.log("clicou", event.target);
 
-  useEffect(()=> {
-    const handleClickOutside = (event:MouseEvent)=> {
-      if(
-        deliveryRef.current &&
-        !deliveryRef.current.contains(event.target as Node)
-      ){
-         setShowDelivery(false);
-      }
-      
+    if (
+      deliveryRef.current &&
+      !deliveryRef.current.contains(event.target as Node)
+    ) {
+      console.log("fechando");
+      setShowDelivery(false);
     }
-      document.addEventListener('mousedown',handleClickOutside)
+  };
 
-      return ()=>{
-        document.removeEventListener("mousedown", handleClickOutside);
-      }
-  }, [])
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
   const navigate = useNavigate();
   return (
@@ -72,18 +75,18 @@ const Navbar = () => {
                  onClick={() => setShowDelivery(!showDelivery)}
               >
                 <FaStore className="icon" />
-                <span>
+                <div>
                   <div className="actions__address2">
                     Retirar na loja: <br />
                   </div>
                   <div className="actions__address">{currentAddress}</div>
-                </span>
+                </div>
                  <FaChevronDown
                   className={`arrow ${showDelivery ? "rotate" : ""}`}
                 />
               </div>
               {showDelivery && (
-                <div className="delivery__dropdown"  ref={deliveryRef}>
+                <div className="delivery__dropdown">
                     <DeliveryOptions 
                         onSelectStore={(address) => {
                       setCurrentAddress(address);

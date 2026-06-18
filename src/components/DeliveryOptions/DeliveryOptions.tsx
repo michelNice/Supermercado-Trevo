@@ -4,7 +4,6 @@ import { trevoAddress } from "./AdressDelivery";
 import CepModal from "../../modals/CepModal/CepModal";
 import { useLockBodyScroll } from "../../modals/CepModal/CepModalUtils";
 import { useModal } from "../../modals/CepModal/CepModalUtils";
-
 import './DeliveryOptions.scss';
 import {
   getSelectedStore,
@@ -17,7 +16,7 @@ type props = {
     onSelectStore:(adress:string)=> void
     onClose: () => void;
 }
-const DeliveryOptions: React.FC <props> = ({ onSelectStore,onClose}) => {
+const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [selected, setSelected] = useState("home");
      const deliveryRef = useRef<HTMLDivElement>(null);
     const {openModal,closeModal,showModal} = useModal()
@@ -41,27 +40,7 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore,onClose}) => {
    setShowUnavailable(true)
  }
 
- useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-  console.log("clicou fora?", event.target);
-
-  if (
-    deliveryRef.current &&
-    !deliveryRef.current.contains(event.target as Node)
-  ) {
-    console.log("fechando");
-    onClose();
-  }
-  };
-
-  document.addEventListener("mousedown", handleClickOutside);
-
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [onClose]);
  useLockBodyScroll(showModal || showUnavailable)
-
     return(
       <>
         <div className="delivery" ref={deliveryRef}>
