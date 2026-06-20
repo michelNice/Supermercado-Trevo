@@ -22,9 +22,6 @@ const ProductDetails: React.FC<Props>  =({product, showModal,products,setSelecte
       useLockBodyScroll(showModal)
   if(!product)return null
 
-  
-
-  
 const relatedProducts = (products ?? []).filter(
   (p) =>
     p.category === product.category &&
