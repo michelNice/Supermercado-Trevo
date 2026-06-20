@@ -136,10 +136,11 @@
         flex-direction: column;
         gap: 1rem;
         margin-top: 2rem;
+        flex: 1; // <- importante
         .buttons-infor{
             display: flex;
             gap: 1rem;
-
+             margin-top: auto; 
             .btn__list,
             .btn__share{
                 display: flex;

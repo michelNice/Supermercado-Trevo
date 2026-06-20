@@ -34,7 +34,6 @@ const Navbar = () => {
       deliveryRef.current &&
       !deliveryRef.current.contains(event.target as Node)
     ) {
-      console.log("fechando");
       setShowDelivery(false);
     }
   };
@@ -99,7 +98,7 @@ const Navbar = () => {
             <div
               className="store"
               onClick={() => navigate("/login")}
-              style={{ cursor: "pointer" }}
+           
             >
               <FaUser className="icon" />
               <span>

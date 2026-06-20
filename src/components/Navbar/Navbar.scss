@@ -295,9 +295,9 @@
 }
 
 .actions__address {
-  max-width: 160px; 
-  white-space: nowrap;
-  overflow: hidden;
-  /*text-overflow: ellipsis;8*/
-  display: block;
+  max-width: 160px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  //text-overflow: ellipsis !important;
+  display: block !important;
 }
