@@ -1,6 +1,5 @@
 import './Products.scss'
-import React, { useState,useEffect } from 'react'
-
+import React, { useState,useEffect } from 'react' 
 import {supabase} from '../../services/Supabase/supabaseClient'
 import { FaCheckCircle } from "react-icons/fa";
 import {SwiperSlide } from "swiper/react";
@@ -13,11 +12,9 @@ import ship from '../../assets/imgs/shop.png'
 import img3 from '../../assets/imgs/imgS3.png'
 import ProductSwiper from './ProductSwiper';
 import type { productSectetion } from '../../Types/Product';
-import { useNavigate } from "react-router-dom";
 const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
-    const navigate = useNavigate();
     useLockBodyScroll(showModal) 
     const imgs = [img,img1,img2,img3]
     useEffect(()=> { 
@@ -60,7 +57,6 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
     const hortiProducts =  filterProductsByCategory('horti')
     const meatProducts = filterProductsByCategory('meat')
     return(
-       
         <>
             <div className="products-container">
              <div className="hr"></div>
@@ -72,7 +68,6 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
                             product={product}
                             setShowModal={setShowModal}
                             setSelectedProduct={setSelectedProduct}
-                            
                         />
                     </SwiperSlide>
                 ))}
@@ -92,7 +87,6 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
                         )
                      })}
                  </ProductSwiper>
-                 
                 <img src={ship} className='ship' alt="" />
                  <h2>HORTIFRUTI DE QUINTA A DOMINGO 🥬🍎</h2>
                  <ProductSwiper>

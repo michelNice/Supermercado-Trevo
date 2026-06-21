@@ -1,7 +1,6 @@
 @use '../../Styles/variables' as *;
 
 .dropdown-wrapper {position: relative;}
-
 .dropdown-menu {
   position: absolute;
   top: 0px;
@@ -13,12 +12,10 @@
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
 .dropdown-menu li a {
   color: $black;
   cursor: pointer;
 }
-
 .dropdown-menu li:hover {color: rgb(99, 101, 200);}
 
 .item {
@@ -28,7 +25,6 @@
   justify-content: space-between;
   color:$black;
 }
-
 .submenu {
   position: absolute;
   top:0;
@@ -40,11 +36,8 @@
   border-radius: 0 6px 6px 0;
   padding:0.625rem;
   z-index: 9999;
-    margin-left:.1rem;
-  
+  margin-left:.1rem; 
 }
-
 .submenu li {padding:0.313rem 0;}
-
 .submenu li a {color:$black;}
 

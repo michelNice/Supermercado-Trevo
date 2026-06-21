@@ -32,14 +32,12 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     useEffect(() => {
     if (selectedStore !== null) {
       saveSelectedStore(selectedStore)
-  
     }
   }, [selectedStore]);
   const handleCepSubmit = ()=>{
    closeModal()
    setShowUnavailable(true)
  }
-
  useLockBodyScroll(showModal || showUnavailable)
     return(
       <>

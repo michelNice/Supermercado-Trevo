@@ -28,8 +28,6 @@ const Subscription = () => {
             <h2>Seja bem-vindo(a)!</h2>
             <p>Insira seus dados nos campos abaixo para fazer login</p>
           </div>
-
-          {/* INPUT USUÁRIO */}
           <div className="input__box">
             <input
               type="text"

@@ -2,18 +2,14 @@
 
 .footer {
   background: $text-dark-bg;
-  color: #fff;
+  color: $white;
   margin: 2rem 0 0 0;
-
   display: flex;
   justify-content: space-between;
-
   gap: 3rem;
   flex-wrap: wrap;
-
   padding: 4rem 6%;
 }
-
 .footer__column {
   max-width: 250px;
 
@@ -43,13 +39,11 @@
   }
 
   a {
-    color: #fff;
+    color:$white;
     text-decoration: none;
     transition: .3s;
 
-    &:hover {
-      opacity: .7;
-    }
+    &:hover {opacity: .7;}
   }
 
   svg {

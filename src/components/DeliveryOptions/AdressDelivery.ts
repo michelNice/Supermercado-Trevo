@@ -3,7 +3,6 @@ export interface TrevoAddress {
   name: string;
   address: string;
 }
-
 export const trevoAddress: TrevoAddress[] = [
   { id: 1, name: "Trevo - Boa Viagem", address: "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE" },
   { id: 2, name: "Trevo - Cohab", address: "Rua Dr. Otávio de Moraes Vasconcelos, 39 — Cohab, Recife - PE" },
