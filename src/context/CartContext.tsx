@@ -1,33 +1,37 @@
-import { createContext, useState } from "react";
-import type { ReactNode } from "react";
-
-export  interface Product {
-    id:string
-    name:string;
-    price:number
+interface Product{
+  id:string
+  name:string
+  price:number
 }
 
-export interface  CartItem extends Product{
-  quantily:number;
+interface CartItem  extends Product{
+  quantity:number;
 }
-
-type CartAction =
-  | { type: "ADD_TO_CART"; payload: Product }
-  | { type: "REMOVE_FROM_CART"; payload: { id: string } }
-  | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
-  | { type: "CLEAR_CART" };
+import React,{useState} from "react";
 
 
-  interface CartContextType {
-    cart:CartItem[];
-    addToCart:(product:Product)=> void
-    removeFromCart: (id: string) => void;
-    updateQuantity: (id: string, quantity: number) => void;
-    clearCart: () => void;
-    cartTotal: number;
-  }
+export default function ShoppingCart(product:Product){
 
- 
+  const [cart, setCart] = useState<CartItem[]>([]);
 
+  const itemExists = cart.find((item)=> item.id === product.id)
+     if (itemExists) {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      );
+    } else {
+      setCart([
+        ...cart,
+        {
+          ...product,
+          quantity: 1,
+        },
+      ]);
+    }
+  };
 
 
