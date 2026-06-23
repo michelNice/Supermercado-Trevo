@@ -1,4 +1,4 @@
-interface Product{
+/*interface Product{
   id:string
   name:string
   price:number
@@ -35,3 +35,4 @@ export default function ShoppingCart(product:Product){
   };
 
 
+*/
