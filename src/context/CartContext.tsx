@@ -7,12 +7,10 @@ interface Product{
   name:string
   price:number
 }
-
 interface CartItem  extends Product{
   quantity:number;
 }
-
-interface  CartContextType {
+export interface  CartContextType {
   cartItem:CartItem[],
   AddToCart:(Product:Product)=> void
   removeFromCart:(id:number)=> void
@@ -20,8 +18,7 @@ interface  CartContextType {
   clearCart:()=> void
   cartTotal:number
 }
-
-const CartContext = createContext<CartContextType | undefined>(undefined)
+export const CartContext = createContext<CartContextType | undefined>(undefined)
 
 const CartProvider = ({children}:{children:ReactNode})=> {
 
@@ -66,5 +63,23 @@ const totalCart = useMemo(
   [cartItems]
 )
 
+  return (
+    <CartContext.Provider
+     value={{
+    cartItem: cartItems,
+    AddToCart: addProduct,
+    removeFromCart,
+    decreaseQuantity,
+    clearCart,
+    cartTotal: totalCart,
+}}
+    >
 
-}
+      {children}
+    </CartContext.Provider>
+
+  )
+
+};
+
+export default CartProvider
