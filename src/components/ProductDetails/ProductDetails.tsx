@@ -3,10 +3,12 @@ import './ProductDetails.scss'
 import '../Products/Products.scss'
 import '../Products/Products.scss'
 import { type productApi } from "../../Types/Product";
+import { useCart } from "../../context/useCart";
 import ProductCard from '../Products/ProductCard';
 import {SwiperSlide } from "swiper/react";
 import ProductSwiper from '../Products/ProductSwiper';
 import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
+
 type Props = {
   product: productApi | null
    showModal:boolean
@@ -19,7 +21,8 @@ type Props = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 const ProductDetails: React.FC<Props>  =({product, showModal,products,setSelectedProduct,showDiscount = true,showOffer = true,setShowModal})=> {
-      useLockBodyScroll(showModal)
+    const {AddToCart} = useCart();   
+   useLockBodyScroll(showModal)
   if(!product)return null
 
 const relatedProducts = (products ?? []).filter(
@@ -54,7 +57,16 @@ const relatedProducts = (products ?? []).filter(
             Compartilhar
           </button>
 
-          <button className="btn__list">
+          <button 
+              className="btn__addCarrinho "
+              onClick={() =>
+                AddToCart({
+                  id: Number(product.id),
+                  name: product.description ?? '',
+                  price: Number(product.price),
+                })
+              }
+             >
             <FiPlus />
             Adicionar lista
           </button>
