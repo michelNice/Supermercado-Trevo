@@ -15,6 +15,7 @@ import DeliveryOptions from "../DeliveryOptions/DeliveryOptions";
 import DepartmentsDropdown from "../DepartmentsDropdown/DepartmentsDropdown";
 import { useNavigate } from "react-router-dom";
 import { getSelectedAddress } from "../../utils/storage.ts";
+import { useCart } from "../../context/useCart";
 const Navbar = () => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)
@@ -25,6 +26,14 @@ const Navbar = () => {
   const [currentAddress, setCurrentAddress] = useState(
      getSelectedAddress() ?? defaultAddress
   )
+  const {cartItem} = useCart()
+
+  const totalItems = cartItem.reduce(
+  (total, item) => total + item.quantity,
+  0
+);
+
+console.log("CART ITEMS:", cartItem);
   
   useEffect(() => {
   const handleClickOutside = (event: MouseEvent) => {
@@ -110,8 +119,13 @@ const Navbar = () => {
             </div>
             
           </div>
-         <a className="cart" href="#">
+         <a className="cart">
             <FaShoppingCart className="icon" />
+            {totalItems  > 0 && (
+              <span className="cart-badge">
+               {totalItems}
+             </span>
+            )}
           </a>
          </div>
       </nav>

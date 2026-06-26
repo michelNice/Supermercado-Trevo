@@ -38,8 +38,6 @@ const Subscription = () => {
             />
             <label htmlFor="user">Email, CPF ou CNPJ*</label>
           </div>
-
-          {/* INPUT SENHA */}
           <div className="input__box">
             <input
               type={showPassword ? "text" : "password"}
@@ -48,9 +46,7 @@ const Subscription = () => {
               value={password}
               onChange={(e)=>setPassword(e.target.value)}
             />
-
             <label htmlFor="password">Senha*</label>
-
             <i
               className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
               onClick={() => setShowPassword(!showPassword)}

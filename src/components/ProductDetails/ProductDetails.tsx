@@ -58,7 +58,7 @@ const relatedProducts = (products ?? []).filter(
           </button>
 
           <button 
-              className="btn__addCarrinho "
+              className="btn__addCarrinho"
               onClick={() =>
                 AddToCart({
                   id: Number(product.id),
@@ -101,7 +101,7 @@ const relatedProducts = (products ?? []).filter(
     </div>
     <div className="products-container">
       <div className="related__products">
-        <h2 className="products-container">
+        <h2 className="products-container h2">
           Produtos Relacionados
         </h2>
         <ProductSwiper>

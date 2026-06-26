@@ -11,14 +11,13 @@ import DepartmentMobile from "./components/DepartmentsMobile/DepartmentsMobile";
 import ShowcaseDeparments from "./components/ShowcaseDeparments/ShowcaseDeparments";
 import Footer from "./components/Footer/Footer";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
+import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
   const [selectedProduct, setSelectedProduct] =
     useState<productApi | null>(null);
-
   const [products, setProducts] = useState<productApi[]>([]);
-
   const handleCepSubmit = () => {
     setShowModal(false);
   };
@@ -62,6 +61,10 @@ function App() {
               setShowModal={setShowModal}
             />
           }
+        />
+
+        <Route 
+          path="/cart"  element={<ShoppingCart />}
         />
       </Routes>
 
