@@ -24,7 +24,6 @@ function App() {
   return (
     <>
       <Navbar />
-
       <Routes>
         <Route
           path="/"
@@ -67,7 +66,7 @@ function App() {
           path="/cart"  element={<ShoppingCart />}
         />
       </Routes>
-
+      
       <CepModal
         show={showModal}
         onClose={() => setShowModal(false)}
