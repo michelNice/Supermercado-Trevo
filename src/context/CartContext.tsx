@@ -1,6 +1,5 @@
-import React,{useState,createContext,useContext,useMemo, Children} from "react";
+import React,{useState,createContext,useContext,useMemo, Children, useEffect} from "react";
 import type { ReactNode } from 'react';
-import { useModal } from "../modals/CepModal/CepModalUtils";
 
 interface Product{
   id:number
@@ -22,7 +21,15 @@ export const CartContext = createContext<CartContextType | undefined>(undefined)
 
 const CartProvider = ({children}:{children:ReactNode})=> {
 
-  const [cartItems,setCartItems] = useState<CartItem[]>([])
+const [cartItems,setCartItems] = useState<CartItem[]>(() => {
+  const savedCart  = localStorage.getItem('cart')
+
+  return savedCart ? JSON.parse(savedCart) : [];
+});
+
+useEffect(()=> {
+  localStorage.setItem('cart',JSON.stringify(cartItems))
+},[cartItems])
 
 
   const  addProduct = (product:Product)=> {

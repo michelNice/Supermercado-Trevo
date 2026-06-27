@@ -23,7 +23,8 @@ type Props = {
 const ProductDetails: React.FC<Props>  =({product, showModal,products,setSelectedProduct,showDiscount = true,showOffer = true,setShowModal})=> {
     const {AddToCart} = useCart();   
    useLockBodyScroll(showModal)
-  if(!product)return null
+   
+  if(!product)return 
 
 const relatedProducts = (products ?? []).filter(
   (p) =>
@@ -59,13 +60,7 @@ const relatedProducts = (products ?? []).filter(
 
           <button 
               className="btn__addCarrinho"
-              onClick={() =>
-                AddToCart({
-                  id: Number(product.id),
-                  name: product.description ?? '',
-                  price: Number(product.price),
-                })
-              }
+              
              >
             <FiPlus />
             Adicionar lista
@@ -94,7 +89,14 @@ const relatedProducts = (products ?? []).filter(
       <span className="old">R$ {product.old_price}</span>
     </div>
   )}
-  <button className="btn__addCarrinho">
+  <button className="btn__addCarrinho"
+  onClick={() =>
+                AddToCart({
+                  id: Number(product.id),
+                  name: product.description ?? '',
+                  price: Number(product.price),
+                })
+              }>
     + Adicionar ao carrinho
   </button>
 </div>

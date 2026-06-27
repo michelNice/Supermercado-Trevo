@@ -20,7 +20,6 @@ const Navbar = () => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)
   const [departments, setDepartments] = useState(false)
- 
   const defaultAddress = "Rua Barão de Souza Leão, 1170 — Boa Viagem, Recife - PE";
   const deliveryRef = useRef<HTMLDivElement>(null);
   const [currentAddress, setCurrentAddress] = useState(
@@ -107,7 +106,6 @@ console.log("CART ITEMS:", cartItem);
             <div
               className="store"
               onClick={() => navigate("/login")}
-           
             >
               <FaUser className="icon" />
               <span>
@@ -119,7 +117,8 @@ console.log("CART ITEMS:", cartItem);
             </div>
             
           </div>
-         <a className="cart">
+         <a className="cart"
+         onClick={()=> navigate("/cart")}>
             <FaShoppingCart className="icon" />
             {totalItems  > 0 && (
               <span className="cart-badge">
