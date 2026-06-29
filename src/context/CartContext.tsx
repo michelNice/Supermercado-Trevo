@@ -2,9 +2,10 @@ import React,{useState,createContext,useContext,useMemo, Children, useEffect} fr
 import type { ReactNode } from 'react';
 
 interface Product{
-  id:number
+  id:string
   name:string
   price:number
+  image:string
 }
 interface CartItem  extends Product{
   quantity:number;
@@ -12,8 +13,8 @@ interface CartItem  extends Product{
 export interface  CartContextType {
   cartItem:CartItem[],
   AddToCart:(Product:Product)=> void
-  removeFromCart:(id:number)=> void
-  decreaseQuantity:(id:number)=> void
+  removeFromCart:(id:string)=> void
+  decreaseQuantity:(id:string)=> void
   clearCart:()=> void
   cartTotal:number
 }
@@ -46,11 +47,22 @@ useEffect(()=> {
     })
 
   }
-  const removeFromCart = (id:number)=> {
-    setCartItems((provItems)=> provItems.filter(item => item.id !== id))
-  }
+  
+const removeFromCart = (id: string) => {
+  console.log("Remover:", id);
 
-  const decreaseQuantity = (id: number) => {
+  setCartItems((prev) => {
+    console.log("Antes:", prev);
+
+    const updated = prev.filter((item) => item.id !== id);
+
+    console.log("Depois:", updated);
+
+    return updated;
+  });
+};
+
+  const decreaseQuantity = (id: string) => {
   setCartItems((prevItems) =>
     prevItems
       .map((item) =>

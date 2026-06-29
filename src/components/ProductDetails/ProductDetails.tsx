@@ -92,9 +92,10 @@ const relatedProducts = (products ?? []).filter(
   <button className="btn__addCarrinho"
   onClick={() =>
                 AddToCart({
-                  id: Number(product.id),
+                  id: product.id,
                   name: product.description ?? '',
                   price: Number(product.price),
+                  image:product.image_url
                 })
               }>
     + Adicionar ao carrinho
