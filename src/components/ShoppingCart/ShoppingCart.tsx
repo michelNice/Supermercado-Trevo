@@ -7,9 +7,10 @@ export default function ShoppingCart() {
     cartTotal,
     removeFromCart,
     decreaseQuantity,
-    //increaseQuantity,
-  } = useCart();
+    increaseQuantity,
 
+  } = useCart();
+  
   return (
     <div className="shopping-cart">
       <h2 className="shopping-cart__title">
@@ -23,14 +24,18 @@ export default function ShoppingCart() {
       )}
 
       {cartItem.map((item) => (
+         
         <div
+       
           className="shopping-cart__item"
           key={item.id}
+           
         >
           <img
             className="shopping-cart__image"
             src={item.image}
             alt={item.name}
+             
           />
 
           <div className="shopping-cart__info">
@@ -49,10 +54,15 @@ export default function ShoppingCart() {
               -
             </button>
 
-            <span>{item.quantity}</span>
+            <button onClick={()=> increaseQuantity(item.id)}>
+              +
+            </button>
 
-           
-
+      <span>
+        {item.quantity}
+        {item.unit === "KG" ? " kg" : " un"}
+         
+      </span>
           </div>
 
           <div className="shopping-cart__subtotal">

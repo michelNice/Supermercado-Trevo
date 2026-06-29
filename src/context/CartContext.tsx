@@ -1,4 +1,4 @@
-import React,{useState,createContext,useContext,useMemo, Children, useEffect} from "react";
+import React,{useState,createContext,useMemo, useEffect} from "react";
 import type { ReactNode } from 'react';
 
 interface Product{
@@ -6,6 +6,7 @@ interface Product{
   name:string
   price:number
   image:string
+  unit:"UN" | "KG"
 }
 interface CartItem  extends Product{
   quantity:number;
@@ -15,6 +16,7 @@ export interface  CartContextType {
   AddToCart:(Product:Product)=> void
   removeFromCart:(id:string)=> void
   decreaseQuantity:(id:string)=> void
+  increaseQuantity:(id:string)=> void
   clearCart:()=> void
   cartTotal:number
 }
@@ -36,12 +38,14 @@ useEffect(()=> {
   const  addProduct = (product:Product)=> {
 
     setCartItems((provItems)=> {
+      console.log(product)
       const existingItem = provItems.find((item)=> item.id === product.id)
       if(existingItem){
          return provItems.map((item) =>
           item.id === product.id  ? {...item,quantity:item.quantity + 1 } : item
         )
       }
+      console.log(product)
 
        return [...provItems, {...product,quantity:1}]
     })
@@ -71,6 +75,14 @@ const removeFromCart = (id: string) => {
           : item).filter((item) => item.quantity > 0)
   );
 };
+
+const increaseQuantity = (id:string) => {
+  setCartItems((prevItems) => 
+    prevItems.map((item) =>
+      item.id === id ? {...item, quantity:item.quantity + 1} : item
+    ).filter((item)=> item.price)
+  )
+}
  const clearCart = ()=> setCartItems([])
 
 
@@ -89,6 +101,7 @@ const totalCart = useMemo(
     AddToCart: addProduct,
     removeFromCart,
     decreaseQuantity,
+     increaseQuantity,
     clearCart,
     cartTotal: totalCart,
 }}

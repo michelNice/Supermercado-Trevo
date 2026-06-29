@@ -89,17 +89,22 @@ const relatedProducts = (products ?? []).filter(
       <span className="old">R$ {product.old_price}</span>
     </div>
   )}
-  <button className="btn__addCarrinho"
-  onClick={() =>
-                AddToCart({
-                  id: product.id,
-                  name: product.description ?? '',
-                  price: Number(product.price),
-                  image:product.image_url
-                })
-              }>
-    + Adicionar ao carrinho
-  </button>
+  <button
+  className="btn__addCarrinho"
+  onClick={() => {
+    console.log("unit_type:", product.unit_type);
+
+    AddToCart({
+      id: product.id,
+      name: product.description ?? "",
+      price: Number(product.price),
+      image: product.image_url,
+      unit: product.unit_type === "kg" ? "KG" : "UN",
+    });
+  }}
+>
+  + Adicionar ao carrinho
+</button>
 </div>
     </div>
     <div className="products-container">
