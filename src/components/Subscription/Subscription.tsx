@@ -65,8 +65,7 @@ const Subscription = () => {
           <a href="#">Esqueceu sua senha?</a>
 
               <ReCAPTCHA
-              sitekey="6LfEmUEtAAAAABvWXw_UheulDngiB9r0Ob7LZwdY
-"
+              sitekey="6Lf8m0EtAAAAAPOawPU2ae99gIFSqEHpeGwCu9-D"
               onChange={(token) => console.log(token)}
             />
 
