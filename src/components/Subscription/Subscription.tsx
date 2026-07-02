@@ -6,6 +6,7 @@ import CepModal from '../../modals/CepModal/CepModal';
 import UnavailableModal from '../../modals/UnavailableModal/UnavailableModal.js';
 import { useModal } from '../../modals/CepModal/CepModalUtils';
  import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
+ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const Subscription = () => {
  const [showPassword, setShowPassword] = useState(false);
  const [password, setPassword] = useState("");
@@ -47,10 +48,12 @@ const Subscription = () => {
               onChange={(e)=>setPassword(e.target.value)}
             />
             <label htmlFor="password">Senha*</label>
-            <i
-              className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-              onClick={() => setShowPassword(!showPassword)}
-            ></i>
+             <span
+  className="password__icon"
+  onClick={() => setShowPassword(!showPassword)}
+>
+  {showPassword ? <FaEyeSlash /> : <FaEye />}
+</span>
           </div>
 
           <div className="error__space">
@@ -61,10 +64,11 @@ const Subscription = () => {
 
           <a href="#">Esqueceu sua senha?</a>
 
-                        <ReCAPTCHA
-              sitekey="6Ld1X8UsAAAAABZzQNQla3yd4t-6oMDVm5YgCNYX"
-              onChange={(token)=>console.log(token)}
-              />
+              <ReCAPTCHA
+              sitekey="6LfEmUEtAAAAABvWXw_UheulDngiB9r0Ob7LZwdY
+"
+              onChange={(token) => console.log(token)}
+            />
 
           <button type="submit" className="btn__subscription">
             Entrar
