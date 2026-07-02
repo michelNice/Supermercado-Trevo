@@ -22,14 +22,10 @@ export default function ShoppingCart() {
           Seu carrinho está vazio.
         </p>
       )}
-
       {cartItem.map((item) => (
-         
         <div
-       
           className="shopping-cart__item"
           key={item.id}
-           
         >
           <img
             className="shopping-cart__image"
