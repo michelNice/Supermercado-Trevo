@@ -1,6 +1,5 @@
 import { useCart } from "../../context/useCart";
 import "./ShoppingCart.scss";
-
 export default function ShoppingCart() {
   const {
     cartItem,
@@ -8,9 +7,7 @@ export default function ShoppingCart() {
     removeFromCart,
     decreaseQuantity,
     increaseQuantity,
-
   } = useCart();
-  
   return (
     <div className="shopping-cart">
       <h2 className="shopping-cart__title">
