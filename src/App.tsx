@@ -12,6 +12,7 @@ import ShowcaseDeparments from "./components/ShowcaseDeparments/ShowcaseDeparmen
 import Footer from "./components/Footer/Footer";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
+import Address from './components/Adress/Address'
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
@@ -41,14 +42,11 @@ function App() {
             </>
           }
         />
-
         <Route path="/login" element={<Subscription />} />
-
         <Route
           path="/departments"
           element={<DepartmentMobile />}
         />
-
         <Route
            path="/product-details/:id"
           element={
@@ -61,10 +59,11 @@ function App() {
             />
           }
         />
-
         <Route 
           path="/cart"  element={<ShoppingCart />}
         />
+    
+        <Route path="/endereco" element={<Address />} />
       </Routes>
       
       <CepModal
