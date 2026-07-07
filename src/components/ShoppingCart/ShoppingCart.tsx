@@ -1,6 +1,8 @@
 import { useCart } from "../../context/useCart";
 import "./ShoppingCart.scss";
+import { useNavigate } from "react-router-dom";
 export default function ShoppingCart() {
+  const navigate = useNavigate();
   const {
     cartItem,
     cartTotal,
@@ -80,7 +82,7 @@ export default function ShoppingCart() {
           Total: R$ {cartTotal.toFixed(2)}
         </h2>
 
-        <button className="shopping-cart__finish">
+        <button className="shopping-cart__finish" onClick={()=>navigate('/endereco')}>
           Finalizar Compra
         </button>
 
