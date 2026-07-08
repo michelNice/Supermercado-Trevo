@@ -125,7 +125,6 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
         </>
     )
 }
-
 export default Product;
 
 
