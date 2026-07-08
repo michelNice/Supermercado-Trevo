@@ -32,8 +32,6 @@ const Navbar = () => {
   0
 );
 
-console.log("CART ITEMS:", cartItem);
-  
   useEffect(() => {
   const handleClickOutside = (event: MouseEvent) => {
     console.log("clicou", event.target);
@@ -118,7 +116,7 @@ console.log("CART ITEMS:", cartItem);
             
           </div>
          <a className="cart"
-         onClick={()=> navigate("/cart")}>
+         onClick={()=> navigate("/carrinho")}>
             <FaShoppingCart className="icon" />
             {totalItems  > 0 && (
               <span className="cart-badge">

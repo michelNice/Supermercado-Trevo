@@ -87,7 +87,7 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
                         )
                      })}
                  </ProductSwiper>
-                <img src={ship} className='ship' alt="" />
+                <img src={ship} className='ship' alt="ship" />
                  <h2>HORTIFRUTI DE QUINTA A DOMINGO 🥬🍎</h2>
                  <ProductSwiper>
                      {hortiProducts.map((product)=> {

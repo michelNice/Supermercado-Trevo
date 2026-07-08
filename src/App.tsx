@@ -48,7 +48,7 @@ function App() {
           element={<DepartmentMobile />}
         />
         <Route
-           path="/product-details/:id"
+           path="/detalhesProduto/:id"
           element={
             <ProductDetails
               products={products}
@@ -60,10 +60,10 @@ function App() {
           }
         />
         <Route 
-          path="/cart"  element={<ShoppingCart />}
+          path="/carrinho"  element={<ShoppingCart />}
         />
     
-        <Route path="/endereco" element={<Address />} />
+        <Route path="/endereço" element={<Address />} />
       </Routes>
       
       <CepModal
