@@ -9,7 +9,6 @@ import {
   Popup,
   useMap,
 } from "react-leaflet";
-
 interface AddressData {
   street: string;
   number: string;
@@ -17,19 +16,34 @@ interface AddressData {
   city: string;
   state: string;
   zipCode: string;
+  complemento:string;
 }
-
 const fields = [
+  {
+    name: "zipCode",
+    label: "CEP",
+    placeholder: "Digite o CEP",
+    type: "text",
+    required:true
+  },
   {
     name: "street",
     label: "Rua",
     placeholder: "Digite a rua",
     type: "text",
+    required:true
   },
   {
     name: "number",
     label: "Número",
     placeholder: "Digite o número",
+    type: "text",
+    required:true
+  },
+  {
+    name: "complemento",
+    label: "complemento",
+    placeholder: "Apartamento, bloco... (opcional)",
     type: "text",
   },
   {
@@ -43,19 +57,16 @@ const fields = [
     label: "Cidade",
     placeholder: "Digite a cidade",
     type: "text",
+    required:true
   },
   {
     name: "state",
     label: "Estado",
     placeholder: "Digite o estado",
     type: "text",
+    required:true
   },
-  {
-    name: "zipCode",
-    label: "CEP",
-    placeholder: "Digite o CEP",
-    type: "text",
-  },
+  
 ] as const;
 
 function ChangeView({
@@ -69,7 +80,6 @@ function ChangeView({
 
   return null;
 }
-
 const Address = () => {
   const [address, setAddress] = useState<AddressData>({
     street: "",
@@ -78,13 +88,12 @@ const Address = () => {
     city: "",
     state: "",
     zipCode: "",
+    complemento:"",
   });
-
   const [position, setPosition] = useState<[number, number]>([
     -23.5505,
     -46.6333,
   ]);
-
   const handleSearchCep = async (cep: string) => {
     try {
       const cleanCep = cep.replace(/\D/g, "");
@@ -96,20 +105,17 @@ const Address = () => {
       if (!response.ok) {
         throw new Error("Erro ao buscar CEP");
       }
-
       return await response.json();
     } catch (error) {
-      console.log(error);
+       throw new Error('Algo error aconteceu')
     }
   };
-
   const handleSearchLocation = async (address: string) => {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
         address
       )}`
     );
-
     return await response.json();
   };
 
@@ -124,7 +130,6 @@ const Address = () => {
       alert("CEP não encontrado");
       return;
     }
-
     setAddress((prev) => ({
       ...prev,
       street: data.logradouro,
@@ -132,7 +137,6 @@ const Address = () => {
       city: data.localidade,
       state: data.uf,
     }));
-
     const fullAddress = `${data.logradouro}, ${data.localidade}, ${data.uf}`;
 
     const location = await handleSearchLocation(fullAddress);
@@ -144,7 +148,6 @@ const Address = () => {
       ]);
     }
   };
-
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -164,9 +167,7 @@ const Address = () => {
   ) => {
     event.preventDefault();
 
-    console.log(address);
   };
-
   return (
     <section className="address">
       <form
@@ -185,6 +186,7 @@ const Address = () => {
             </label>
 
             <input
+               
               id={field.name}
               name={field.name}
               type={field.type}
@@ -199,15 +201,13 @@ const Address = () => {
             />
           </div>
         ))}
-
         <button
           className="address-form__button"
           type="submit"
         >
-          Salvar endereço
+          Salvar endereço e continuar
         </button>
       </form>
-
       <div className="address-map">
         <MapContainer
           center={position}

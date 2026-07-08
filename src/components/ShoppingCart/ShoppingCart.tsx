@@ -82,8 +82,8 @@ export default function ShoppingCart() {
           Total: R$ {cartTotal.toFixed(2)}
         </h2>
 
-        <button className="shopping-cart__finish" onClick={()=>navigate('/endereco')}>
-          Finalizar Compra
+        <button className="shopping-cart__finish" onClick={()=>navigate('/endereço')}>
+          Continuar
         </button>
 
       </div>

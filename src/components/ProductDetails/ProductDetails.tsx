@@ -8,10 +8,9 @@ import ProductCard from '../Products/ProductCard';
 import {SwiperSlide } from "swiper/react";
 import ProductSwiper from '../Products/ProductSwiper';
 import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
-
 type Props = {
   product: productApi | null
-   showModal:boolean
+  showModal:boolean
   products?: productApi[]
   showOffer?: boolean
   showDiscount?: boolean
@@ -44,7 +43,7 @@ const relatedProducts = (products ?? []).filter(
           </button>
         </div>
 
-        <img src={product.image_url} alt="" />
+        <img src={product.image_url} alt="imagem" />
       </div>
 
       <div className="product__info">
@@ -57,10 +56,8 @@ const relatedProducts = (products ?? []).filter(
             <FiShare2 />
             Compartilhar
           </button>
-
           <button 
               className="btn__addCarrinho"
-              
              >
             <FiPlus />
             Adicionar lista
@@ -92,8 +89,6 @@ const relatedProducts = (products ?? []).filter(
   <button
   className="btn__addCarrinho"
   onClick={() => {
-    console.log("unit_type:", product.unit_type);
-
     AddToCart({
       id: product.id,
       name: product.description ?? "",

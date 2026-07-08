@@ -16,7 +16,7 @@ return (
          <div className="product-card"  
   onClick={() => {
   setSelectedProduct(product)
-  navigate(`/product-details/${product.id}`)
+  navigate(`/detalhesProduto/${product.id}`)
 }}>
                                     {showDiscount && product.offer && (
                                         <div
