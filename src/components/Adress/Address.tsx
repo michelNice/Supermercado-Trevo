@@ -2,6 +2,7 @@ import "./Address.scss";
 import { useState } from "react";
 import { formatCep } from "../../modals/CepModal/CepModalUtils";
 import "leaflet/dist/leaflet.css";
+import { useNavigate } from "react-router-dom"; 
 import {
   MapContainer,
   TileLayer,
@@ -94,6 +95,7 @@ const Address = () => {
     -23.5505,
     -46.6333,
   ]);
+  const navigate = useNavigate();
   const handleSearchCep = async (cep: string) => {
     try {
       const cleanCep = cep.replace(/\D/g, "");
@@ -202,8 +204,10 @@ const Address = () => {
           </div>
         ))}
         <button
+          onClick={()=>navigate('/pagamento')}
           className="address-form__button"
           type="submit"
+          
         >
           Salvar endereço e continuar
         </button>
