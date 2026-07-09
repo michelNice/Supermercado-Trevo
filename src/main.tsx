@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import CartProvider from "../src/context/CartContext"
+import { CheckoutProvider } from './context/CheckoutContext'
 import './index.css'
 import App from './App.js'
 
@@ -12,10 +13,12 @@ if (!rootElement) {
 }
 
 createRoot(rootElement).render(
-  <StrictMode>
+    <StrictMode>
     <BrowserRouter>
       <CartProvider>
-        <App />
+        <CheckoutProvider>
+          <App />
+        </CheckoutProvider>
       </CartProvider>
     </BrowserRouter>
   </StrictMode>
