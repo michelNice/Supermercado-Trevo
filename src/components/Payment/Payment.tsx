@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './Payment.scss'
+import { useCheckout } from '../../context/CheckoutContext'
 interface PaymentData {
     method: string
     cardNumber: string
@@ -9,14 +10,7 @@ interface PaymentData {
     installments: string
 }
 const Payment = () => {
-    const [payment, setPayment] = useState<PaymentData>({
-        method: '',
-        cardNumber: '',
-        cardName: '',
-        expiryDate: '',
-        cvv: '',
-        installments: ''
-    })
+    const { payment, setPayment } = useCheckout()
     const paymentMethods = [
         {
             type: 'radio',
