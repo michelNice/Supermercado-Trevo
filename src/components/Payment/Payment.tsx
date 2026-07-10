@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './Payment.scss'
-import { useCheckout } from '../../context/CheckoutContext'
+import { useCheckout} from '../../context/CheckoutContext'
+import { useCart } from '../../context/CartContext'
+import { createOrder } from '../../services/Supabase/orderService'
 interface PaymentData {
     method: string
     cardNumber: string
@@ -10,7 +12,8 @@ interface PaymentData {
     installments: string
 }
 const Payment = () => {
-    const { payment, setPayment } = useCheckout()
+    const { payment, setPayment,address} = useCheckout()
+    const {cartItem} = useCart()
     const paymentMethods = [
         {
             type: 'radio',
@@ -118,14 +121,23 @@ const Payment = () => {
             [name]: newValue
         }))
     }
-    const handlePayment = (e: React.FormEvent) => {
-        e.preventDefault()
-        const isValid = validatePayment()
+    const handlePayment = async (e: React.FormEvent) => {
+    e.preventDefault()
 
-         if(!isValid) return
+    const isValid = validatePayment()
 
-         console.log(payment)
+    if(!isValid) return
+         
+    const order = {
+       produtos: cartItem,
+       endereco: address,
+       pagamento: payment
     }
+
+    const response = await createOrder(order)
+
+    console.log(response)
+}
     const validatePayment = () => {
 
     if(!payment.method){
