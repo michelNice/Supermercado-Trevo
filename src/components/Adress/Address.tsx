@@ -3,6 +3,7 @@ import { useState } from "react";
 import { formatCep } from "../../modals/CepModal/CepModalUtils";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom"; 
+import { useCheckout } from "../../context/CheckoutContext";
 import {
   MapContainer,
   TileLayer,
@@ -46,12 +47,14 @@ const fields = [
     label: "complemento",
     placeholder: "Apartamento, bloco... (opcional)",
     type: "text",
+    required:false
   },
   {
     name: "neighborhood",
     label: "Bairro",
     placeholder: "Digite o bairro",
     type: "text",
+    required:true
   },
   {
     name: "city",
@@ -82,15 +85,9 @@ function ChangeView({
   return null;
 }
 const Address = () => {
-  const [address, setAddress] = useState<AddressData>({
-    street: "",
-    number: "",
-    neighborhood: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    complemento:"",
-  });
+
+ const {address, setAddress} = useCheckout()
+ 
   const [position, setPosition] = useState<[number, number]>([
     -23.5505,
     -46.6333,
@@ -169,6 +166,8 @@ const Address = () => {
   ) => {
     event.preventDefault();
 
+     navigate("/pagamento");
+
   };
   return (
     <section className="address">
@@ -195,6 +194,7 @@ const Address = () => {
               placeholder={field.placeholder}
               value={address[field.name]}
               onChange={handleChange}
+              required={field.required}
               onBlur={
                 field.name === "zipCode"
                   ? handleCep
@@ -204,7 +204,6 @@ const Address = () => {
           </div>
         ))}
         <button
-          onClick={()=>navigate('/pagamento')}
           className="address-form__button"
           type="submit"
           
