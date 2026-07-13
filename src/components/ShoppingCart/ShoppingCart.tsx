@@ -75,9 +75,7 @@ export default function ShoppingCart() {
           </button>
         </div>
       ))}
-
       <div className="shopping-cart__footer">
-
         <h2>
           Total: R$ {cartTotal.toFixed(2)}
         </h2>

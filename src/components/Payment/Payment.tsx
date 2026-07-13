@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './Payment.scss'
 import { useCheckout} from '../../context/CheckoutContext'
 import { useCart } from '../../context/CartContext'
@@ -12,8 +11,12 @@ interface PaymentData {
     installments: string
 }
 const Payment = () => {
-    const { payment, setPayment,address} = useCheckout()
-    const {cartItem} = useCart()
+    const { payment, setPayment,address,setAddress} = useCheckout()
+    const {cartItem,clearCart} = useCart()
+    const total = cartItem.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+).toFixed(2)
     const paymentMethods = [
         {
             type: 'radio',
@@ -68,7 +71,6 @@ const Payment = () => {
             label: '3x'
         }
     ]
-
     const formatCardNumber = (value:string)=>{
         return value
             .replace(/\D/g,'') 
@@ -128,15 +130,34 @@ const Payment = () => {
 
     if(!isValid) return
          
+
     const order = {
-       produtos: cartItem,
-       endereco: address,
-       pagamento: payment
+    items: cartItem,
+    address: address,
+    card_name: payment.cardName,
+    payment_method: payment.method,
+    total: total
     }
+     await createOrder(order)
+      setPayment({
+        method: "",
+        cardNumber: "",
+        cardName: "",
+        expiryDate: "",
+        cvv: "",
+        installments: ""
+    });
+    setAddress({
+        street: "",
+        number: "",
+        neighborhood: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        complemento: ""
+     })
 
-    const response = await createOrder(order)
-
-    console.log(response)
+    clearCart()
 }
     const validatePayment = () => {
 
@@ -176,93 +197,151 @@ const Payment = () => {
 
     return true
 }
-    return (
-        <section>
-            <h2>Forma de pagamento</h2>
-            <form onSubmit={handlePayment}>
-                {paymentMethods.map((pay) => (
-                    <div key={pay.value}>
+ return (
+    <section className="payment">
 
-                        <label htmlFor={pay.value}>
-                            {pay.label}
-                        </label>
+        <h2>
+            Forma de pagamento
+        </h2>
+
+
+        <form onSubmit={handlePayment}>
+
+
+            {paymentMethods.map((pay) => (
+
+                <div key={pay.value}>
+
+                    <label htmlFor={pay.value}>
+                        {pay.label}
+                    </label>
+
+
+                    <input
+                        type={pay.type}
+                        id={pay.value}
+                        name="method"
+                        value={pay.value}
+                        checked={payment.method === pay.value}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+            ))}
+
+
+
+            {payment.method === 'pix' && (
+
+                <div className="payment__card">
+
+                    <h3>
+                        Pagamento via Pix
+                    </h3>
+
+                </div>
+
+            )}
+
+
+
+            {(payment.method === 'credit' ||
+            payment.method === 'debit') && (
+
+                <div className="payment__card">
+
+
+                    <h3>
+                        Dados do cartão
+                    </h3>
+
+
+                    <div className="payment__fields">
+
+
+                    {cardFields.map((field) => (
 
                         <input
-                            type={pay.type}
-                            id={pay.value}
-                            name="method"
-                            value={pay.value}
-                            checked={payment.method === pay.value}
+                            key={field.name}
+                            type={field.type}
+                            name={field.name}
+                            placeholder={field.placeholder}
+
+                            value={
+                                payment[field.name as keyof PaymentData]
+                            }
+
                             onChange={handleChange}
+
+                            maxLength={
+                                field.name === 'cardNumber' ? 19 :
+                                field.name === 'cvv' ? 3 :
+                                field.name === 'expiryDate' ? 5 :
+                                undefined
+                            }
+
+                            className="payment__input"
                         />
-                    </div>
-                ))}
-                {payment.method === 'pix' && (
 
-                    <div>
+                    ))}
 
-                        <h3>
-                            Pagamento via Pix
-                        </h3>
 
                     </div>
 
-                )}
-                {(payment.method === 'credit' ||
-                payment.method === 'debit') && (
 
-                    <div>
-                        <h3>Dados do cartão</h3>
-                        {cardFields.map((field) => (
 
-                            <input
-                                key={field.name}
-                                type={field.type}
-                                name={field.name}
-                                placeholder={field.placeholder}
-                                value={
-                                    payment[field.name as keyof PaymentData]
-                                }
-                                onChange={handleChange}
-                                maxLength={
-                                    field.name === 'cardNumber' ? 19 :
-                                    field.name === 'cvv' ? 3 :
-                                     field.name === 'expiryDate' ? 5 :
-                                     undefined
-                                }
-                            />
-                        ))}
-                        {payment.method === 'credit' && (
+                    {payment.method === 'credit' && (
 
-                            <select
-                                name="installments"
-                                value={payment.installments}
-                                onChange={handleChange}
-                            >
-                                <option value="">
-                                    Parcelas
+                        <select
+                            className="payment__select"
+                            name="installments"
+                            value={payment.installments}
+                            onChange={handleChange}
+                        >
+
+                            <option value="">
+                                Parcelas
+                            </option>
+
+
+                            {installments.map((item)=>(
+
+                                <option
+                                    key={item.value}
+                                    value={item.value}
+                                >
+                                    {item.label}
                                 </option>
-                                {installments.map((item)=>(
 
-                                    <option
-                                        key={item.value}
-                                        value={item.value}
-                                    >
-                                        {item.label}
-                                    </option>
-                                ))}
-                            </select>
-                        )}
-                    </div>
-                )}
-                <button type="submit">
-                    Finalizar Pedido
-                </button>
-            </form>
+                            ))}
 
-        </section>
 
-    )
+                        </select>
+
+                    )}
+
+
+                </div>
+
+            )}
+
+
+
+            <button 
+                type="submit" 
+                className="payment__button"
+            >
+                Finalizar Pedido
+            </button>
+
+
+        </form>
+
+
+    </section>
+  )
+    
 }
 
 

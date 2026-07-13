@@ -1,14 +1,14 @@
-import { supabase } from "./supabaseClient"
+import { supabase } from "./supabaseClient";
 
-export async function createOrder(order:any) {
+export async function createOrder(order: any) {
+  const { data, error } = await supabase
+    .from("orders")
+    .insert([order])
+    .select();
 
-    const { data, error } = await supabase
-        .from("orders")
-        .insert(order)
+  if (error) {
+    throw error;
+  }
 
-    if(error){
-        throw error
-    }
-
-    return data
+  return data;
 }

@@ -25,14 +25,12 @@ const CartProvider = ({children}:{children:ReactNode})=> {
 
 const [cartItems,setCartItems] = useState<CartItem[]>(() => {
   const savedCart  = localStorage.getItem('cart')
-
   return savedCart ? JSON.parse(savedCart) : [];
 });
 useEffect(()=> {
   localStorage.setItem('cart',JSON.stringify(cartItems))
 },[cartItems])
   const  addProduct = (product:Product)=> {
-
     setCartItems((provItems)=> {
       const existingItem = provItems.find((item)=> item.id === product.id)
       if(existingItem){
@@ -42,18 +40,14 @@ useEffect(()=> {
       }
        return [...provItems, {...product,quantity:1}]
     })
-
   }
 const removeFromCart = (id: string) => {
-
   setCartItems((prev) => {
-   
     const updated = prev.filter((item) => item.id !== id);
 
     return updated;
   });
 };
-
   const decreaseQuantity = (id: string) => {
   setCartItems((prevItems) =>
     prevItems
@@ -63,10 +57,6 @@ const removeFromCart = (id: string) => {
           : item).filter((item) => item.quantity > 0)
   );
 };
-
-
-
-
 const increaseQuantity = (id:string) => {
   setCartItems((prevItems) => 
     prevItems.map((item) =>
@@ -76,7 +66,6 @@ const increaseQuantity = (id:string) => {
 }
  const clearCart = ()=> setCartItems([])
 
-
 const totalCart = useMemo(
   () => cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -84,7 +73,6 @@ const totalCart = useMemo(
   ),
   [cartItems]
 )
-
   return (
     <CartContext.Provider
      value={{
@@ -102,8 +90,6 @@ const totalCart = useMemo(
   )
 
 };
-
-
 export const useCart = () => {
     const context = useContext(CartContext)
 
@@ -112,8 +98,6 @@ export const useCart = () => {
           "useCart deve estar dentro do CartProvider"
         )
     }
-
     return context
 }
-
 export default CartProvider
