@@ -1,5 +1,4 @@
-import { Children, createContext, useContext, useState } from "react"
-import { CartContext } from "./CartContext"
+import {createContext, useContext, useState } from "react"
 interface PaymentData {
     method: string
     cardNumber: string
@@ -18,11 +17,9 @@ interface AddressData {
     complemento: string
 }
 interface CheckoutContextType{
-     payment: PaymentData
+    payment: PaymentData
     setPayment: React.Dispatch<React.SetStateAction<PaymentData>>
-
-
-      address: AddressData
+    address: AddressData
     setAddress: React.Dispatch<React.SetStateAction<AddressData>>
 }
 const CheckoutContext  = createContext<CheckoutContextType | null>(null)
@@ -55,7 +52,7 @@ children
                 payment,
                 setPayment,
                 address,
-               setAddress
+                setAddress
             }}
          >
             {children}

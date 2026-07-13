@@ -1,0 +1,220 @@
+.payment {
+
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+
+    background: #52565f;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.15);
+
+
+    h2 {
+
+        color: white;
+
+        margin-bottom: 25px;
+
+        font-size: 24px;
+
+    }
+
+
+    // Opções Pix / Crédito / Débito
+    form > div:not(.payment__card) {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 15px;
+
+
+        label {
+
+            color:white;
+
+            cursor:pointer;
+
+            font-size:16px;
+
+        }
+
+
+        input[type="radio"] {
+
+            cursor:pointer;
+
+            width:18px;
+
+            height:18px;
+
+        }
+
+    }
+
+
+
+    // Caixa do cartão e Pix
+    &__card {
+
+        background:white;
+
+        padding:25px;
+
+        margin-top:25px;
+
+        border-radius:12px;
+
+
+        h3 {
+
+            color:#333;
+
+            margin-bottom:20px;
+
+            font-size:20px;
+
+        }
+
+    }
+
+
+
+    // Área dos inputs
+    &__fields {
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:15px;
+
+    }
+
+
+
+    // Inputs do cartão
+    &__input {
+
+        width:100%;
+
+        height:45px;
+
+        padding:0 15px;
+
+
+        border:1px solid #ddd;
+
+        border-radius:8px;
+
+
+        font-size:15px;
+
+        outline:none;
+
+
+        transition:.3s;
+
+
+
+        &:focus {
+
+            border-color:#2776f2;
+
+            box-shadow:0 0 5px rgba(39,118,242,.3);
+
+        }
+
+
+        &::placeholder {
+
+            color:#999;
+
+        }
+
+    }
+
+
+
+    // Parcelas
+    &__select {
+
+        width:100%;
+
+        height:45px;
+
+        margin-top:20px;
+
+        padding:0 15px;
+
+
+        border-radius:8px;
+
+        border:1px solid #ddd;
+
+
+        background:white;
+
+        cursor:pointer;
+
+
+        outline:none;
+
+
+        &:focus {
+
+            border-color:#2776f2;
+
+        }
+
+    }
+
+
+
+    // Botão finalizar
+    &__button {
+
+        width:100%;
+
+        height:50px;
+
+
+        margin-top:30px;
+
+
+        border:none;
+
+        border-radius:10px;
+
+
+        background:#2776f2;
+
+        color:white;
+
+
+        font-size:16px;
+
+        font-weight:bold;
+
+
+        cursor:pointer;
+
+
+        transition:.3s;
+
+
+
+        &:hover {
+
+            background:#145bc5;
+
+        }
+
+    }
+
+}
