@@ -4,8 +4,8 @@ import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import paymentRouter from "./src/routes/payment";
 
-dotenv.config();
 dotenv.config();
 
 const app = express();
@@ -13,6 +13,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Rota do Mercado Pago
+app.use("/payment", paymentRouter);
+
+// Rota do reCAPTCHA
 app.post("/verify-captcha", async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
