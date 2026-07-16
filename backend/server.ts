@@ -1,22 +1,23 @@
+import "dotenv/config";
+
 import express from "express";
 import type { Request, Response } from "express";
 import axios from "axios";
 import cors from "cors";
-import dotenv from "dotenv";
 
 import paymentRouter from "./src/routes/payment";
-
-dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// Rota do Mercado Pago
+
+// Mercado Pago
 app.use("/payment", paymentRouter);
 
-// Rota do reCAPTCHA
+
+// reCAPTCHA
 app.post("/verify-captcha", async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
@@ -51,6 +52,7 @@ app.post("/verify-captcha", async (req: Request, res: Response) => {
       message: "reCAPTCHA inválido.",
       errors: response.data["error-codes"],
     });
+
   } catch (error) {
     console.error("Erro ao verificar o reCAPTCHA:", error);
 
@@ -60,6 +62,7 @@ app.post("/verify-captcha", async (req: Request, res: Response) => {
     });
   }
 });
+
 
 const PORT = process.env.PORT || 3001;
 
