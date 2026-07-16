@@ -1,7 +1,7 @@
 import './Payment.scss'
 import { useCheckout} from '../../context/CheckoutContext'
 import { useCart } from '../../context/CartContext'
-import { createOrder } from '../../services/Supabase/orderService'
+//import { createOrder } from '../../services/Supabase/orderService'
 interface PaymentData {
     method: string
     cardNumber: string
@@ -11,8 +11,9 @@ interface PaymentData {
     installments: string
 }
 const Payment = () => {
-    const { payment, setPayment,address,setAddress} = useCheckout()
-    const {cartItem,clearCart} = useCart()
+    //const { payment, setPayment,address,setAddress} = useCheckout()
+    const { payment, setPayment } = useCheckout()
+    const {cartItem} = useCart()
     const total = cartItem.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
@@ -45,7 +46,6 @@ const Payment = () => {
             name: 'cardNumber',
             placeholder: 'Número do cartão'
         },
-       
         {
             type: 'text',
             name: 'expiryDate',
@@ -123,41 +123,40 @@ const Payment = () => {
             [name]: newValue
         }))
     }
-    const handlePayment = async (e: React.FormEvent) => {
+  const createMercadoPagoPayment = async () => {
+
+    const response = await fetch(
+        "http://localhost:3001/payment/create-preference",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                items: cartItem
+            })
+        }
+    )
+    const data = await response.json()
+    if(data.initPoint){
+        window.location.href = data.initPoint
+    }
+}
+ const handlePayment = async (e: React.FormEvent) => {
+
     e.preventDefault()
 
     const isValid = validatePayment()
 
     if(!isValid) return
-         
+    try {
 
-    const order = {
-    items: cartItem,
-    address: address,
-    card_name: payment.cardName,
-    payment_method: payment.method,
-    total: total
+        await createMercadoPagoPayment()
+
+    } catch (error) {
+
+        console.log("Erro no pagamento:", error)
     }
-     await createOrder(order)
-      setPayment({
-        method: "",
-        cardNumber: "",
-        cardName: "",
-        expiryDate: "",
-        cvv: "",
-        installments: ""
-    });
-    setAddress({
-        street: "",
-        number: "",
-        neighborhood: "",
-        city: "",
-        state: "",
-        zipCode: "",
-        complemento: ""
-     })
-
-    clearCart()
 }
     const validatePayment = () => {
 
@@ -174,12 +173,10 @@ const Payment = () => {
             alert('Número do cartão inválido')
             return false
         }
-
         if(payment.cvv.length !== 3){
             alert('CVV inválido')
             return false
         }
-
         if(!payment.cardName || !payment.expiryDate){
             alert('Preencha todos os dados do cartão')
             return false
@@ -188,35 +185,25 @@ const Payment = () => {
               alert('Digite nome e sobrenome')
              return false
         }
-
         if(payment.method === 'credit' && !payment.installments){
             alert('Escolha as parcelas')
             return false
         }
     }
-
     return true
 }
  return (
     <section className="payment">
-
         <h2>
             Forma de pagamento
         </h2>
-
-
         <form onSubmit={handlePayment}>
-
-
             {paymentMethods.map((pay) => (
-
                 <div key={pay.value}>
 
                     <label htmlFor={pay.value}>
                         {pay.label}
                     </label>
-
-
                     <input
                         type={pay.type}
                         id={pay.value}
@@ -225,41 +212,24 @@ const Payment = () => {
                         checked={payment.method === pay.value}
                         onChange={handleChange}
                     />
-
                 </div>
 
             ))}
-
-
-
             {payment.method === 'pix' && (
-
                 <div className="payment__card">
 
                     <h3>
                         Pagamento via Pix
                     </h3>
-
                 </div>
-
             )}
-
-
-
             {(payment.method === 'credit' ||
             payment.method === 'debit') && (
-
                 <div className="payment__card">
-
-
                     <h3>
                         Dados do cartão
                     </h3>
-
-
                     <div className="payment__fields">
-
-
                     {cardFields.map((field) => (
 
                         <input
