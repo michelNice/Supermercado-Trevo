@@ -1,23 +1,20 @@
 import "dotenv/config";
-
 import express from "express";
 import type { Request, Response } from "express";
 import axios from "axios";
 import cors from "cors";
 
 import paymentRouter from "./src/routes/payment";
+import pixRoutes from "./src/routes/pix";
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-
 // Mercado Pago
 app.use("/payment", paymentRouter);
+app.use("/pix", pixRoutes);
 
-
-// reCAPTCHA
 app.post("/verify-captcha", async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
@@ -50,11 +47,10 @@ app.post("/verify-captcha", async (req: Request, res: Response) => {
     return res.status(400).json({
       success: false,
       message: "reCAPTCHA inválido.",
-      errors: response.data["error-codes"],
     });
 
   } catch (error) {
-    console.error("Erro ao verificar o reCAPTCHA:", error);
+    console.error(error);
 
     return res.status(500).json({
       success: false,

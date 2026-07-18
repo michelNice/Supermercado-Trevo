@@ -1,6 +1,10 @@
-import './Payment.scss'
+{/*import './Payment.scss'
 import { useCheckout} from '../../context/CheckoutContext'
 import { useCart } from '../../context/CartContext'
+import { initMercadoPago } from "@mercadopago/sdk-react";
+//import { CardPayment } from "@mercadopago/sdk-react";
+import { Payment as MercadoPagoPayment } from "@mercadopago/sdk-react";
+import { useEffect } from 'react';
 //import { createOrder } from '../../services/Supabase/orderService'
 interface PaymentData {
     method: string
@@ -12,6 +16,11 @@ interface PaymentData {
 }
 const Payment = () => {
     //const { payment, setPayment,address,setAddress} = useCheckout()
+    useEffect(()=> {
+        initMercadoPago(
+        import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY
+    );
+    },[])
     const { payment, setPayment } = useCheckout()
     const {cartItem} = useCart()
     const total = cartItem.reduce(
@@ -151,7 +160,8 @@ const Payment = () => {
     if(!isValid) return
     try {
 
-        await createMercadoPagoPayment()
+        //await createMercadoPagoPayment()
+        console.log("Pagamento enviado")
 
     } catch (error) {
 
@@ -194,16 +204,20 @@ const Payment = () => {
 }
  return (
     <section className="payment">
-        <h2>
-            Forma de pagamento
-        </h2>
-        <form onSubmit={handlePayment}>
-            {paymentMethods.map((pay) => (
-                <div key={pay.value}>
 
-                    <label htmlFor={pay.value}>
-                        {pay.label}
-                    </label>
+    <h2>Forma de pagamento</h2>
+
+    <form onSubmit={handlePayment}>
+
+        <div className="payment__methods">
+
+            {paymentMethods.map((pay) => (
+
+                <label
+                    key={pay.value}
+                    className="payment__method"
+                >
+
                     <input
                         type={pay.type}
                         id={pay.value}
@@ -212,107 +226,135 @@ const Payment = () => {
                         checked={payment.method === pay.value}
                         onChange={handleChange}
                     />
-                </div>
+
+                    <span>{pay.label}</span>
+
+                </label>
 
             ))}
-            {payment.method === 'pix' && (
-                <div className="payment__card">
 
-                    <h3>
-                        Pagamento via Pix
-                    </h3>
-                </div>
-            )}
-            {(payment.method === 'credit' ||
-            payment.method === 'debit') && (
-                <div className="payment__card">
-                    <h3>
-                        Dados do cartão
-                    </h3>
-                    <div className="payment__fields">
-                    {cardFields.map((field) => (
+        </div>
 
-                        <input
-                            key={field.name}
-                            type={field.type}
-                            name={field.name}
-                            placeholder={field.placeholder}
+        {payment.method === "pix" && (
 
-                            value={
-                                payment[field.name as keyof PaymentData]
-                            }
+            <div className="payment__card">
 
-                            onChange={handleChange}
+                <h3>Pagamento via Pix</h3>
 
-                            maxLength={
-                                field.name === 'cardNumber' ? 19 :
-                                field.name === 'cvv' ? 3 :
-                                field.name === 'expiryDate' ? 5 :
-                                undefined
-                            }
+                <p>
+                    O QR Code será gerado após clicar em
+                    <strong> Finalizar Pedido</strong>.
+                </p>
 
-                            className="payment__input"
-                        />
+            </div>
 
-                    ))}
+        )}
 
+        {(payment.method === "credit" ||
+            payment.method === "debit") && (
 
-                    </div>
+            <div className="payment__card">
 
+                <h3>Dados do cartão</h3>
 
+                <div className="payment__mercadopago">
 
-                    {payment.method === 'credit' && (
-
-                        <select
-                            className="payment__select"
-                            name="installments"
-                            value={payment.installments}
-                            onChange={handleChange}
-                        >
-
-                            <option value="">
-                                Parcelas
-                            </option>
-
-
-                            {installments.map((item)=>(
-
-                                <option
-                                    key={item.value}
-                                    value={item.value}
-                                >
-                                    {item.label}
-                                </option>
-
-                            ))}
-
-
-                        </select>
-
-                    )}
-
+                    <MercadoPagoPayment
+    initialization={{
+        amount: Number(total),
+    }}
+    customization={{
+        paymentMethods: {
+            creditCard: "all",
+            debitCard: "all",
+            pix: "all",
+        },
+    }}
+    onSubmit={async (formData) => {
+        console.log(formData);
+    }}
+/>
 
                 </div>
 
-            )}
+            </div>
 
+        )}
 
+        <button
+            type="submit"
+            className="payment__button"
+        >
+            Finalizar Pedido
+        </button>
 
-            <button 
-                type="submit" 
-                className="payment__button"
-            >
-                Finalizar Pedido
-            </button>
+    </form>
 
-
-        </form>
-
-
-    </section>
+</section>
   )
     
 }
 
 
 export default Payment
+*/}
+
+import "./Payment.scss";
+import { useEffect } from "react";
+import { initMercadoPago, Payment as MercadoPagoPayment } from "@mercadopago/sdk-react";
+import { useCart } from "../../context/CartContext";
+
+const Payment = () => {
+    const { cartItem } = useCart();
+
+    useEffect(() => {
+        initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY);
+    }, []);
+
+    const total = cartItem.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+    );
+
+    return (
+        <section className="payment">
+            <h2>Forma de pagamento</h2>
+
+            <div className="payment__mercadopago">
+                <MercadoPagoPayment
+                    initialization={{
+                        amount: total,
+                    }}
+                    customization={{
+                        paymentMethods: {
+                            creditCard: "all",
+                            debitCard: "all",
+                        },
+                    }}
+                    onSubmit={async (formData) => {
+                        try {
+                            const response = await fetch(
+                                "http://localhost:3001/payment/process-payment",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify(formData),
+                                }
+                            );
+
+                            const result = await response.json();
+
+                            console.log(result);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }}
+                />
+            </div>
+        </section>
+    );
+};
+
+export default Payment;
