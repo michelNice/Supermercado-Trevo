@@ -16,7 +16,6 @@ router.post("/create-preference", async (req: Request, res: Response) => {
             unit_price: 100,
           },
         ],
-
         back_urls: {
           success: "http://localhost:5173/",
           failure: "http://localhost:5173/",
