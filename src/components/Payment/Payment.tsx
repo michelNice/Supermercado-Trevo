@@ -300,61 +300,158 @@ export default Payment
 */}
 
 import "./Payment.scss";
-import { useEffect } from "react";
-import { initMercadoPago, Payment as MercadoPagoPayment } from "@mercadopago/sdk-react";
+import { useEffect, useState } from "react";
+import {
+  initMercadoPago,
+  Payment as MercadoPagoPayment,
+} from "@mercadopago/sdk-react";
+
 import { useCart } from "../../context/CartContext";
 
 const Payment = () => {
-    const { cartItem } = useCart();
+  const { cartItem } = useCart();
 
-    useEffect(() => {
-        initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY);
-    }, []);
+  const [method, setMethod] = useState<"card" | "pix">("card");
+  const [qrCode, setQrCode] = useState("");
+  const [loadingPix, setLoadingPix] = useState(false);
 
-    const total = cartItem.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
+  useEffect(() => {
+    initMercadoPago(
+      import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY
     );
+  }, []);
 
-    return (
-        <section className="payment">
-            <h2>Forma de pagamento</h2>
+  const total = cartItem.reduce(
+    (acc, item) => acc + Number(item.price) * item.quantity,
+    0
+  );
 
-            <div className="payment__mercadopago">
-                <MercadoPagoPayment
-                    initialization={{
-                        amount: total,
-                    }}
-                    customization={{
-                        paymentMethods: {
-                            creditCard: "all",
-                            debitCard: "all",
-                        },
-                    }}
-                    onSubmit={async (formData) => {
-                        try {
-                            const response = await fetch(
-                                "http://localhost:3001/payment/process-payment",
-                                {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify(formData),
-                                }
-                            );
+  async function gerarPix() {
+    console.log("========== PIX CLICADO ==========");
+    console.log("Carrinho:", cartItem);
+    console.log("TOTAL CALCULADO:", total);
+    console.log("TIPO DO TOTAL:", typeof total);
 
-                            const result = await response.json();
+    try {
+      setLoadingPix(true);
 
-                            console.log(result);
-                        } catch (error) {
-                            console.error(error);
-                        }
-                    }}
-                />
-            </div>
-        </section>
-    );
+      const body = {
+        total,
+        email: "cliente@email.com",
+      };
+
+      console.log("BODY ENVIADO:", body);
+
+      const response = await fetch(
+        "http://localhost:3001/pix/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      console.log("STATUS BACKEND:", response.status);
+
+      const data = await response.json();
+
+      console.log("RESPOSTA PIX:", data);
+
+      if (data.qrCodeBase64) {
+        setQrCode(data.qrCodeBase64);
+      } else {
+        console.log("Mercado Pago não retornou QR Code");
+      }
+    } catch (error) {
+      console.error("ERRO AO GERAR PIX:", error);
+    } finally {
+      setLoadingPix(false);
+    }
+  }
+
+  return (
+    <section className="payment">
+      <h2>Forma de pagamento</h2>
+
+      <div className="payment__buttons">
+        <button
+          onClick={() => {
+            setMethod("card");
+            setQrCode("");
+          }}
+        >
+          Cartão
+        </button>
+
+        <button
+          onClick={() => {
+            setMethod("pix");
+            gerarPix();
+          }}
+        >
+          PIX
+        </button>
+      </div>
+
+      {method === "card" && (
+        <div className="payment__mercadopago">
+          <MercadoPagoPayment
+            initialization={{
+              amount: total,
+            }}
+            customization={{
+              paymentMethods: {
+                creditCard: "all",
+                debitCard: "all",
+              },
+            }}
+            onSubmit={async (formData) => {
+              try {
+                const response = await fetch(
+                  "http://localhost:3001/payment/process-payment",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                  }
+                );
+
+                const result = await response.json();
+
+                console.log("PAGAMENTO CARTÃO:", result);
+              } catch (error) {
+                console.error("ERRO CARTÃO:", error);
+              }
+            }}
+          />
+        </div>
+      )}
+
+      {method === "pix" && (
+        <div className="payment__pix">
+          {loadingPix && <p>Gerando PIX...</p>}
+
+          {qrCode && (
+            <>
+              <h3>Escaneie o QR Code PIX</h3>
+
+              <img
+                className="payment__qrcode"
+                src={`data:image/png;base64,${qrCode}`}
+                alt="QR Code PIX"
+              />
+
+              <p>QR Code gerado com sucesso.</p>
+            </>
+          )}
+        </div>
+      )}
+    </section>
+  );
 };
 
 export default Payment;
