@@ -14,6 +14,7 @@ import ProductDetails from "./components/ProductDetails/ProductDetails";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 import Address from './components/Adress/Address'
 import Payment from "./components/Payment/Payment";
+import PurchaseConfirmed from "./components/purchaseConfirmed/PurchaseConfirmed";
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
@@ -63,6 +64,10 @@ function App() {
         <Route 
           path="/carrinho"  element={<ShoppingCart />}
         />
+        <Route
+  path="/compra-confirmada"
+  element={<PurchaseConfirmed />}
+/>
         <Route path="/pagamento" element={<Payment />} />
         <Route path="/endereço" element={<Address />} />
       </Routes>

@@ -11,66 +11,83 @@ import {
   Popup,
   useMap,
 } from "react-leaflet";
+/*
 interface AddressData {
+  name: string;
+  email: string;
   street: string;
   number: string;
   neighborhood: string;
   city: string;
   state: string;
   zipCode: string;
-  complemento:string;
+  complemento: string;
 }
+  */
 const fields = [
+  {
+    name: "name",
+    label: "Nome completo",
+    placeholder: "Digite seu nome completo",
+    type: "text",
+    required: true,
+  },
+  {
+    name: "email",
+    label: "E-mail",
+    placeholder: "Digite seu e-mail",
+    type: "email",
+    required: true,
+  },
   {
     name: "zipCode",
     label: "CEP",
     placeholder: "Digite o CEP",
     type: "text",
-    required:true
+    required: true,
   },
   {
     name: "street",
     label: "Rua",
     placeholder: "Digite a rua",
     type: "text",
-    required:true
+    required: true,
   },
   {
     name: "number",
     label: "Número",
     placeholder: "Digite o número",
     type: "text",
-    required:true
+    required: true,
   },
   {
     name: "complemento",
-    label: "complemento",
+    label: "Complemento",
     placeholder: "Apartamento, bloco... (opcional)",
     type: "text",
-    required:false
+    required: false,
   },
   {
     name: "neighborhood",
     label: "Bairro",
     placeholder: "Digite o bairro",
     type: "text",
-    required:true
+    required: true,
   },
   {
     name: "city",
     label: "Cidade",
     placeholder: "Digite a cidade",
     type: "text",
-    required:true
+    required: true,
   },
   {
     name: "state",
     label: "Estado",
     placeholder: "Digite o estado",
     type: "text",
-    required:true
+    required: true,
   },
-  
 ] as const;
 
 function ChangeView({

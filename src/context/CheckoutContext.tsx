@@ -8,6 +8,8 @@ interface PaymentData {
     installments: string
 }
 interface AddressData {
+    name:string,
+    email:string
     street: string
     number: string
     neighborhood: string
@@ -15,6 +17,7 @@ interface AddressData {
     state: string
     zipCode: string
     complemento: string
+    
 }
 interface CheckoutContextType{
     payment: PaymentData
@@ -45,6 +48,8 @@ children
     state: "",
     zipCode: "",
     complemento: "",
+    name:'',
+    email:''
 })
     return (
         <CheckoutContext.Provider 
