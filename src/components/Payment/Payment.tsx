@@ -4,27 +4,23 @@ import {
   initMercadoPago,
   Payment as MercadoPagoPayment,
 } from "@mercadopago/sdk-react";
-
 import { useCart } from "../../context/CartContext";
 import { useCheckout } from "../../context/CheckoutContext";
-
+import { useNavigate } from "react-router-dom";
 const Payment = () => {
   const { cartItem } = useCart();
   const { address } = useCheckout();
-
   const [method, setMethod] = useState<"card" | "pix">("card");
   const [qrCode, setQrCode] = useState("");
   const [loadingPix, setLoadingPix] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY);
   }, []);
-
   const total = cartItem.reduce(
     (acc, item) => acc + Number(item.price) * item.quantity,
     0
   );
-
   async function gerarPix() {
     try {
       setLoadingPix(true);
@@ -38,7 +34,8 @@ const Payment = () => {
           },
           body: JSON.stringify({
             total,
-            email: "cliente@email.com",
+            email:address.email,
+             name: address.name,
           }),
         }
       );
@@ -98,7 +95,12 @@ const Payment = () => {
 
           <div className="payment__card">
             <h3>Endereço de entrega</h3>
-
+            <p>
+                {address.name}
+            </p>
+             <p>
+                {address.email}
+            </p>
             <p>
               {address.street}, {address.number}
             </p>
@@ -168,6 +170,8 @@ const Payment = () => {
                     );
 
                     const result = await response.json();
+
+                    console.log(result)
 
                     console.log(result);
                   } catch (error) {
