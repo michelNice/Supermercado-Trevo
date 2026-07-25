@@ -1,41 +1,88 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
+import { Payment } from "mercadopago";
 import client from "../config/mercadoPago";
-import { Preference } from "mercadopago";
+import { sendConfirmationEmail } from "../services/emailService";
 const router = Router();
-router.post("/create-preference", async (req: Request, res: Response) => {
-  try {
-    const preference = new Preference(client);
-    const response = await preference.create({
-      body: {
-        items: [
-          {
-            id: "1",
-            title: "Compra Trevo Supermercado",
-            quantity: 1,
-            unit_price: 100,
+router.post(
+  "/process-payment",
+  async (req: Request, res: Response) => {
+    try {
+      const {
+        token,
+        payment_method_id,
+        issuer_id,
+        installments,
+        transaction_amount,
+        payer,
+      } = req.body;
+      if (
+        !token ||
+        !payment_method_id ||
+        !transaction_amount
+      ) {
+        return res.status(400).json({
+          message:
+          "Dados de pagamento incompletos."
+        });
+
+      }
+      const payment = new Payment(client);
+      const response = await payment.create({
+        body: {
+          transaction_amount:
+            Number(transaction_amount),
+          token,
+          description:
+            "Compra Trevo Supermercado",
+          payment_method_id,
+          issuer_id,
+          installments:
+            Number(installments),
+          payer: {
+            email:
+              payer.email,
+
           },
-        ],
-        back_urls: {
-          success: "http://localhost:5173/",
-          failure: "http://localhost:5173/",
-          pending: "http://localhost:5173/",
         },
-      },
-    });
+      });
 
-    return res.json({
-      preferenceId: response.id,
-      initPoint: response.init_point,
-    });
+              console.log("Mercado Pago status:", response.status);
 
-  } catch (error: any) {
-    console.error("ERRO MERCADO PAGO:", error);
+        if (response.status === "approved") {
+          console.log("Payment approved. Sending email...");
 
-    return res.status(500).json({
-      message: error.message,
-    });
+          try {
+            await sendConfirmationEmail(
+              payer.email,
+              req.body.address?.name || "Cliente"
+            );
+
+            console.log("Email sent successfully!");
+          } catch (error) {
+            console.error("Email error:", error);
+          }
+        }
+
+      return res.json({
+        id: response.id,
+        status: response.status,
+        detail: response.status_detail,
+
+      });
+    } catch(error:any){
+      console.error(
+        "ERRO PAGAMENTO:",
+        error
+      );
+      return res.status(500).json({
+        message:
+          error.message,
+
+      });
+    }
   }
-});
+);
+
 
 export default router;

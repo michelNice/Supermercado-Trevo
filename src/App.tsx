@@ -64,8 +64,8 @@ function App() {
         <Route 
           path="/carrinho"  element={<ShoppingCart />}
         />
-        <Route
-  path="/compra-confirmada"
+          <Route
+  path="/purchase-confirmed"
   element={<PurchaseConfirmed />}
 />
         <Route path="/pagamento" element={<Payment />} />

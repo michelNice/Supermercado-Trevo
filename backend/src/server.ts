@@ -4,14 +4,14 @@ import type { Request, Response } from "express";
 import axios from "axios";
 import cors from "cors";
 
-import paymentRouter from "./src/routes/payment";
-import pixRoutes from "./src/routes/pix";
+import paymentRouter from "./routes/payment";
+import pixRoutes from "./routes/pix";
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// Mercado Pago
 app.use("/payment", paymentRouter);
 app.use("/pix", pixRoutes);
 

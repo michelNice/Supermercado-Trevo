@@ -18,7 +18,6 @@ interface NavMobileProps {
     onLoginClick: () => void
     onDepartmentsClick: () => void
 }
-
  type MobileMenuItems = {
   icon: React.ReactNode;
   title: string;
