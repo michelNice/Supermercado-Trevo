@@ -19,46 +19,26 @@ app.post("/verify-captcha", async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
 
-    if (!token) {
-      return res.status(400).json({
-        success: false,
-        message: "Token do reCAPTCHA não enviado.",
-      });
-    }
-
     const response = await axios.post(
       "https://www.google.com/recaptcha/api/siteverify",
       null,
       {
         params: {
-          secret: process.env.RECAPTCHA_SECRET,
+          secret: process.env.RECAPTCHA_SECRET_KEY,
           response: token,
         },
       }
     );
 
-    if (response.data.success) {
-      return res.json({
-        success: true,
-        message: "reCAPTCHA válido!",
-      });
-    }
-
-    return res.status(400).json({
-      success: false,
-      message: "reCAPTCHA inválido.",
-    });
+    res.json(response.data);
 
   } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
-      message: "Erro interno do servidor.",
+      message: "Captcha verification failed",
     });
   }
 });
-
 
 const PORT = process.env.PORT || 3001;
 

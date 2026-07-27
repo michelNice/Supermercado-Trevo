@@ -11,19 +11,7 @@ import {
   Popup,
   useMap,
 } from "react-leaflet";
-/*
-interface AddressData {
-  name: string;
-  email: string;
-  street: string;
-  number: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  complemento: string;
-}
-  */
+
 const fields = [
   {
     name: "name",

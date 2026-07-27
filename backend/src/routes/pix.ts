@@ -1,11 +1,22 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { Payment } from "mercadopago";
+
 import client from "../config/mercadoPago";
 import { sendConfirmationEmail } from "../services/emailService";
 
 const router = Router();
 
+const pendingPayments = new Map<
+  number,
+  {
+    email: string;
+    name: string;
+    items: any[];
+    address: any;
+    total: number;
+  }
+>();
 
 // ===========================
 // CREATE PIX
@@ -13,98 +24,74 @@ const router = Router();
 
 router.post("/create", async (req: Request, res: Response) => {
   try {
-
     const {
       total,
       email,
-      name
+      name,
+      items,
+      address,
     } = req.body || {};
-
 
     if (!total || !email) {
       return res.status(400).json({
         message: "Total e email são obrigatórios.",
-        body: req.body,
       });
     }
 
-
     const payment = new Payment(client);
-
 
     const response = await payment.create({
       body: {
+        transaction_amount: Number(Number(total).toFixed(2)),
 
-        transaction_amount:
-          Number(Number(total).toFixed(2)),
+        description: "Compra Trevo Supermercado",
 
-        description:
-          "Compra Trevo Supermercado",
-
-        payment_method_id:
-          "pix",
+        payment_method_id: "pix",
 
         payer: {
           email,
         },
-
       },
     });
 
 
-    console.log(
-      "PIX CREATED:",
-      response.id
-    );
+    if (response.id) {
+      pendingPayments.set(response.id, {
+        email,
+        name: name || "Cliente",
+        items: items || [],
+        address: address || {},
+        total: Number(total),
+      });
+    }
 
 
     return res.json({
-
       id: response.id,
 
       status: response.status,
 
       qrCode:
         response.point_of_interaction
-        ?.transaction_data
-        ?.qr_code,
-
+          ?.transaction_data
+          ?.qr_code,
 
       qrCodeBase64:
         response.point_of_interaction
-        ?.transaction_data
-        ?.qr_code_base64,
-
+          ?.transaction_data
+          ?.qr_code_base64,
     });
 
 
-  } catch(error:any){
-
-    console.log(
-      "========== ERRO MERCADO PAGO =========="
-    );
-
+  } catch (error: any) {
 
     return res.status(500).json({
-
-      message:
-        error?.message ||
-        "Erro ao gerar PIX",
-
-      status:
-        error?.status,
-
-      cause:
-        error?.cause,
-
-      response:
-        error?.response?.data,
-
+      message: error?.message || "Erro ao gerar PIX",
+      status: error?.status,
+      cause: error?.cause,
     });
-
   }
 });
-
 
 
 
@@ -112,91 +99,55 @@ router.post("/create", async (req: Request, res: Response) => {
 // CHECK PIX STATUS
 // ===========================
 
-
-router.get("/status/:id", async (
-  req: Request,
-  res: Response
-) => {
+router.get("/status/:id", async (req: Request, res: Response) => {
 
   try {
 
-
     const payment = new Payment(client);
 
+    const paymentId = Number(req.params.id);
 
     const response = await payment.get({
-
-      id:
-        Number(req.params.id),
-
+      id: paymentId,
     });
 
 
+    if (response.status === "approved") {
 
-    console.log(
-      "PIX STATUS:",
-      response.status
-    );
+      const customer = pendingPayments.get(paymentId);
 
 
+      if (customer) {
 
-    if(response.status === "approved"){
-
-
-      console.log(
-        "PIX APPROVED"
-      );
-
-
-
-      await sendConfirmationEmail(
-
-        response.payer?.email || "",
-
-        response.payer?.first_name || "Cliente"
-
-      );
+        await sendConfirmationEmail(
+          customer.email,
+          customer.name,
+          customer.items,
+          customer.address,
+          customer.total
+        );
 
 
-
-      console.log(
-        "CONFIRMATION EMAIL SENT"
-      );
+        pendingPayments.delete(paymentId);
+      }
 
     }
 
 
-
     return res.json({
-
-      status:
-        response.status,
-
+      status: response.status,
     });
 
 
-
-  } catch(error:any){
-
-
-    console.error(
-      "Erro ao consultar PIX:",
-      error
-    );
-
+  } catch (error) {
 
     return res.status(500).json({
-
-      message:
-        "Erro ao consultar pagamento PIX",
-
+      message: "Erro ao consultar pagamento PIX",
     });
-
 
   }
 
 });
-
 
 
 export default router;

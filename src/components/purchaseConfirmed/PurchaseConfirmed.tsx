@@ -1,17 +1,61 @@
+import { FaCheckCircle, FaHome, FaShoppingBasket } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./PurchaseConfirmed.scss";
 
 const PurchaseConfirmed = () => {
   return (
     <section className="purchase-confirmed">
-      <h1>🎉 Compra confirmada!</h1>
+      <div className="confirmation-card">
+        <FaCheckCircle className="success-icon" />
 
-      <p>Seu pedido foi recebido com sucesso.</p>
+        <h1>Compra Confirmada!</h1>
 
-      <p>
-        Enviamos a confirmação para o seu e-mail.
-      </p>
+        <p className="subtitle">
+          Obrigado por comprar no Trevo Supermercado.
+        </p>
 
-      <p>Obrigado por comprar no Trevo Supermercado.</p>
+        <div className="status-box">
+          <h3>Seu pedido foi recebido</h3>
+
+          <p>
+            Já estamos separando seus produtos e em breve iniciaremos o
+            processamento do seu pedido.
+          </p>
+        </div>
+
+        <div className="info">
+          <div className="info-item">
+            <strong>Confirmação por E-mail</strong>
+            <span>
+              Enviamos um e-mail de confirmação com os detalhes do seu pedido.
+            </span>
+          </div>
+
+          <div className="info-item">
+            <strong>Prazo de Entrega</strong>
+            <span>1 a 2 dias úteis</span>
+          </div>
+
+          <div className="info-item">
+            <strong>Status do Pagamento</strong>
+            <span className="approved">Aprovado</span>
+          </div>
+        </div>
+
+        <div className="buttons">
+          <Link to="/">
+            <button className="primary">
+              <FaHome />
+              Continuar Comprando
+            </button>
+          </Link>
+
+          <button className="secondary">
+            <FaShoppingBasket />
+            Meus Pedidos
+          </button>
+        </div>
+      </div>
     </section>
   );
 };

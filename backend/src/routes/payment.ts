@@ -15,71 +15,100 @@ router.post(
         installments,
         transaction_amount,
         payer,
+        items,
+        address,
       } = req.body;
+
+
       if (
         !token ||
         !payment_method_id ||
-        !transaction_amount
+        !transaction_amount ||
+        !payer?.email
       ) {
         return res.status(400).json({
-          message:
-          "Dados de pagamento incompletos."
+          message: "Dados de pagamento incompletos.",
         });
-
       }
+
+
       const payment = new Payment(client);
+
+
       const response = await payment.create({
         body: {
-          transaction_amount:
-            Number(transaction_amount),
+          transaction_amount: Number(
+            Number(transaction_amount).toFixed(2)
+          ),
+
           token,
+
           description:
             "Compra Trevo Supermercado",
-          payment_method_id,
-          issuer_id,
-          installments:
-            Number(installments),
-          payer: {
-            email:
-              payer.email,
 
+          payment_method_id,
+
+          issuer_id,
+
+          installments:
+            installments
+              ? Number(installments)
+              : 1,
+
+          payer: {
+            email: payer.email,
           },
         },
       });
 
-              console.log("Mercado Pago status:", response.status);
 
-        if (response.status === "approved") {
-          console.log("Payment approved. Sending email...");
 
-          try {
-            await sendConfirmationEmail(
-              payer.email,
-              req.body.address?.name || "Cliente"
-            );
+      if (response.status === "approved") {
 
-            console.log("Email sent successfully!");
-          } catch (error) {
-            console.error("Email error:", error);
-          }
+        try {
+
+          await sendConfirmationEmail(
+            payer.email,
+            address?.name || "Cliente",
+            items || [],
+            address || {},
+            Number(transaction_amount)
+          );
+
+
+        } catch (emailError) {
+
+          console.error(
+            "Erro ao enviar email de confirmação:",
+            emailError
+          );
+
         }
+
+      }
+
 
       return res.json({
         id: response.id,
         status: response.status,
         detail: response.status_detail,
-
       });
-    } catch(error:any){
+
+
+    } catch (error: any) {
+
       console.error(
-        "ERRO PAGAMENTO:",
+        "Erro ao processar pagamento:",
         error
       );
+
+
       return res.status(500).json({
         message:
-          error.message,
-
+          error.message ||
+          "Erro ao processar pagamento",
       });
+
     }
   }
 );
