@@ -48,7 +48,7 @@ const relatedProducts = (products ?? []).filter(
 
       <div className="product__info">
         <div>
-          <span>{product.description}</span>
+          <span>{product.name}</span>
         </div>
 
         <div className="buttons-infor">
@@ -91,7 +91,7 @@ const relatedProducts = (products ?? []).filter(
   onClick={() => {
     AddToCart({
       id: product.id,
-      name: product.description ?? "",
+      name: product.name ?? "",
       price: Number(product.price),
       image: product.image_url,
       unit: product.unit_type === "kg" ? "KG" : "UN",

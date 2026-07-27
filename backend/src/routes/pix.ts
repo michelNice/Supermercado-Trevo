@@ -37,7 +37,6 @@ router.post("/create", async (req: Request, res: Response) => {
         message: "Total e email são obrigatórios.",
       });
     }
-
     const payment = new Payment(client);
 
     const response = await payment.create({
@@ -53,8 +52,6 @@ router.post("/create", async (req: Request, res: Response) => {
         },
       },
     });
-
-
     if (response.id) {
       pendingPayments.set(response.id, {
         email,
@@ -64,8 +61,6 @@ router.post("/create", async (req: Request, res: Response) => {
         total: Number(total),
       });
     }
-
-
     return res.json({
       id: response.id,
 
@@ -93,8 +88,6 @@ router.post("/create", async (req: Request, res: Response) => {
   }
 });
 
-
-
 // ===========================
 // CHECK PIX STATUS
 // ===========================
@@ -110,13 +103,9 @@ router.get("/status/:id", async (req: Request, res: Response) => {
     const response = await payment.get({
       id: paymentId,
     });
-
-
     if (response.status === "approved") {
 
       const customer = pendingPayments.get(paymentId);
-
-
       if (customer) {
 
         await sendConfirmationEmail(

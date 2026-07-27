@@ -156,17 +156,12 @@ export async function sendConfirmationEmail(
           margin-top:25px;
         ">
 
-
-
           <h2 style="
             color:#004d26;
             margin-top:0;
           ">
             Endereço de entrega
           </h2>
-
-
-
 
           <p style="
             line-height:1.6;
@@ -176,15 +171,7 @@ export async function sendConfirmationEmail(
             ${address.city} - ${address.state}<br>
             CEP: ${address.zipCode}
           </p>
-
-
-
         </div>
-
-
-
-
-
         <p style="
           margin-top:25px;
           font-size:16px;
@@ -198,13 +185,7 @@ export async function sendConfirmationEmail(
           ">
             1 a 2 dias úteis
           </strong>
-
         </p>
-
-
-
-
-
         <hr style="
           border:none;
           border-top:1px solid #ddd;

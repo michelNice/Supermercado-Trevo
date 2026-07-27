@@ -1,6 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { Payment } from "mercadopago";
+
 import client from "../config/mercadoPago";
 import { sendConfirmationEmail } from "../services/emailService";
 const router = Router();
@@ -18,8 +19,6 @@ router.post(
         items,
         address,
       } = req.body;
-
-
       if (
         !token ||
         !payment_method_id ||
@@ -31,9 +30,7 @@ router.post(
         });
       }
 
-
       const payment = new Payment(client);
-
 
       const response = await payment.create({
         body: {
@@ -50,10 +47,9 @@ router.post(
 
           issuer_id,
 
-          installments:
-            installments
-              ? Number(installments)
-              : 1,
+          installments: installments
+            ? Number(installments)
+            : 1,
 
           payer: {
             email: payer.email,
@@ -62,7 +58,7 @@ router.post(
       });
 
 
-
+      // Send confirmation email only if payment is approved
       if (response.status === "approved") {
 
         try {
@@ -75,19 +71,15 @@ router.post(
             Number(transaction_amount)
           );
 
-
-        } catch (emailError) {
-
-          console.error(
-            "Erro ao enviar email de confirmação:",
-            emailError
-          );
-
+        } catch {
+          // Ignore email errors
+          // Payment should continue even if email fails
         }
 
       }
 
 
+      // Return payment result
       return res.json({
         id: response.id,
         status: response.status,
@@ -95,18 +87,13 @@ router.post(
       });
 
 
-    } catch (error: any) {
-
-      console.error(
-        "Erro ao processar pagamento:",
-        error
-      );
-
+    } catch (error: unknown) {
 
       return res.status(500).json({
         message:
-          error.message ||
-          "Erro ao processar pagamento",
+          error instanceof Error
+            ? error.message
+            : "Erro ao processar pagamento",
       });
 
     }
