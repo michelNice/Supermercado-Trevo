@@ -13,7 +13,6 @@ app.use("/pix", pixRoutes);
 app.post("/verify-captcha", async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
-
     const response = await axios.post(
       "https://www.google.com/recaptcha/api/siteverify",
       null,
@@ -24,9 +23,7 @@ app.post("/verify-captcha", async (req: Request, res: Response) => {
         },
       }
     );
-
     res.json(response.data);
-
   } catch (error) {
     res.status(500).json({
       success: false,

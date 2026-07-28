@@ -1,16 +1,11 @@
 @use '../Styles/variables' as *;
 
-/****************************/
-/* MIXINS GLOBAIS           */
-/****************************/
-
 /* Flexbox center */
 @mixin flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 /* Container com largura máxima */
 @mixin container($max-width: 84.5rem) {
   max-width: $max-width;
@@ -18,11 +13,9 @@
   padding: 0 1rem;
 }
 
-/* Transição padrão */
 @mixin transition($time: 0.3s, $ease: ease) {
   transition: all $time $ease;
 }
-
 /* Botão padrão */
 @mixin btn($bg, $color) {
   background: $bg;
@@ -33,7 +26,6 @@
   cursor: pointer;
   @include transition();
 }
-
 /* Floating label */
 @mixin floating-label {
   position: absolute;

@@ -1,7 +1,6 @@
 import { FaCheckCircle, FaHome, FaShoppingBasket } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./PurchaseConfirmed.scss";
-
 const PurchaseConfirmed = () => {
   return (
     <section className="purchase-confirmed">

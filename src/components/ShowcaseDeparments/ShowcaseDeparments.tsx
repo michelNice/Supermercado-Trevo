@@ -12,7 +12,6 @@ const imgsShowcase = [
     imgDepartments4,
     imgDepartments5,
     imgDepartments6
-   
 ]
 const ShowcaseDeparments: React.FC = () => {
     return (
@@ -27,5 +26,4 @@ const ShowcaseDeparments: React.FC = () => {
         </>
     )
 }
-
 export default ShowcaseDeparments

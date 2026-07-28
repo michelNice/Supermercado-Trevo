@@ -1,9 +1,8 @@
-$primary: #ee7104;
-$text-dark-bg: #004d26;
 $background: #f5f5f5;
-$white: #fff;
 $text: #333;
 $text-light: #666;
+@use '../../Styles/mixins' as *;
+@use '../../Styles/variables' as *;
 
 .payment {
   max-width: 87.5rem;
@@ -54,9 +53,6 @@ $text-light: #666;
   }
 }
 
-
-/* EMAIL */
-
 .payment__email {
 
   input {
@@ -82,28 +78,18 @@ $text-light: #666;
     }
   }
 }
-
-
 .payment__product {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid #ececec;
-  }
+  &:not(:last-child) {border-bottom: 1px solid #ececec;}
 
-  span {
-    color: $text;
-  }
+  span {color: $text;}
 
-  strong {
-    color: $text-dark-bg;
-  }
+  strong {color: $text-dark-bg;}
 }
-
-
 .payment__total {
   display: flex;
   justify-content: space-between;
@@ -121,9 +107,7 @@ $text-light: #666;
   flex-direction: column;
   gap: .5rem;
 
-  p {
-    margin: 0;
-  }
+  p { margin: 0;}
 }
 
 
@@ -148,9 +132,7 @@ $text-light: #666;
   cursor: pointer;
   transition: .25s;
 
-  &:hover {
-    background: darken($primary, 8%);
-  }
+  &:hover {background: darken($primary, 8%);}
 }
 
 
@@ -163,16 +145,9 @@ $text-light: #666;
 }
 
 
-.payment__mercadopago {
-  min-height: 40rem;
-}
+.payment__mercadopago {min-height: 40rem;}
 
-
-.payment__pix {
-  text-align: center;
-}
-
-
+.payment__pix {text-align: center;}
 .payment__qrcode {
   width: 12.5rem;
   height: 12.5rem;
@@ -182,23 +157,21 @@ $text-light: #666;
 
 .payment__message {
   position: fixed;
-  top: 20px;
+  top: 110px;
   right: 20px;
 
-  background:$text-dark-bg;
+  background: $text-dark-bg;
   color: $white;
 
-  padding:1rem 25px;
+  padding: 1rem 25px;
   border-radius: 10px;
 
-  font-size:1rem;
+  font-size: 1rem;
   font-weight: 600;
 
-  box-shadow: 0 5px 20px rgba(0,0,0,.2);
-
-  animation: slideIn .3s ease;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
+  z-index: 1000;
 }
-
 
 @keyframes slideIn {
   from {
@@ -222,11 +195,7 @@ $text-light: #666;
       grid-template-columns: 1fr;
     }
   }
-
-
-  .payment__mercadopago {
-    min-height: 35rem;
-  }
+  .payment__mercadopago {min-height: 35rem;}
 }
 
 
@@ -236,22 +205,11 @@ $text-light: #666;
     margin: 1rem;
     padding: 1rem;
 
-    h2 {
-      font-size: 1.6rem;
-    }
+    h2 {font-size: 1.6rem;}
 
-    h3 {
-      font-size: 1.1rem;
-    }
+    h3 {font-size: 1.1rem;}
   }
+  .payment__buttons {flex-direction: column;}
 
-
-  .payment__buttons {
-    flex-direction: column;
-  }
-
-
-  .payment__mercadopago {
-    min-height: 32rem;
-  }
+  .payment__mercadopago { min-height: 32rem;}
 }
