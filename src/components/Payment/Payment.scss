@@ -180,6 +180,38 @@ $text-light: #666;
   display: block;
 }
 
+.payment__message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  background:$text-dark-bg;
+  color: $white;
+
+  padding:1rem 25px;
+  border-radius: 10px;
+
+  font-size:1rem;
+  font-weight: 600;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,.2);
+
+  animation: slideIn .3s ease;
+}
+
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 @media (max-width: 62rem) {
 

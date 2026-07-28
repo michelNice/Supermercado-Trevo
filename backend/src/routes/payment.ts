@@ -1,9 +1,9 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { Payment } from "mercadopago";
-
 import client from "../config/mercadoPago";
 import { sendConfirmationEmail } from "../services/emailService";
+import { createOrder } from "../services/orderService";
 const router = Router();
 router.post(
   "/process-payment",
@@ -58,27 +58,28 @@ router.post(
       });
 
 
-      // Send confirmation email only if payment is approved
       if (response.status === "approved") {
 
-        try {
+    await createOrder({
+        paymentId: response.id,
+        total: Number(transaction_amount),
+        status: response.status,
+        items,
+        address,
+    });
 
-          await sendConfirmationEmail(
+    try {
+        await sendConfirmationEmail(
             payer.email,
             address?.name || "Cliente",
             items || [],
             address || {},
             Number(transaction_amount)
-          );
-
-        } catch {
-          // Ignore email errors
-          // Payment should continue even if email fails
-        }
-
-      }
-
-
+        );
+    } catch (error) {
+        console.error("Email error:", error);
+    }
+}
       // Return payment result
       return res.json({
         id: response.id,
