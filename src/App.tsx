@@ -2,15 +2,15 @@ import "./App.css";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
+import type { productApi } from "./Types/Product";
 import HeroSlider from "./components/HeroSlider/HeroSlider";
 import Subscription from "./components/Subscription/Subscription";
 import Product from "./components/Products/Products";
-import type { productApi } from "./Types/Product";
+import  ProductDetailsWrapper from "./components/ProductDetails/ProductDetailsWrapper";
 import CepModal from "./modals/CepModal/CepModal";
 import DepartmentMobile from "./components/DepartmentsMobile/DepartmentsMobile";
 import ShowcaseDeparments from "./components/ShowcaseDeparments/ShowcaseDeparments";
 import Footer from "./components/Footer/Footer";
-import ProductDetails from "./components/ProductDetails/ProductDetails";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 import Address from './components/Adress/Address'
 import Payment from "./components/Payment/Payment";
@@ -32,7 +32,7 @@ function App() {
           path="/"
           element={
             <>
-              <HeroSlider />
+              <HeroSlider products={products}/>
               <ShowcaseDeparments />
               <Product
                 setProducts={setProducts}
@@ -50,17 +50,16 @@ function App() {
           element={<DepartmentMobile />}
         />
         <Route
-           path="/detalhesProduto/:id"
-          element={
-            <ProductDetails
-              products={products}
-              product={selectedProduct}
-              showModal={showModal}
-              setSelectedProduct={setSelectedProduct}
-              setShowModal={setShowModal}
-            />
-          }
-        />
+  path="/detalhesProduto/:id"
+  element={
+    <ProductDetailsWrapper
+      products={products}
+      showModal={showModal}
+      setSelectedProduct={setSelectedProduct}
+      setShowModal={setShowModal}
+    />
+  }
+/>
         <Route 
           path="/carrinho"  element={<ShoppingCart />}
         />
@@ -84,5 +83,9 @@ function App() {
     </>
   );
 }
+
+
+
+
 
 export default App;

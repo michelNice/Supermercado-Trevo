@@ -5,18 +5,34 @@ import { FaCheckCircle } from "react-icons/fa";
 import {SwiperSlide } from "swiper/react";
 import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 import ProductCard from './ProductCard';
-import img from '../../assets/imgs/imgS.png';
-import img1 from '../../assets/imgs/imgS1.png';
-import img2 from '../../assets/imgs/imgS2.png'
+import img from '../../assets/imgs/img.png';
+import img1 from '../../assets/imgs/img1.png';
+import img2 from '../../assets/imgs/img2.png'
 import ship from '../../assets/imgs/shop.png'
-import img3 from '../../assets/imgs/imgS3.png'
+import img3 from '../../assets/imgs/img3.png'
+import img4 from '../../assets/imgs/img4.png'
 import ProductSwiper from './ProductSwiper';
 import type { productSectetion } from '../../Types/Product';
 const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelectedProduct ,setProducts,products}) => {
     const [error,setError] = useState<string | null>(null)
     const [loading,setLoading] = useState(false)
     useLockBodyScroll(showModal) 
-    const imgs = [img,img1,img2,img3]
+    const imgs = [img,img1,img2,img3,img4]
+    const excludedCategories = [
+  "meat",
+  "horti",
+  "vinho",
+  "coke",
+  "yoke",
+  "perdi",
+  "del",
+  "sadia",
+  "lasere",
+  "dell",
+  "seara",
+  "bakery",
+  "pet",
+];
     useEffect(()=> { 
       const Getproduct =  async  ()=> {
         setLoading(true)
@@ -45,9 +61,7 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
   )
 }
     const mixedProducts = products.filter(
-       (product) =>
-    product.category !== "meat" &&
-    product.category !== "horti"
+        (product)=> !excludedCategories.includes(product.category)
     )
     const filterProductsByCategory = (category:string)=> {
         return  products.filter(
@@ -56,6 +70,8 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
     }
     const hortiProducts =  filterProductsByCategory('horti')
     const meatProducts = filterProductsByCategory('meat')
+    const cokeProduct = filterProductsByCategory('coke')
+    const wineProduct = filterProductsByCategory('vinho')
     return(
         <>
             <div className="products-container">
@@ -106,7 +122,7 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
                         )
                      })}
                  </ProductSwiper>
-                 <div className="brands">
+                <div className="brands">
                    <FaCheckCircle className="brands__icon" />
                         <div>
                             <h2>COLEÇÕES POR MARCAS</h2>
@@ -120,6 +136,32 @@ const Product: React.FC<productSectetion> = ({ setShowModal ,showModal, setSelec
                         </div>
                     ))}
                 </div>
+                
+                 <h2>MATE A SUA SEDE ❄️</h2>
+               <ProductSwiper>
+  {cokeProduct.map((product) => (
+    <SwiperSlide key={product.id}>
+      <ProductCard
+        product={product}
+        setShowModal={setShowModal}
+        setSelectedProduct={setSelectedProduct}
+      />
+    </SwiperSlide>
+  ))}
+</ProductSwiper>
+      <h2>VINHOS PARA TODAS AS OCASIÕES 🍷</h2>
+ <ProductSwiper>
+  {wineProduct.map((product) => (
+    <SwiperSlide key={product.id}>
+      <ProductCard
+        product={product}
+        setShowModal={setShowModal}
+        setSelectedProduct={setSelectedProduct}
+      />
+    </SwiperSlide>
+  ))}
+</ProductSwiper>
+               
             </div>
            
         </>

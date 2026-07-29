@@ -7,6 +7,7 @@ interface Product{
   image:string
   unit:"UN" | "KG"
 }
+
 interface CartItem  extends Product{
   quantity:number;
 }
