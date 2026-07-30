@@ -16,7 +16,13 @@ import DepartmentsDropdown from "../DepartmentsDropdown/DepartmentsDropdown";
 import { useNavigate } from "react-router-dom";
 import { getSelectedAddress } from "../../utils/storage.ts";
 import { useCart } from "../../context/useCart";
-const Navbar = () => {
+import SearchProducts from "../SearchProducts/SearchProducts";
+import { type productApi } from "../../Types/Product";
+type NavbarProp = {
+      products: productApi[];
+  }
+
+const Navbar = ({products}:NavbarProp) => {
   const [menuOpen,setMenuOpen] = useState(false)
   const [showDelivery, setShowDelivery] = useState(false)
   const [departments, setDepartments] = useState(false)
@@ -43,7 +49,6 @@ const Navbar = () => {
       setShowDelivery(false);
     }
   };
-
   document.addEventListener("mousedown", handleClickOutside);
 
   return () => {
@@ -69,10 +74,13 @@ const Navbar = () => {
             <a className="logo" href="/">
             <img src={trevo} alt="Trevo" />
           </a>
+          {/*
           <div className="search__box">
             <input type="text" placeholder="O que você precisa?" aria-label="Buscar produtos"/>
              <FaSearch className="icon seacher" />
          </div>
+         */}
+         <SearchProducts products={products}/>
            <div className="actions">
             <div className="store__wrapper">
               <div
