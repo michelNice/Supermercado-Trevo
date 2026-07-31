@@ -78,7 +78,6 @@ function App() {
         setCep={setCep}
         onSubmit={handleCepSubmit}
       />
-
       <Footer />
     </>
   );

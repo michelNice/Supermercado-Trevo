@@ -5,8 +5,9 @@ import ReCAPTCHA from "react-google-recaptcha";
 import CepModal from '../../modals/CepModal/CepModal';
 import UnavailableModal from '../../modals/UnavailableModal/UnavailableModal.js';
 import { useModal } from '../../modals/CepModal/CepModalUtils';
- import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
- import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import RegisterModal from '../../modals/RegisterModal';
 const Subscription = () => {
  const [showPassword, setShowPassword] = useState(false);
  const [password, setPassword] = useState("");
@@ -14,6 +15,7 @@ const Subscription = () => {
  const [userError, setUserError] = useState("");
  const {openModal,closeModal,showModal} = useModal()
  const [showUnavailable,setShowUnavailable] = useState(false)
+ const [showRegister, setShowRegister] = useState(false);
  const [cep,setCep] = useState('')
  const handleCepSubmit = ()=>{
    closeModal()
@@ -78,7 +80,8 @@ const Subscription = () => {
           <button
             type="button"
             className="btn__subscriptionTrans"
-             onClick={openModal}
+             /*onClick={openModal}*/
+              onClick={() => setShowRegister(true)}
           >
             Criar uma conta
           </button>
@@ -99,6 +102,11 @@ const Subscription = () => {
       show={showUnavailable}
       onClose={() => setShowUnavailable(false)}
       />
+      <RegisterModal
+      show={showRegister}
+      onClose={() => setShowRegister(false)}
+    />
+
     </section>
     
   </>

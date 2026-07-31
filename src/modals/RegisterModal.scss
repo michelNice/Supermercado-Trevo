@@ -1,0 +1,79 @@
+@use '../Styles/variables' as *;
+@use '../Styles/mixins' as *;
+
+.register-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(16, 24, 40, 0.55);
+  backdrop-filter: blur(4px);
+  animation: registerOverlayIn 0.25s ease-out;
+}
+
+.register-modal {
+  position: relative;
+  width: min(100%, 480px);
+  animation: registerModalIn 0.3s ease-out;
+}
+
+.register-modal__close {
+  position: absolute;
+  top: -2.75rem;
+  right: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: $white;
+  color: $text-medium;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    background: #f8f8f8;
+  }
+}
+
+@keyframes registerOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes registerModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 540px) {
+  .register-modal__overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .register-modal {
+    width: 100%;
+  }
+
+  .register-modal__close {
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+  }
+}
