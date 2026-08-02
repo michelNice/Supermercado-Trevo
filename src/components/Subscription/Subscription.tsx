@@ -8,10 +8,13 @@ import { useModal } from '../../modals/CepModal/CepModalUtils';
 import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import RegisterModal from '../../modals/RegisterModal';
+import { supabase } from "../../services/Supabase/supabaseClient";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../context/useAuth';
 const Subscription = () => {
+  const [email, setEmail] = useState("");
  const [showPassword, setShowPassword] = useState(false);
  const [password, setPassword] = useState("");
- const [user, setUser] = useState("");
  const [userError, setUserError] = useState("");
  const {openModal,closeModal,showModal} = useModal()
  const [showUnavailable,setShowUnavailable] = useState(false)
@@ -21,12 +24,30 @@ const Subscription = () => {
    closeModal()
    setShowUnavailable(true)
  }
+ const {setUser} = useAuth()
+     const navigate = useNavigate();
+ async function handleLogin(e:React.FormEvent){
+    e.preventDefault()
+
+    const {data,error} = await supabase.auth.signInWithPassword({
+        email,
+        password
+    })
+    if(error){
+       alert(error.message);
+      return 
+    }
+    if(data.user){
+       navigate("/minha-conta");
+      setUser(data.user)
+    }
+ }
   useLockBodyScroll(showModal || showUnavailable)
  return (
   <>
     <section className="login__wrapper">
       <div className="sub__login">
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="sub__text">
             <h2>Seja bem-vindo(a)!</h2>
             <p>Insira seus dados nos campos abaixo para fazer login</p>
@@ -36,8 +57,8 @@ const Subscription = () => {
               type="text"
               id="user"
               placeholder=" "
-              value={user}
-              onChange={(e) => handleUserChange(e, setUser, setUserError)}
+              value={email}
+               onChange={(e) => setEmail(e.target.value)}
             />
             <label htmlFor="user">Email, CPF ou CNPJ*</label>
           </div>
