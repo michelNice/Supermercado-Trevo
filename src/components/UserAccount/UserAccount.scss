@@ -1,0 +1,113 @@
+@use "../../Styles/variables" as *;
+@use "../../Styles/mixins" as *;
+
+.account {
+  max-width: 1200px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+
+  display: grid;
+  gap: 2rem;
+
+  &__profile,
+  &__cart,
+  &__address {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 1.8rem;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    transition: .25s ease;
+  }
+
+  &__profile:hover,
+  &__cart:hover,
+  &__address:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, .10);
+  }
+
+  h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0f172a;
+    padding-bottom: .75rem;
+    border-bottom: 2px solid #f1f5f9;
+  }
+
+  p {
+    margin: .8rem 0;
+    font-size: .98rem;
+    color: #475569;
+    line-height: 1.5;
+
+    strong {
+      color: #111827;
+      font-weight: 600;
+      margin-right: .25rem;
+    }
+  }
+
+  &__product {
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+
+    border: 1px solid #edf2f7;
+    border-radius: 10px;
+    background: #fafafa;
+
+    transition: .2s ease;
+
+    &:hover {
+      background: #f8fafc;
+      border-color: #22c55e;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 2rem;
+    color: #64748b;
+    font-size: .95rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .account {
+    grid-template-columns: repeat(2, 1fr);
+
+    &__profile {
+      grid-column: span 2;
+    }
+
+    &__address {
+      grid-column: span 2;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .account {
+    padding: 1rem;
+    gap: 1rem;
+
+    &__profile,
+    &__cart,
+    &__address {
+      padding: 1.2rem;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+    }
+
+    p {
+      font-size: .92rem;
+    }
+  }
+}

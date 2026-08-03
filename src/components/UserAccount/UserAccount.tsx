@@ -1,7 +1,7 @@
 import { useAuth } from "../../context/useAuth";
 import { useCart } from "../../context/useCart";
 import { useCheckout } from "../../context/CheckoutContext";
-
+import './UserAccount.scss'
 function UserAccount() {
     const { user } = useAuth();
     const { cartItem } = useCart();
@@ -62,31 +62,20 @@ function UserAccount() {
                                 </strong>{" "}
                                 R$ {Number(item.price).toFixed(2)}
                             </p>
-
                         </div>
                     ))
                 )}
-
             </section>
-
-
-
             <section className="account__address">
-
                 <h2>Meu Endereço</h2>
-
-
                 {address ? (
                     <div>
-
                         <p>
                             <strong>
                                 Nome:
                             </strong>{" "}
                             {address.name || "Não informado"}
                         </p>
-
-
                         <p>
                             <strong>
                                 Rua:
@@ -94,8 +83,6 @@ function UserAccount() {
                             {address.street || "Não informado"}
                             {address.number && `, ${address.number}`}
                         </p>
-
-
                         <p>
                             <strong>
                                 Bairro:
