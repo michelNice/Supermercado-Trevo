@@ -149,7 +149,8 @@ const Navbar = ({products}:NavbarProp) => {
               )}
             </span>
           </Link>
-
+        </div>
+        
           <a
             className="cart"
             onClick={() => navigate("/carrinho")}
@@ -162,7 +163,6 @@ const Navbar = ({products}:NavbarProp) => {
               </span>
             )}
           </a>
-        </div>
       </div>
     </nav>
 
