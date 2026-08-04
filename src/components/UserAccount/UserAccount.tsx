@@ -1,16 +1,39 @@
 import { useAuth } from "../../context/useAuth";
 import { useCart } from "../../context/useCart";
-import { useCheckout } from "../../context/CheckoutContext";
+
+import { supabase } from "../../services/Supabase/supabaseClient";
 import './UserAccount.scss'
+import { useState ,useEffect} from "react";
 function UserAccount() {
+    const [savedAddress,setSaveAddress] = useState<any>(null)
     const { user } = useAuth();
     const { cartItem } = useCart();
-    const { address } = useCheckout();
-
     if (!user) {
         return <p>Você precisa fazer login.</p>;
     }
+    useEffect(()=> {
+        async function loadAddress(){
+        
+            if(!user)return
+            console.log("ID DO USUARIO LOGADO:", user.id);
+            // TESTE 1: Ver qual usuário está logado
+        console.log("USUARIO LOGADO:", user);
 
+        // TESTE 2: Ver somente o ID
+        console.log("ID DO USUARIO:", user.id);
+
+            const {data,error} = await supabase
+    .from("addresses")
+    .select("*")
+    .eq("user_id", user.id);
+
+            if(error){
+                return 
+            }
+            setSaveAddress(data)
+        }
+        loadAddress()
+    },[user])
     return (
         <div className="account">
 
@@ -24,11 +47,9 @@ function UserAccount() {
 
                 <p>
                     <strong>Email:</strong>{" "}
-                    {user.email}
+                    {user?.email}
                 </p>
             </section>
-
-
             <section className="account__cart">
 
                 <h2>Produtos no carrinho</h2>
@@ -41,7 +62,6 @@ function UserAccount() {
                             key={item.id}
                             className="account__product"
                         >
-
                             <p>
                                 <strong>
                                     Produto:
@@ -68,34 +88,33 @@ function UserAccount() {
             </section>
             <section className="account__address">
                 <h2>Meu Endereço</h2>
-                {address ? (
+                {savedAddress ?  (
                     <div>
                         <p>
                             <strong>
                                 Nome:
                             </strong>{" "}
-                            {address.name || "Não informado"}
+                            {savedAddress?.name || "Não informado"}
                         </p>
                         <p>
                             <strong>
                                 Rua:
                             </strong>{" "}
-                            {address.street || "Não informado"}
-                            {address.number && `, ${address.number}`}
+                            {savedAddress?.street || "Não informado"}
+                            {savedAddress?.number && `, ${savedAddress?.number}`}
                         </p>
                         <p>
                             <strong>
                                 Bairro:
                             </strong>{" "}
-                            {address.neighborhood || "Não informado"}
+                            {savedAddress?.neighborhood || "Não informado"}
                         </p>
-
 
                         <p>
                             <strong>
                                 Cidade:
                             </strong>{" "}
-                            {address.city || "Não informado"}
+                            {savedAddress?.city || "Não informado"}
                         </p>
 
 
@@ -103,7 +122,7 @@ function UserAccount() {
                             <strong>
                                 Estado:
                             </strong>{" "}
-                            {address.state || "Não informado"}
+                            {savedAddress?.state || "Não informado"}
                         </p>
 
 
@@ -111,18 +130,16 @@ function UserAccount() {
                             <strong>
                                 CEP:
                             </strong>{" "}
-                            {address.zipCode || "Não informado"}
+                            {savedAddress?.zip_code || "Não informado"}
                         </p>
 
 
-                        {address.complemento && (
-                            <p>
-                                <strong>
-                                    Complemento:
-                                </strong>{" "}
-                                {address.complemento}
-                            </p>
-                        )}
+              {savedAddress?.complement && (
+                    <p>
+                        <strong>Complemento:</strong>{" "}
+                        {savedAddress.complement}
+                    </p>
+                )}
 
                     </div>
 

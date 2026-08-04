@@ -4,6 +4,7 @@ import { formatCep } from "../../modals/CepModal/CepModalUtils";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom"; 
 import { useCheckout } from "../../context/CheckoutContext";
+import { supabase } from "../../services/Supabase/supabaseClient";
 import {
   MapContainer,
   TileLayer,
@@ -166,14 +167,36 @@ const Address = () => {
     }));
   };
 
-  const handleSubmit = (
+  const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
 
-     navigate("/pagamento");
+    const { data:{user}, } = await supabase.auth.getUser();
+
+    if(!user){
+      return
+    }
+    const {error} =  await supabase
+    .from("addresses")
+    .insert({
+        user_id:user.id,
+        name:address.name,
+        street:address.street,
+        number:address.number,
+        neighborhood:address.neighborhood,
+        city:address.city,
+        state:address.state,
+        zip_code:address.zipCode,
+        complement:address.complemento
+    })
+    if(error){
+      return
+    }
+    navigate("/pagamento");
 
   };
+
   return (
     <section className="address">
       <form
