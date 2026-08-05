@@ -34,12 +34,18 @@ function UserAccount() {
         if (!user) return;
 
 
+        const { data: session } = await supabase.auth.getSession();
+
+console.log("SESSION:", session.session);
+console.log("TOKEN:", session.session?.access_token);
+
+
         console.log("USER ID:", user.id);
 
 
        const { data, error } = await supabase
   .from("addresses")
-  .select("*");
+  .select("*").eq("user_id", user.id)
 
 
 

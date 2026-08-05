@@ -167,35 +167,58 @@ const Address = () => {
     }));
   };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
+ const handleSubmit = async (
+  event: React.FormEvent<HTMLFormElement>
+) => {
+  event.preventDefault();
 
-    const { data:{user}, } = await supabase.auth.getUser();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-    if(!user){
-      return
-    }
-    const {error} =  await supabase
+  console.log("SESSION:", session);
+
+  if (!session) {
+    alert("Usuário sem sessão");
+    return;
+  }
+
+  const user = session.user;
+
+  console.log("USER:", user);
+
+  const { data, error } = await supabase
     .from("addresses")
     .insert({
-        user_id:user.id,
-        name:address.name,
-        street:address.street,
-        number:address.number,
-        neighborhood:address.neighborhood,
-        city:address.city,
-        state:address.state,
-        zip_code:address.zipCode,
-        complement:address.complemento
+      user_id: user.id,
+      name: address.name,
+      street: address.street,
+      number: address.number,
+      neighborhood: address.neighborhood,
+      city: address.city,
+      state: address.state,
+      zip_code: address.zipCode,
+      complement: address.complemento,
     })
-    if(error){
-      return
-    }
-    navigate("/pagamento");
+    .select();
 
-  };
+  console.log("INSERT DATA:", data);
+  console.log("INSERT ERROR:", error);
+
+  if (error) {
+    console.log(
+      "ERROR OBJECT:",
+      JSON.stringify(error, null, 2)
+    );
+
+    console.error(error);
+
+    alert(error.message);
+    return;
+  }
+
+  navigate("/pagamento");
+};
 
   return (
     <section className="address">
