@@ -14,15 +14,23 @@ if (!rootElement) {
 }
 
 createRoot(rootElement).render(
-    <StrictMode>
+  <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <CheckoutProvider>
-        <AuthProvider>
-          <App />
-          </AuthProvider>
-        </CheckoutProvider>
-      </CartProvider>
+
+      <AuthProvider>
+
+        <CartProvider>
+
+          <CheckoutProvider>
+
+            <App />
+
+          </CheckoutProvider>
+
+        </CartProvider>
+
+      </AuthProvider>
+
     </BrowserRouter>
   </StrictMode>
 )
