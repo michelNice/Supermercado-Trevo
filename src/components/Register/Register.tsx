@@ -27,7 +27,6 @@ async function handleRegister(e: React.FormEvent) {
 });
 
   if (error) {
-    console.error(error);
     alert(error.message);
     return;
   }

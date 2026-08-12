@@ -1,11 +1,9 @@
 import { useAuth } from "../../context/useAuth";
 import { useCart } from "../../context/useCart";
 import { supabase } from "../../services/Supabase/supabaseClient";
-
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./UserAccount.scss";
-
-
 interface Address {
     id: string;
     user_id: string;
@@ -19,63 +17,37 @@ interface Address {
     complement?: string;
 }
 function UserAccount() {
-
     const { user } = useAuth();
     const { cartItem } = useCart();
-
+    const navigate = useNavigate();
     const [address, setAddress] = useState<Address | null>(null);
-
-
-
     useEffect(() => {
-
     async function loadAddress() {
 
         if (!user) return;
 
-
-        const { data: session } = await supabase.auth.getSession();
-
-console.log("SESSION:", session.session);
-console.log("TOKEN:", session.session?.access_token);
-
-
-        console.log("USER ID:", user.id);
-
-
        const { data, error } = await supabase
-  .from("addresses")
-  .select("*").eq("user_id", user.id)
-
-
-
-
-        console.log("DATA ADDRESS:", data);
-        console.log("ERROR ADDRESS:", error);
-
-        console.log(user);
-console.log(user.id);
-console.log(user.email);
-
-
-
+      .from("addresses")
+      .select("*").eq("user_id", user.id)
         if (error) {
             return;
         }
-
-
         setAddress(data[0] || null);
 
     }
-
-
     loadAddress();
-
-
 }, [user]);
 
+async function handleLogout() {
 
+    const { error } = await supabase.auth.signOut();
 
+    if (error) {
+        return;
+    }
+
+    navigate("/");
+}
     if (!user) {
 
         return (
@@ -85,23 +57,12 @@ console.log(user.email);
         );
 
     }
-
-
-
-
-
     return (
-
         <div className="account">
-
-
             <section className="account__profile">
-
                 <h2>
                     Minha Conta
                 </h2>
-
-
                 <p>
                     <strong>
                         Nome:
@@ -113,46 +74,26 @@ console.log(user.email);
                     }
 
                 </p>
-
-
                 <p>
                     <strong>
                         Email:
                     </strong>{" "}
 
                     {user.email}
-
                 </p>
-
-
             </section>
-
-
-
-
-
-            <section className="account__cart">
-
-
+      <section className="account__cart">
                 <h2>
                     Produtos no carrinho
                 </h2>
-
-
-
                 {
                     cartItem.length === 0 ? (
 
                         <p>
                             Nenhum produto no carrinho.
                         </p>
-
-
                     ) : (
-
-
                         cartItem.map((item)=>(
-
                             <div
                                 key={item.id}
                                 className="account__product"
@@ -166,35 +107,25 @@ console.log(user.email);
                                     {item.name}
 
                                 </p>
-
-
                                 <p>
                                     <strong>
                                         Quantidade:
                                     </strong>{" "}
 
                                     {item.quantity}
-
                                 </p>
-
-
                                 <p>
                                     <strong>
                                         Preço:
                                     </strong>{" "}
 
                                     R$ {Number(item.price).toFixed(2)}
-
                                 </p>
-
-
                             </div>
-
-                        ))
+                          ))
 
                     )
                 }
-
 
             </section>
 
@@ -329,6 +260,13 @@ console.log(user.email);
 
 
             </section>
+            
+            <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                >
+                                    Sair da conta
+                                </button>
 
 
 

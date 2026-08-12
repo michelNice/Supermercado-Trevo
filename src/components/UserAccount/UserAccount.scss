@@ -5,10 +5,8 @@
   max-width: 1200px;
   margin: 2.5rem auto;
   padding: 0 1.5rem;
-
   display: grid;
   gap: 2rem;
-
   &__profile,
   &__cart,
   &__address {
@@ -63,10 +61,7 @@
       background: #f8fafc;
       border-color:$primary;
     }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+    &:last-child {margin-bottom: 0;}
   }
 
   &__empty {
@@ -81,13 +76,9 @@
   .account {
     grid-template-columns: repeat(2, 1fr);
 
-    &__profile {
-      grid-column: span 2;
-    }
+    &__profile {grid-column: span 2;}
 
-    &__address {
-      grid-column: span 2;
-    }
+    &__address {grid-column: span 2;}
   }
 }
 
@@ -102,12 +93,7 @@
       padding: 1.2rem;
     }
 
-    h2 {
-      font-size: 1.35rem;
-    }
-
-    p {
-      font-size: .92rem;
-    }
+    h2 {font-size: 1.35rem;}
+    p {font-size: .92rem;}
   }
 }

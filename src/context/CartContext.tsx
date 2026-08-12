@@ -67,11 +67,6 @@ const CartProvider = ({
 
             return JSON.parse(savedCart);
         } catch (error) {
-            console.error(
-                "Erro ao carregar carrinho do localStorage:",
-                error
-            );
-
             return [];
         }
     });
@@ -110,11 +105,6 @@ const CartProvider = ({
             if (!user) {
                 return;
             }
-
-            console.log(
-                "CARREGANDO CARRINHO DO USUÁRIO:",
-                user.id
-            );
 
             /*
              * Buscar itens do carrinho
@@ -180,13 +170,6 @@ const CartProvider = ({
 
                 return;
             }
-
-            /*
-             * ==========================================
-             * Montar carrinho
-             * ==========================================
-             */
-
             const cartFromDatabase: CartItem[] =
                 cartData
                     .map((cartItem) => {
@@ -200,7 +183,6 @@ const CartProvider = ({
                         if (!product) {
                             return null;
                         }
-
                         return {
                             id: product.id,
                             name: product.name,
@@ -240,7 +222,6 @@ const CartProvider = ({
      * 4. ADICIONAR PRODUTO
      * ==========================================
      */
-
     const addProduct = async (
         product: Product
     ) => {
@@ -249,7 +230,6 @@ const CartProvider = ({
          * USUÁRIO NÃO LOGADO
          * ==============================
          */
-
         if (!user) {
             setCartItems((prevItems) => {
                 const existingItem =
@@ -285,21 +265,13 @@ const CartProvider = ({
             return;
         }
 
-        /*
-         * ==============================
-         * USUÁRIO LOGADO
-         * ==============================
-         */
-
         const existingItem =
             cartItems.find(
                 (item) =>
                     item.id === product.id
             );
 
-        /*
-         * Produto já existe
-         */
+    
 
         if (existingItem) {
             const newQuantity =
@@ -322,11 +294,6 @@ const CartProvider = ({
                     );
 
             if (error) {
-                console.error(
-                    "ERRO AO ATUALIZAR CARRINHO:",
-                    error
-                );
-
                 return;
             }
 
@@ -347,11 +314,6 @@ const CartProvider = ({
 
             return;
         }
-
-        /*
-         * Produto novo
-         */
-
         const { error } =
             await supabase
                 .from("cart_items")
@@ -363,11 +325,6 @@ const CartProvider = ({
                 });
 
         if (error) {
-            console.error(
-                "ERRO AO INSERIR CARRINHO:",
-                error
-            );
-
             return;
         }
 
@@ -381,41 +338,18 @@ const CartProvider = ({
             ]
         );
     };
-
-    /*
-     * ==========================================
-     * 5. REMOVER PRODUTO
-     * ==========================================
-     */
-
     const removeFromCart = async (
         id: string
     ) => {
-        /*
-         * Atualiza a tela
-         */
-
         setCartItems((prevItems) =>
             prevItems.filter(
                 (item) =>
                     item.id !== id
             )
         );
-
-        /*
-         * Visitante:
-         * o useEffect salva no localStorage.
-         */
-
         if (!user) {
             return;
         }
-
-        /*
-         * Usuário logado:
-         * remove do Supabase.
-         */
-
         const { error } =
             await supabase
                 .from("cart_items")
@@ -436,13 +370,6 @@ const CartProvider = ({
             );
         }
     };
-
-    /*
-     * ==========================================
-     * 6. DIMINUIR QUANTIDADE
-     * ==========================================
-     */
-
     const decreaseQuantity = async (
         id: string
     ) => {
@@ -451,28 +378,15 @@ const CartProvider = ({
                 (item) =>
                     item.id === id
             );
-
         if (!item) {
             return;
         }
-
-        /*
-         * Se chegou em 1,
-         * remove o produto.
-         */
-
         if (item.quantity <= 1) {
             await removeFromCart(id);
             return;
         }
-
         const newQuantity =
             item.quantity - 1;
-
-        /*
-         * Atualiza tela
-         */
-
         setCartItems(
             (prevItems) =>
                 prevItems.map(
@@ -486,11 +400,6 @@ const CartProvider = ({
                             : item
                 )
         );
-
-        /*
-         * Atualiza banco
-         * se estiver logado.
-         */
 
         if (user) {
             const { error } =
@@ -508,22 +417,8 @@ const CartProvider = ({
                         "product_id",
                         id
                     );
-
-            if (error) {
-                console.error(
-                    "ERRO AO DIMINUIR QUANTIDADE:",
-                    error
-                );
-            }
         }
     };
-
-    /*
-     * ==========================================
-     * 7. AUMENTAR QUANTIDADE
-     * ==========================================
-     */
-
     const increaseQuantity = async (
         id: string
     ) => {
@@ -540,10 +435,6 @@ const CartProvider = ({
         const newQuantity =
             item.quantity + 1;
 
-        /*
-         * Atualiza tela
-         */
-
         setCartItems(
             (prevItems) =>
                 prevItems.map(
@@ -558,12 +449,7 @@ const CartProvider = ({
                 )
         );
 
-        /*
-         * Atualiza banco
-         * se estiver logado.
-         */
-
-        if (user) {
+       if (user) {
             const { error } =
                 await supabase
                     .from("cart_items")
@@ -579,51 +465,17 @@ const CartProvider = ({
                         "product_id",
                         id
                     );
-
-            if (error) {
-                console.error(
-                    "ERRO AO AUMENTAR QUANTIDADE:",
-                    error
-                );
-            }
         }
     };
 
-    /*
-     * ==========================================
-     * 8. LIMPAR CARRINHO
-     * ==========================================
-     */
-
     const clearCart = async () => {
-        /*
-         * Limpa estado
-         */
-
         setCartItems([]);
-
-        /*
-         * Limpa carrinho de visitante
-         */
-
         localStorage.removeItem(
             "guest_cart"
         );
-
-        /*
-         * Se não estiver logado,
-         * terminou.
-         */
-
         if (!user) {
             return;
         }
-
-        /*
-         * Usuário logado:
-         * limpa Supabase.
-         */
-
         const { error } =
             await supabase
                 .from("cart_items")
@@ -641,12 +493,6 @@ const CartProvider = ({
         }
     };
 
-    /*
-     * ==========================================
-     * 9. TOTAL
-     * ==========================================
-     */
-
     const totalCart = useMemo(() => {
         return cartItems.reduce(
             (total, item) =>
@@ -656,13 +502,6 @@ const CartProvider = ({
             0
         );
     }, [cartItems]);
-
-    /*
-     * ==========================================
-     * PROVIDER
-     * ==========================================
-     */
-
     return (
         <CartContext.Provider
             value={{
@@ -679,12 +518,6 @@ const CartProvider = ({
         </CartContext.Provider>
     );
 };
-
-/*
- * ==========================================
- * HOOK
- * ==========================================
- */
 
 export const useCart = () => {
     const context =

@@ -49,9 +49,7 @@ function SearchProducts({ products = [] }: ProsSeach) {
         setIsOpen(true);
     }}
 />
-
-
-            <FaSearch className="icon" />
+ <FaSearch className="icon" />
 
             {isOpen && search && (
                 <div className="search__results">

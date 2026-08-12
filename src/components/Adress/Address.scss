@@ -1,6 +1,4 @@
-
 @use "../../Styles/variables" as *;
-
 .address {
   min-height: calc(20vh - 20px);
   display: flex;
@@ -9,16 +7,9 @@
   padding: 2.5rem 0.5rem;
   background: $gray-soft;
 }
-
-/* Área do formulário/endereço salvo */
 .address-content {
   flex: 1;
 }
-
-/* =========================
-   FORMULÁRIO
-========================= */
-
 .address-form {
   width: 100%;
   background: $white;
@@ -42,7 +33,6 @@
       font-size: 1.125rem;
       font-weight: 600;
     }
-
     input {
       width: 100%;
       height: 48px;
@@ -63,25 +53,19 @@
     width: 100%;
     height: 52px;
     margin-top: 1rem;
-
     border: none;
     border-radius: 8px;
-
     background: $primary;
     color: $white;
-
     font-size: 1rem;
     font-weight: 600;
-
     cursor: pointer;
     transition: 0.3s;
-
     &:hover {
       background: $primary-dark;
     }
   }
 }
-
 /* =========================
    ENDEREÇO SALVO
 ========================= */
@@ -122,19 +106,14 @@
     width: 100%;
     height: 52px;
     margin-top: 1rem;
-
     border: none;
     border-radius: 8px;
-
     background: $primary;
     color: $white;
-
     font-size: 1rem;
     font-weight: 600;
-
     cursor: pointer;
     transition: 0.3s;
-
     &:hover {
       background: $primary-dark;
     }
@@ -144,7 +123,6 @@
 /* =========================
    MAPA
 ========================= */
-
 .address-map {
   flex: 1;
   min-height: 700px;
@@ -162,7 +140,6 @@
     height: 100%;
   }
 }
-
 /* =========================
    TABLET / MOBILE
 ========================= */
@@ -177,9 +154,7 @@
   .address-form {
     padding: 1.5rem;
 
-    h2 {
-      font-size: 1.6rem;
-    }
+    h2 {font-size: 1.6rem;}
 
     &__group {
       label {

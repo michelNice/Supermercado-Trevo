@@ -91,7 +91,7 @@ const DepartmentMobile:React.FC = ()=> {
                 <ul>
                 {departaments.map((item, index) => (
                     <li key={index}>
-                        <a href="">
+                        <a href="hi">
                             {item.name}
                             {item.icon}
                         </a>
