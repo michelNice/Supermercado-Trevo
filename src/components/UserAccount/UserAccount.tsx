@@ -128,21 +128,10 @@ async function handleLogout() {
                 }
 
             </section>
-
-
-
-
-
-
-
             <section className="account__address">
-
-
                 <h2>
                     Meu Endereço
                 </h2>
-
-
 
                 {
                     address ? (
@@ -171,11 +160,7 @@ async function handleLogout() {
                                     address.number &&
                                     `, ${address.number}`
                                 }
-
                             </p>
-
-
-
 
                             <p>
                                 <strong>
@@ -185,10 +170,6 @@ async function handleLogout() {
                                 {address.neighborhood}
 
                             </p>
-
-
-
-
                             <p>
                                 <strong>
                                     Cidade:
@@ -197,10 +178,6 @@ async function handleLogout() {
                                 {address.city}
 
                             </p>
-
-
-
-
                             <p>
                                 <strong>
                                     Estado:
@@ -209,10 +186,6 @@ async function handleLogout() {
                                 {address.state}
 
                             </p>
-
-
-
-
                             <p>
                                 <strong>
                                     CEP:
@@ -221,11 +194,6 @@ async function handleLogout() {
                                 {address.zip_code}
 
                             </p>
-
-
-
-
-
                             {
                                 address.complement && (
 
@@ -241,11 +209,7 @@ async function handleLogout() {
                                 )
                             }
 
-
-
                         </div>
-
-
                     ) : (
 
 
@@ -256,19 +220,10 @@ async function handleLogout() {
 
                     )
                 }
-
-
-
             </section>
-            
-            <button
-                                    type="button"
-                                    onClick={handleLogout}
-                                >
-                                    Sair da conta
-                                </button>
-
-
+            <button type="button" onClick={handleLogout} className="account__logout">
+                    Sair da conta
+            </button>
 
         </div>
 

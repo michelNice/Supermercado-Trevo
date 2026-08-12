@@ -10,7 +10,7 @@
   &__profile,
   &__cart,
   &__address {
-    background: #fff;
+    background: $white;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
     padding: 1.8rem;
@@ -24,6 +24,26 @@
     transform: translateY(-3px);
     box-shadow: 0 14px 32px rgba(15, 23, 42, .10);
   }
+&__logout {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.4rem;
+  border: 1px solid $primary;
+  border-radius: 8px;
+  background: transparent;
+  color: $primary;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: $primary;
+    color: $white;
+  }
+  &:active { transform: scale(0.97);}
+}
+
+
 
   h2 {
     margin: 0 0 1.5rem;
@@ -46,6 +66,9 @@
       margin-right: .25rem;
     }
   }
+
+
+
 
   &__product {
     padding: 1rem 1.2rem;
