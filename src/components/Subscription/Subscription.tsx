@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import "./Subscription.scss";
 
@@ -24,10 +23,22 @@ import { useAuth } from "../../context/useAuth";
 
 const Subscription = () => {
 
+    // =========================
+    // LOGIN
+    // =========================
+
     const [email, setEmail] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [userError, setUserError] = useState("");
+
+    // reCAPTCHA
+    const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
+
+    // =========================
+    // MODAIS
+    // =========================
 
     const {
         closeModal,
@@ -35,59 +46,170 @@ const Subscription = () => {
     } = useModal();
 
     const [showUnavailable, setShowUnavailable] = useState(false);
-
     const [showRegister, setShowRegister] = useState(false);
 
     const [cep, setCep] = useState("");
-    const handleCepSubmit = () => {
 
-        closeModal();
-        setShowUnavailable(true);
-    };
+
+    // =========================
+    // AUTH
+    // =========================
 
     const { setUser } = useAuth();
     const navigate = useNavigate();
 
-    async function handleLogin(e: React.FormEvent) {
-        e.preventDefault();
-        const { data, error } =
-            await supabase.auth.signInWithPassword({
-                email,
-                password
-            });
-        if (error) {
 
-            setUserError(error.message);
+    // =========================
+    // CEP
+    // =========================
+
+    const handleCepSubmit = () => {
+        closeModal();
+        setShowUnavailable(true);
+    };
+
+
+    const handleForgotPassword = async()=> {
+        if(!email){
+             setUserError("Digite seu email para recuperar a senha.");
+            return;
+        }
+
+        
+        try{
+            const { error } = await supabase.auth.resetPasswordForEmail(
+                        email,
+                        {
+                            redirectTo: "http://localhost:5173/reset-password",
+                        }
+            );
+            if(error){
+                 setUserError("Não foi possível enviar o email de recuperação.");
+                return;
+            }
+            setUserError(
+            "Enviamos um link de recuperação para seu email."
+            );
+
+        }catch (error) {
+        console.error("Erro inesperado:", error);
+
+        setUserError(
+            "Ocorreu um erro ao tentar recuperar sua senha."
+        );
+     }
+    }
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+
+        e.preventDefault();
+
+        // Limpa erro anterior
+        setUserError("");
+
+
+        // Verifica reCAPTCHA
+        if (!recaptchaToken) {
+            setUserError("Complete o reCAPTCHA antes de entrar.");
             return;
         }
 
 
-        if (data.user) {
-
-            setUser(data.user);
-
-            navigate("/minha-conta");
+        // Verifica campos
+        if (!email || !password) {
+            setUserError("Preencha o email e a senha.");
+            return;
         }
-    }
+
+
+        try {
+
+            const { data, error } =
+                await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+
+
+            // Erro no login
+            if (error) {
+
+                console.error("Erro no login:", error);
+
+                setUserError("Email ou senha incorretos.");
+
+                return;
+            }
+
+
+            // Usuário retornado pelo Supabase
+            if (data.user) {
+
+                console.log("Login realizado:", data.user);
+
+                // Atualiza o contexto
+                setUser(data.user);
+
+                // Vai para a página inicial
+                navigate("/");
+
+            }
+
+        } catch (error) {
+
+            console.error("Erro inesperado:", error);
+
+            setUserError(
+                "Ocorreu um erro ao tentar fazer login."
+            );
+
+        }
+
+    };
+
+
+    // =========================
+    // BODY SCROLL
+    // =========================
+
     useLockBodyScroll(
         showModal || showUnavailable
     );
 
+
     return (
         <>
+
             <section className="login__wrapper">
+
                 <div className="sub__login">
+
                     <form onSubmit={handleLogin}>
+
+                        {/* =========================
+                            TEXTO
+                        ========================= */}
+
                         <div className="sub__text">
+
                             <h2>
                                 Seja bem-vindo(a)!
                             </h2>
+
                             <p>
-                                Insira seus dados nos campos abaixo para fazer login
+                                Insira seus dados nos campos abaixo
+                                para fazer login
                             </p>
 
                         </div>
+
+
+                        {/* =========================
+                            EMAIL
+                        ========================= */}
+
                         <div className="input__box">
+
                             <input
                                 type="text"
                                 id="user"
@@ -103,7 +225,14 @@ const Subscription = () => {
                             </label>
 
                         </div>
+
+
+                        {/* =========================
+                            SENHA
+                        ========================= */}
+
                         <div className="input__box">
+
                             <input
                                 type={
                                     showPassword
@@ -111,29 +240,42 @@ const Subscription = () => {
                                         : "password"
                                 }
                                 id="password"
-                                placeholder=""
+                                placeholder=" "
                                 value={password}
                                 onChange={(e) =>
                                     setPassword(e.target.value)
                                 }
                             />
+
                             <label htmlFor="password">
                                 Senha*
                             </label>
+
+
                             <span
                                 className="password__icon"
                                 onClick={() =>
                                     setShowPassword(!showPassword)
                                 }
                             >
+
                                 {
                                     showPassword
                                         ? <FaEyeSlash />
                                         : <FaEye />
                                 }
+
                             </span>
+
                         </div>
+
+
+                        {/* =========================
+                            ERRO
+                        ========================= */}
+
                         <div className="error__space">
+
                             {
                                 userError && (
                                     <p className="error__text">
@@ -141,18 +283,28 @@ const Subscription = () => {
                                     </p>
                                 )
                             }
+
                         </div>
 
-                        <div className="error__space"></div>
 
-                        <a href="#">
+                        {/* =========================
+                            ESQUECEU SENHA
+                        ========================= */}
+
+                        <button className="foget__password"
+                              type="button"
+                              onClick={handleForgotPassword}
+                        >
                             Esqueceu sua senha?
-                        </a>
+                        </button>
                         <ReCAPTCHA
-                            sitekey="6Lf8m0EtAAAAAPOawPU2ae99gIFSqEHpeGwCu9-D"
-                            onChange={(token) =>
-                                console.log(token)
-                            }
+                            sitekey="6Lc3boQtAAAAAEGLMgHkX5x5P219OXU-AbgCsFc-"
+                            onChange={(token) => {
+                                setRecaptchaToken(token);
+                            }}
+                            onExpired={() => {
+                                setRecaptchaToken(null);
+                            }}
                         />
                         <button
                             type="submit"
@@ -163,6 +315,7 @@ const Subscription = () => {
                         <p className="text_noAcc">
                             Ainda não tem uma conta?
                         </p>
+
                         <button
                             type="button"
                             className="btn__subscriptionTrans"
@@ -172,9 +325,10 @@ const Subscription = () => {
                         >
                             Criar uma conta
                         </button>
-                    </form>
-                </div>
 
+                    </form>
+
+                </div>
                 <CepModal
                     show={showModal}
 
@@ -190,8 +344,6 @@ const Subscription = () => {
                     setCep={setCep}
                     onSubmit={handleCepSubmit}
                 />
-
-
                 <UnavailableModal
                     show={showUnavailable}
                     onClose={() =>
@@ -204,10 +356,12 @@ const Subscription = () => {
                         setShowRegister(false)
                     }
                 />
+
             </section>
+
         </>
     );
 };
 
-export default Subscription;
 
+export default Subscription;

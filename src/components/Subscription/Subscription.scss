@@ -247,6 +247,28 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   animation: slideUpFade 0.25s ease-out; 
 }
 
+
+.foget__password {
+  background: transparent;
+  border: none;
+  color: $primary;
+  padding: 0;
+  margin: 0.5rem 0 0.2rem 0;
+  font-size: 1rem;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+  width: fit-content;
+
+  &:hover {
+    color: darken($primary, 10%);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 @keyframes slideUpFade {
   0% {
     opacity: 0;
