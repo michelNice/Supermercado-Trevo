@@ -16,6 +16,7 @@ import Address from "./components/Adress/Address";
 import Payment from "./components/Payment/Payment";
 import PurchaseConfirmed from "./components/purchaseConfirmed/PurchaseConfirmed";
 import UserAccount from "./components/UserAccount/UserAccount";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -71,7 +72,7 @@ function App() {
             />
           }
         />
-
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/carrinho" element={<ShoppingCart />} />
 
         <Route

@@ -1,22 +1,15 @@
 import { useState } from "react";
 import "./Subscription.scss";
-
 import ReCAPTCHA from "react-google-recaptcha";
-
 import CepModal from "../../modals/CepModal/CepModal";
 import UnavailableModal from "../../modals/UnavailableModal/UnavailableModal.js";
-
 import {
     useModal,
     useLockBodyScroll
 } from "../../modals/CepModal/CepModalUtils";
-
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
 import RegisterModal from "../../modals/RegisterModal";
-
 import { supabase } from "../../services/Supabase/supabaseClient";
-
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
 
@@ -31,6 +24,10 @@ const Subscription = () => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [userError, setUserError] = useState("");
+
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState("");
+    const [forgotMessage, setForgotMessage] = useState("");
 
     // reCAPTCHA
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
@@ -69,36 +66,43 @@ const Subscription = () => {
     };
 
 
-    const handleForgotPassword = async()=> {
-        if(!email){
-             setUserError("Digite seu email para recuperar a senha.");
+    // =========================
+    // RECUPERAR SENHA
+    // =========================
+
+    const handleForgotPassword = async () => {
+
+        if (!forgotEmail) {
+            setForgotMessage("Digite seu email.");
             return;
         }
 
-        
-        try{
-            const { error } = await supabase.auth.resetPasswordForEmail(
-                        email,
-                        {
-                            redirectTo: "http://localhost:5173/reset-password",
-                        }
-            );
-            if(error){
-                 setUserError("Não foi possível enviar o email de recuperação.");
-                return;
+        const { error } = await supabase.auth.resetPasswordForEmail(
+            forgotEmail,
+            {
+                redirectTo: "http://localhost:5173/reset-password",
             }
-            setUserError(
-            "Enviamos um link de recuperação para seu email."
+        );
+
+        if (error) {
+            console.error("Erro ao recuperar senha:", error);
+
+            setForgotMessage(
+                "Não foi possível enviar o email de recuperação."
             );
 
-        }catch (error) {
-        console.error("Erro inesperado:", error);
+            return;
+        }
 
-        setUserError(
-            "Ocorreu um erro ao tentar recuperar sua senha."
+        setForgotMessage(
+            "Enviamos um link de recuperação para seu email."
         );
-     }
-    }
+    };
+
+
+    // =========================
+    // LOGIN
+    // =========================
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 
@@ -152,7 +156,6 @@ const Subscription = () => {
 
                 // Vai para a página inicial
                 navigate("/");
-
             }
 
         } catch (error) {
@@ -162,9 +165,7 @@ const Subscription = () => {
             setUserError(
                 "Ocorreu um erro ao tentar fazer login."
             );
-
         }
-
     };
 
 
@@ -173,7 +174,9 @@ const Subscription = () => {
     // =========================
 
     useLockBodyScroll(
-        showModal || showUnavailable
+        showModal ||
+        showUnavailable ||
+        showForgotPassword
     );
 
 
@@ -288,15 +291,26 @@ const Subscription = () => {
 
 
                         {/* =========================
-                            ESQUECEU SENHA
+                            ESQUECEU A SENHA
                         ========================= */}
 
-                        <button className="foget__password"
-                              type="button"
-                              onClick={handleForgotPassword}
+                        <button
+                            className="foget__password"
+                            type="button"
+                            onClick={() => {
+                                setForgotEmail("");
+                                setForgotMessage("");
+                                setShowForgotPassword(true);
+                            }}
                         >
                             Esqueceu sua senha?
                         </button>
+
+
+                        {/* =========================
+                            RECAPTCHA
+                        ========================= */}
+
                         <ReCAPTCHA
                             sitekey="6Lc3boQtAAAAAEGLMgHkX5x5P219OXU-AbgCsFc-"
                             onChange={(token) => {
@@ -306,12 +320,24 @@ const Subscription = () => {
                                 setRecaptchaToken(null);
                             }}
                         />
+
+
+                        {/* =========================
+                            ENTRAR
+                        ========================= */}
+
                         <button
                             type="submit"
                             className="btn__subscription"
                         >
                             Entrar
                         </button>
+
+
+                        {/* =========================
+                            CRIAR CONTA
+                        ========================= */}
+
                         <p className="text_noAcc">
                             Ainda não tem uma conta?
                         </p>
@@ -329,6 +355,12 @@ const Subscription = () => {
                     </form>
 
                 </div>
+
+
+                {/* =========================
+                    CEP MODAL
+                ========================= */}
+
                 <CepModal
                     show={showModal}
 
@@ -344,18 +376,154 @@ const Subscription = () => {
                     setCep={setCep}
                     onSubmit={handleCepSubmit}
                 />
+
+
+                {/* =========================
+                    UNAVAILABLE MODAL
+                ========================= */}
+
                 <UnavailableModal
                     show={showUnavailable}
                     onClose={() =>
                         setShowUnavailable(false)
                     }
                 />
+
+
+                {/* =========================
+                    REGISTER MODAL
+                ========================= */}
+
                 <RegisterModal
                     show={showRegister}
                     onClose={() =>
                         setShowRegister(false)
                     }
                 />
+
+
+                {/* =========================
+                    FORGOT PASSWORD MODAL
+                ========================= */}
+
+                {showForgotPassword && (
+
+                    <div className="forgot-password-modal">
+
+                        <div
+                            className="forgot-password-modal__overlay"
+                            onClick={() =>
+                                setShowForgotPassword(false)
+                            }
+                        >
+
+                            <div
+                                className="forgot-password-modal__content"
+                                onClick={(e) =>
+                                    e.stopPropagation()
+                                }
+                            >
+
+                                {/* FECHAR */}
+
+                                <button
+                                    type="button"
+                                    className="forgot-password-modal__close"
+                                    onClick={() =>
+                                        setShowForgotPassword(false)
+                                    }
+                                >
+                                    ×
+                                </button>
+
+
+                                {/* TEXTO */}
+
+                                <div className="forgot-password-modal__header">
+
+                                    <h2>
+                                        Recuperar senha
+                                    </h2>
+
+                                    <p>
+                                        Digite seu email para receber
+                                        um link para redefinir sua senha.
+                                    </p>
+
+                                </div>
+
+
+                                {/* EMAIL */}
+
+                                <div className="forgot-password-modal__input">
+
+                                    <label htmlFor="forgot-email">
+                                        Email
+                                    </label>
+
+                                    <input
+                                        id="forgot-email"
+                                        type="email"
+                                        placeholder="Digite seu email"
+                                        value={forgotEmail}
+                                        onChange={(e) =>
+                                            setForgotEmail(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                </div>
+
+
+                                {/* MENSAGEM */}
+
+                                {forgotMessage && (
+
+                                    <p
+                                        className={
+                                            forgotMessage ===
+                                            "Enviamos um link de recuperação para seu email."
+                                                ? "forgot-password-modal__message forgot-password-modal__message--success"
+                                                : "forgot-password-modal__message"
+                                        }
+                                    >
+                                        {forgotMessage}
+                                    </p>
+
+                                )}
+
+
+                                {/* ENVIAR */}
+
+                                <button
+                                    type="button"
+                                    className="forgot-password-modal__submit"
+                                    onClick={handleForgotPassword}
+                                >
+                                    Enviar link
+                                </button>
+
+
+                                {/* CANCELAR */}
+
+                                <button
+                                    type="button"
+                                    className="forgot-password-modal__cancel"
+                                    onClick={() =>
+                                        setShowForgotPassword(false)
+                                    }
+                                >
+                                    Cancelar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                )}
 
             </section>
 

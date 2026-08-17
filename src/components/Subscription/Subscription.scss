@@ -1,5 +1,6 @@
 @use '../../Styles/variables' as *;
 @use '../../Styles/mixins' as *;
+
 $text-gray: #666;
 $radius: 5px;
 $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
@@ -7,6 +8,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 // ──────────────────────────────
 // Local Mixins
 // ──────────────────────────────
+
 @mixin transition($time: 0.3s, $ease: ease) {
   transition: all $time $ease;
 }
@@ -43,12 +45,16 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   cursor: pointer;
   font-size: 1.1rem;
   @include transition();
-  &:hover { color: $primary; }
+
+  &:hover {
+    color: $primary;
+  }
 }
 
 // ──────────────────────────────
 // Placeholders
 // ──────────────────────────────
+
 %btn-base {
   padding: 0.8rem;
   border-radius: $radius;
@@ -59,6 +65,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 // ──────────────────────────────
 // LOGIN / SUBSCRIPTION
 // ──────────────────────────────
+
 .login__wrapper {
   @include flex-center;
   margin: 2rem 0;
@@ -82,6 +89,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
           color: $primary;
           font-size: 2rem;
         }
+
         p {
           color: $text-gray;
           padding: 1rem 0;
@@ -101,6 +109,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
           background: transparent;
           font-size: 1rem;
           padding-right: 2.5rem;
+
           @include transition();
 
           &:focus {
@@ -123,8 +132,13 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
           }
         }
 
-        label { @include floating-label; }
-        i { @include icon-style; }
+        label {
+          @include floating-label;
+        }
+
+        i {
+          @include icon-style;
+        }
       }
 
       .g-recaptcha {
@@ -145,7 +159,10 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
       .btn__subscription {
         @include btn($primary, $white);
-        &:hover { background: rgba($primary, 0.9); }
+
+        &:hover {
+          background: rgba($primary, 0.9);
+        }
       }
 
       .btn__subscriptionTrans {
@@ -156,10 +173,10 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   }
 
   .password__icon {
-  @include icon-style;
-}
+    @include icon-style;
+  }
 
-  .text_noAcc{
+  .text_noAcc {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,6 +194,10 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   }
 }
 
+// ──────────────────────────────
+// INPUT
+// ──────────────────────────────
+
 .input__box {
   position: relative;
   margin-bottom: 1.5rem;
@@ -186,7 +207,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   color: $error;
   font-size: 0.75rem;
   margin-top: 4px;
-  min-height: 16px; 
+  min-height: 16px;
 }
 
 .input__box input {
@@ -210,7 +231,6 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   pointer-events: none;
 }
 
-
 .input__box input:focus + label,
 .input__box input:not(:placeholder-shown) + label {
   top: -8px;
@@ -221,32 +241,30 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   color: #ee7104;
 }
 
+// ──────────────────────────────
+// ERROR
+// ──────────────────────────────
 
 .error__space {
-  height:0; 
-  margin-bottom:0px;
-}
-
-/* estilo da mensagem de erro */
-.error__text {
-  color: $error;
-  font-size: 0.8rem;
-  margin: 0;
-  padding-left: 2px;
-  
-}
-
-/* borda vermelha quando erro */
-.input__box.error input {
-  border: 1px solid $error !important;
+  height: 0;
+  margin-bottom: 0;
 }
 
 .error__text {
   color: $error;
   font-size: 0.75rem;
-  animation: slideUpFade 0.25s ease-out; 
+  margin: 0;
+  padding-left: 2px;
+  animation: slideUpFade 0.25s ease-out;
 }
 
+.input__box.error input {
+  border: 1px solid $error !important;
+}
+
+// ──────────────────────────────
+// FORGOT PASSWORD BUTTON
+// ──────────────────────────────
 
 .foget__password {
   background: transparent;
@@ -269,11 +287,330 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   }
 }
 
+// ──────────────────────────────
+// FORGOT PASSWORD MODAL
+// ──────────────────────────────
+
+.forgot-password-modal {
+
+  // Fundo escuro atrás do modal
+  &__overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    animation: forgotModalFade 0.2s ease-out;
+  }
+
+  // Caixa principal
+  &__content {
+    position: relative;
+
+    width: 100%;
+    max-width: 430px;
+
+    box-sizing: border-box;
+
+    padding: 2rem;
+
+    background: $white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+
+    animation: forgotModalUp 0.25s ease-out;
+  }
+
+  // ──────────────────────────────
+  // FECHAR
+  // ──────────────────────────────
+
+  &__close {
+    position: absolute;
+
+    top: 12px;
+    right: 15px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #666;
+
+    font-size: 1.7rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background: #f3f3f3;
+      color: $primary;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  // ──────────────────────────────
+  // HEADER
+  // ──────────────────────────────
+
+  &__header {
+
+    padding-right: 1.5rem;
+
+    h2 {
+      margin: 0 0 0.8rem;
+
+      color: $primary;
+
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 1.5rem;
+
+      color: $text-gray;
+
+      font-size: 0.95rem;
+
+      line-height: 1.5;
+    }
+  }
+
+  // ──────────────────────────────
+  // INPUT DO EMAIL
+  // ──────────────────────────────
+
+  &__input {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.45rem;
+
+    margin-bottom: 1rem;
+
+    label {
+      color: #444;
+
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+
+      box-sizing: border-box;
+
+      padding: 0.9rem 1rem;
+
+      border: 1px solid $border-light;
+
+      border-radius: $radius;
+
+      outline: none;
+
+      background: $white;
+
+      color: #222;
+
+      font-family: inherit;
+
+      font-size: 1rem;
+
+      transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+
+      &::placeholder {
+        color: #999;
+      }
+
+      &:hover {
+        border-color: #aaa;
+      }
+
+      &:focus {
+        border-color: $primary;
+
+        box-shadow:
+          0 0 0 3px rgba($primary, 0.12);
+      }
+    }
+  }
+
+  // ──────────────────────────────
+  // MENSAGEM
+  // ──────────────────────────────
+
+  &__message {
+    margin: 0 0 1rem;
+
+    color: $error;
+
+    font-size: 0.85rem;
+
+    line-height: 1.4;
+
+    animation: slideUpFade 0.25s ease-out;
+
+    &--success {
+      color: #16803c;
+    }
+  }
+
+  // ──────────────────────────────
+  // BOTÃO ENVIAR
+  // ──────────────────────────────
+
+  &__submit {
+    width: 100%;
+
+    padding: 0.9rem 1rem;
+
+    border: none;
+
+    border-radius: $radius;
+
+    background: $primary;
+
+    color: $white;
+
+    font-family: inherit;
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+      background 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      background: rgba($primary, 0.9);
+
+      box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.12);
+
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary;
+      outline-offset: 3px;
+    }
+  }
+
+  // ──────────────────────────────
+  // BOTÃO CANCELAR
+  // ──────────────────────────────
+
+  &__cancel {
+    width: 100%;
+
+    margin-top: 0.7rem;
+
+    padding: 0.9rem 1rem;
+
+    border: 1px solid $primary;
+
+    border-radius: $radius;
+
+    background: transparent;
+
+    color: $primary;
+
+    font-family: inherit;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition:
+      background 0.3s ease,
+      color 0.3s ease;
+
+    &:hover {
+      background: rgba($primary, 0.05);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary;
+      outline-offset: 3px;
+    }
+  }
+}
+
+// ──────────────────────────────
+// MODAL ANIMATIONS
+// ──────────────────────────────
+
+@keyframes forgotModalFade {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes forgotModalUp {
+
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// ──────────────────────────────
+// SLIDE ERROR
+// ──────────────────────────────
+
 @keyframes slideUpFade {
+
   0% {
     opacity: 0;
     transform: translateY(6px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -281,16 +618,72 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 }
 
 // ──────────────────────────────
-// Responsive
+// RESPONSIVE
 // ──────────────────────────────
+
 @media (max-width: 700px) {
-  .login__wrapper .sub__login {
-    padding: 0 1rem;
-    width: 100%;
-    height: 600px;
+
+  .login__wrapper {
+
+    .sub__login {
+      padding: 0 1rem;
+      width: 100%;
+      height: 600px;
+    }
   }
 
+  .forgot-password-modal {
+
+    &__overlay {
+      padding: 1rem;
+    }
+
+    &__content {
+      max-width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+    }
+
+    &__header {
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+    }
+  }
 }
 
+@media (max-width: 400px) {
 
+  .forgot-password-modal {
 
+    &__content {
+      padding: 1.25rem;
+    }
+
+    &__header {
+
+      h2 {
+        font-size: 1.4rem;
+      }
+    }
+
+    &__input {
+
+      input {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+      }
+    }
+
+    &__submit,
+    &__cancel {
+      padding: 0.8rem;
+      font-size: 0.95rem;
+    }
+  }
+}
