@@ -8,11 +8,9 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 // ──────────────────────────────
 // Local Mixins
 // ──────────────────────────────
-
 @mixin transition($time: 0.3s, $ease: ease) {
   transition: all $time $ease;
 }
-
 @mixin btn($bg, $color) {
   background: $bg;
   color: $color;
@@ -21,6 +19,8 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   border: none;
   cursor: pointer;
   @include transition();
+
+  &:hover {opacity: 0.9;}
 }
 
 @mixin floating-label {
@@ -50,11 +50,6 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
     color: $primary;
   }
 }
-
-// ──────────────────────────────
-// Placeholders
-// ──────────────────────────────
-
 %btn-base {
   padding: 0.8rem;
   border-radius: $radius;
@@ -95,10 +90,9 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
           padding: 1rem 0;
         }
       }
-
       .input__box {
         position: relative;
-        margin: .4rem 0;
+        margin: 0.4rem 0;
 
         input {
           width: 100%;
@@ -149,7 +143,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
       a {
         color: $primary;
         text-decoration: underline;
-        padding: .3rem 0;
+        padding: 0.3rem 0;
       }
 
       button {
@@ -221,7 +215,6 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 .input__box input.input--error {
   border-color: $error;
 }
-
 .input__box label {
   position: absolute;
   left: 12px;
@@ -236,15 +229,13 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   top: -8px;
   left: 8px;
   font-size: 0.75rem;
-  background: #fff;
+  background:$white;
   padding: 0 4px;
-  color: #ee7104;
+  color:$primary;
 }
-
 // ──────────────────────────────
 // ERROR
 // ──────────────────────────────
-
 .error__space {
   height: 0;
   margin-bottom: 0;
@@ -258,9 +249,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   animation: slideUpFade 0.25s ease-out;
 }
 
-.input__box.error input {
-  border: 1px solid $error !important;
-}
+.input__box.error input {border: 1px solid $error !important;}
 
 // ──────────────────────────────
 // FORGOT PASSWORD BUTTON
@@ -277,14 +266,8 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   text-decoration: underline;
   cursor: pointer;
   width: fit-content;
-
-  &:hover {
-    color: darken($primary, 10%);
-  }
-
-  &:focus {
-    outline: none;
-  }
+  &:hover {color: darken($primary, 10%);}
+  &:focus { outline: none; }
 }
 
 // ──────────────────────────────
@@ -293,40 +276,36 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
 .forgot-password-modal {
 
-  // Fundo escuro atrás do modal
   &__overlay {
     position: fixed;
     inset: 0;
-
     z-index: 9999;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 1rem;
-
-    background: rgba(0, 0, 0, 0.55);
-
+    background: rgba(0, 0, 0, 0.68);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     animation: forgotModalFade 0.2s ease-out;
   }
 
-  // Caixa principal
+  // ──────────────────────────────
+  // CONTENT
+  // ──────────────────────────────
+
   &__content {
     position: relative;
-
     width: 100%;
     max-width: 430px;
-
     box-sizing: border-box;
-
     padding: 2rem;
-
     background: $white;
-
-    border-radius: 10px;
-
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    // Sombra mais forte para separar do login
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.28),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
 
     animation: forgotModalUp 0.25s ease-out;
   }
@@ -340,38 +319,26 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
     top: 12px;
     right: 15px;
-
     width: 34px;
     height: 34px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border: none;
     border-radius: 50%;
-
     background: transparent;
-
     color: #666;
-
     font-size: 1.7rem;
     line-height: 1;
-
     cursor: pointer;
-
     transition:
       background 0.2s ease,
       color 0.2s ease;
-
     &:hover {
       background: #f3f3f3;
       color: $primary;
     }
-
-    &:focus {
-      outline: none;
-    }
+    &:focus {outline: none;}
   }
 
   // ──────────────────────────────
@@ -379,25 +346,19 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   // ──────────────────────────────
 
   &__header {
-
     padding-right: 1.5rem;
 
     h2 {
       margin: 0 0 0.8rem;
-
       color: $primary;
-
       font-size: 1.7rem;
       font-weight: 700;
     }
 
     p {
       margin: 0 0 1.5rem;
-
       color: $text-gray;
-
       font-size: 0.95rem;
-
       line-height: 1.5;
     }
   }
@@ -407,53 +368,31 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
   // ──────────────────────────────
 
   &__input {
-
     display: flex;
     flex-direction: column;
-
     gap: 0.45rem;
-
     margin-bottom: 1rem;
-
     label {
       color: #444;
-
       font-size: 0.9rem;
       font-weight: 500;
     }
-
     input {
       width: 100%;
-
       box-sizing: border-box;
-
       padding: 0.9rem 1rem;
-
       border: 1px solid $border-light;
-
       border-radius: $radius;
-
       outline: none;
-
       background: $white;
-
       color: #222;
-
       font-family: inherit;
-
       font-size: 1rem;
-
       transition:
         border-color 0.25s ease,
         box-shadow 0.25s ease;
-
-      &::placeholder {
-        color: #999;
-      }
-
-      &:hover {
-        border-color: #aaa;
-      }
+      &::placeholder {color: #999;}
+      &:hover { border-color: #aaa;}
 
       &:focus {
         border-color: $primary;
@@ -470,15 +409,10 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
   &__message {
     margin: 0 0 1rem;
-
     color: $error;
-
     font-size: 0.85rem;
-
     line-height: 1.4;
-
     animation: slideUpFade 0.25s ease-out;
-
     &--success {
       color: #16803c;
     }
@@ -490,19 +424,12 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
   &__submit {
     width: 100%;
-
     padding: 0.9rem 1rem;
-
     border: none;
-
     border-radius: $radius;
-
     background: $primary;
-
     color: $white;
-
     font-family: inherit;
-
     font-size: 1rem;
     font-weight: 500;
 
@@ -522,9 +449,7 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
       transform: translateY(-1px);
     }
 
-    &:active {
-      transform: translateY(0);
-    }
+    &:active {transform: translateY(0);}
 
     &:focus-visible {
       outline: 2px solid $primary;
@@ -538,33 +463,23 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
   &__cancel {
     width: 100%;
-
-    margin-top: 0.7rem;
-
-    padding: 0.9rem 1rem;
-
-    border: 1px solid $primary;
-
+    margin-top: 0.5rem;
+    padding: 0.7rem 1rem;
+    border: none;
     border-radius: $radius;
-
     background: transparent;
-
-    color: $primary;
-
+    color: #777;
     font-family: inherit;
-
-    font-size: 1rem;
-
+    font-size: 0.95rem;
+    font-weight: 500;
     cursor: pointer;
-
     transition:
-      background 0.3s ease,
-      color 0.3s ease;
-
+      background 0.2s ease,
+      color 0.2s ease;
     &:hover {
       background: rgba($primary, 0.05);
+      color: $primary;
     }
-
     &:focus-visible {
       outline: 2px solid $primary;
       outline-offset: 3px;
@@ -577,18 +492,11 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 // ──────────────────────────────
 
 @keyframes forgotModalFade {
-
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
 
 @keyframes forgotModalUp {
-
   from {
     opacity: 0;
     transform: translateY(15px) scale(0.98);
@@ -605,7 +513,6 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 // ──────────────────────────────
 
 @keyframes slideUpFade {
-
   0% {
     opacity: 0;
     transform: translateY(6px);
@@ -646,13 +553,9 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
     &__header {
 
-      h2 {
-        font-size: 1.5rem;
-      }
+      h2 {font-size: 1.5rem;}
 
-      p {
-        font-size: 0.9rem;
-      }
+      p {font-size: 0.9rem;}
     }
   }
 }
@@ -661,15 +564,11 @@ $shadow: 0 6px 18px 2px rgba(16, 24, 40, 0.248);
 
   .forgot-password-modal {
 
-    &__content {
-      padding: 1.25rem;
-    }
+    &__content {padding: 1.25rem;}
 
     &__header {
 
-      h2 {
-        font-size: 1.4rem;
-      }
+      h2 {font-size: 1.4rem;}
     }
 
     &__input {

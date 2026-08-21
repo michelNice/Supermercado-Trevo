@@ -5,12 +5,9 @@ import {
     useEffect,
     useContext,
 } from "react";
-
 import type { ReactNode } from "react";
-
 import { useAuth } from "./useAuth";
 import { supabase } from "../services/Supabase/supabaseClient";
-
 interface Product {
     id: string;
     name: string;
@@ -18,11 +15,9 @@ interface Product {
     image: string;
     unit: "UN" | "KG";
 }
-
 interface CartItem extends Product {
     quantity: number;
 }
-
 export interface CartContextType {
     cartItem: CartItem[];
     AddToCart: (product: Product) => Promise<void>;
@@ -32,7 +27,6 @@ export interface CartContextType {
     clearCart: () => Promise<void>;
     cartTotal: number;
 }
-
 export const CartContext = createContext<
     CartContextType | undefined
 >(undefined);
@@ -43,43 +37,17 @@ const CartProvider = ({
     children: ReactNode;
 }) => {
     const { user } = useAuth();
-
-    /*
-     * ==========================================
-     * 1. CARRINHO INICIAL
-     * ==========================================
-     *
-     * Para visitante:
-     * carregamos o carrinho do localStorage.
-     *
-     * Para usuário logado:
-     * o carrinho será carregado do Supabase
-     * pelo useEffect abaixo.
-     */
-
     const [cartItems, setCartItems] = useState<CartItem[]>(() => {
         try {
             const savedCart = localStorage.getItem("guest_cart");
-
             if (!savedCart) {
                 return [];
             }
-
             return JSON.parse(savedCart);
         } catch (error) {
             return [];
         }
     });
-
-    /*
-     * ==========================================
-     * 2. SALVAR CARRINHO DO VISITANTE
-     * ==========================================
-     *
-     * Somente salva no localStorage quando
-     * NÃO existe usuário logado.
-     */
-
     useEffect(() => {
         if (!user) {
             localStorage.setItem(
@@ -88,28 +56,12 @@ const CartProvider = ({
             );
         }
     }, [cartItems, user]);
-
-    /*
-     * ==========================================
-     * 3. CARREGAR CARRINHO DO SUPABASE
-     * ==========================================
-     */
-
     useEffect(() => {
         const loadCart = async () => {
-            /*
-             * Se não existe usuário,
-             * não buscamos carrinho no banco.
-             */
-
+        
             if (!user) {
                 return;
             }
-
-            /*
-             * Buscar itens do carrinho
-             */
-
             const {
                 data: cartData,
                 error: cartError,
@@ -132,22 +84,10 @@ const CartProvider = ({
                 cartData
             );
 
-            /*
-             * Se o usuário não possui
-             * produtos no carrinho.
-             */
-
             if (!cartData || cartData.length === 0) {
                 setCartItems([]);
                 return;
             }
-
-            /*
-             * ==========================================
-             * Buscar produtos
-             * ==========================================
-             */
-
             const productIds = cartData.map(
                 (item) => item.product_id
             );
@@ -167,7 +107,6 @@ const CartProvider = ({
                     "ERRO AO CARREGAR PRODUTOS:",
                     productsError
                 );
-
                 return;
             }
             const cartFromDatabase: CartItem[] =
@@ -204,11 +143,6 @@ const CartProvider = ({
                 "CARRINHO FINAL:",
                 cartFromDatabase
             );
-
-            /*
-             * Atualizar estado
-             */
-
             setCartItems(
                 cartFromDatabase
             );
@@ -217,19 +151,9 @@ const CartProvider = ({
         loadCart();
     }, [user]);
 
-    /*
-     * ==========================================
-     * 4. ADICIONAR PRODUTO
-     * ==========================================
-     */
     const addProduct = async (
         product: Product
     ) => {
-        /*
-         * ==============================
-         * USUÁRIO NÃO LOGADO
-         * ==============================
-         */
         if (!user) {
             setCartItems((prevItems) => {
                 const existingItem =
@@ -249,7 +173,7 @@ const CartProvider = ({
                                           item.quantity +
                                           1,
                                   }
-                                : item
+                        : item
                     );
                 }
 
@@ -270,9 +194,6 @@ const CartProvider = ({
                 (item) =>
                     item.id === product.id
             );
-
-    
-
         if (existingItem) {
             const newQuantity =
                 existingItem.quantity + 1;
@@ -296,7 +217,6 @@ const CartProvider = ({
             if (error) {
                 return;
             }
-
             setCartItems(
                 (prevItems) =>
                     prevItems.map(
@@ -327,7 +247,6 @@ const CartProvider = ({
         if (error) {
             return;
         }
-
         setCartItems(
             (prevItems) => [
                 ...prevItems,
@@ -427,11 +346,9 @@ const CartProvider = ({
                 (item) =>
                     item.id === id
             );
-
         if (!item) {
             return;
         }
-
         const newQuantity =
             item.quantity + 1;
 
@@ -445,10 +362,9 @@ const CartProvider = ({
                                   quantity:
                                       newQuantity,
                               }
-                            : item
+                    : item
                 )
         );
-
        if (user) {
             const { error } =
                 await supabase
@@ -467,7 +383,6 @@ const CartProvider = ({
                     );
         }
     };
-
     const clearCart = async () => {
         setCartItems([]);
         localStorage.removeItem(
@@ -484,7 +399,6 @@ const CartProvider = ({
                     "user_id",
                     user.id
                 );
-
         if (error) {
             console.error(
                 "ERRO AO LIMPAR CARRINHO:",
@@ -518,7 +432,6 @@ const CartProvider = ({
         </CartContext.Provider>
     );
 };
-
 export const useCart = () => {
     const context =
         useContext(CartContext);
