@@ -17,7 +17,6 @@ interface AddressData {
     state: string
     zipCode: string
     complemento: string
-    
 }
 interface CheckoutContextType{
     payment: PaymentData

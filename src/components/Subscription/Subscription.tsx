@@ -12,31 +12,15 @@ import RegisterModal from "../../modals/RegisterModal";
 import { supabase } from "../../services/Supabase/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
-
-
 const Subscription = () => {
-
-    // =========================
-    // LOGIN
-    // =========================
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [userError, setUserError] = useState("");
-
     const [showForgotPassword, setShowForgotPassword] = useState(false);
     const [forgotEmail, setForgotEmail] = useState("");
     const [forgotMessage, setForgotMessage] = useState("");
-
-    // reCAPTCHA
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-
-
-    // =========================
-    // MODAIS
-    // =========================
-
     const {
         closeModal,
         showModal
@@ -47,28 +31,12 @@ const Subscription = () => {
 
     const [cep, setCep] = useState("");
 
-
-    // =========================
-    // AUTH
-    // =========================
-
     const { setUser } = useAuth();
     const navigate = useNavigate();
-
-
-    // =========================
-    // CEP
-    // =========================
-
     const handleCepSubmit = () => {
         closeModal();
         setShowUnavailable(true);
     };
-
-
-    // =========================
-    // RECUPERAR SENHA
-    // =========================
 
     const handleForgotPassword = async () => {
 
@@ -76,7 +44,6 @@ const Subscription = () => {
             setForgotMessage("Digite seu email.");
             return;
         }
-
         const { error } = await supabase.auth.resetPasswordForEmail(
             forgotEmail,
             {
@@ -98,12 +65,6 @@ const Subscription = () => {
             "Enviamos um link de recuperação para seu email."
         );
     };
-
-
-    // =========================
-    // LOGIN
-    // =========================
-
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 
         e.preventDefault();
@@ -117,15 +78,11 @@ const Subscription = () => {
             setUserError("Complete o reCAPTCHA antes de entrar.");
             return;
         }
-
-
         // Verifica campos
         if (!email || !password) {
             setUserError("Preencha o email e a senha.");
             return;
         }
-
-
         try {
 
             const { data, error } =
@@ -133,66 +90,34 @@ const Subscription = () => {
                     email,
                     password,
                 });
-
-
-            // Erro no login
             if (error) {
-
-                console.error("Erro no login:", error);
-
                 setUserError("Email ou senha incorretos.");
 
                 return;
             }
 
-
-            // Usuário retornado pelo Supabase
             if (data.user) {
-
-                console.log("Login realizado:", data.user);
-
-                // Atualiza o contexto
                 setUser(data.user);
-
-                // Vai para a página inicial
                 navigate("/");
             }
-
         } catch (error) {
-
-            console.error("Erro inesperado:", error);
-
             setUserError(
                 "Ocorreu um erro ao tentar fazer login."
             );
         }
     };
-
-
-    // =========================
-    // BODY SCROLL
-    // =========================
-
     useLockBodyScroll(
         showModal ||
         showUnavailable ||
         showForgotPassword
     );
-
-
     return (
         <>
-
             <section className="login__wrapper">
 
                 <div className="sub__login">
 
                     <form onSubmit={handleLogin}>
-
-                        {/* =========================
-                            TEXTO
-                        ========================= */}
-
                         <div className="sub__text">
 
                             <h2>
@@ -205,16 +130,9 @@ const Subscription = () => {
                             </p>
 
                         </div>
-
-
-                        {/* =========================
-                            EMAIL
-                        ========================= */}
-
                         <div className="input__box">
-
                             <input
-                                type="text"
+                                type="email"
                                 id="user"
                                 placeholder=" "
                                 value={email}
@@ -222,18 +140,10 @@ const Subscription = () => {
                                     setEmail(e.target.value)
                                 }
                             />
-
                             <label htmlFor="user">
-                                Email, CPF ou CNPJ*
+                                Email
                             </label>
-
                         </div>
-
-
-                        {/* =========================
-                            SENHA
-                        ========================= */}
-
                         <div className="input__box">
 
                             <input
@@ -249,36 +159,24 @@ const Subscription = () => {
                                     setPassword(e.target.value)
                                 }
                             />
-
                             <label htmlFor="password">
                                 Senha*
                             </label>
-
-
                             <span
                                 className="password__icon"
                                 onClick={() =>
                                     setShowPassword(!showPassword)
                                 }
                             >
-
                                 {
                                     showPassword
                                         ? <FaEyeSlash />
                                         : <FaEye />
                                 }
-
                             </span>
 
                         </div>
-
-
-                        {/* =========================
-                            ERRO
-                        ========================= */}
-
                         <div className="error__space">
-
                             {
                                 userError && (
                                     <p className="error__text">
@@ -288,12 +186,6 @@ const Subscription = () => {
                             }
 
                         </div>
-
-
-                        {/* =========================
-                            ESQUECEU A SENHA
-                        ========================= */}
-
                         <button
                             className="foget__password"
                             type="button"
@@ -305,12 +197,6 @@ const Subscription = () => {
                         >
                             Esqueceu sua senha?
                         </button>
-
-
-                        {/* =========================
-                            RECAPTCHA
-                        ========================= */}
-
                         <ReCAPTCHA
                             sitekey="6Lc3boQtAAAAAEGLMgHkX5x5P219OXU-AbgCsFc-"
                             onChange={(token) => {
@@ -320,24 +206,12 @@ const Subscription = () => {
                                 setRecaptchaToken(null);
                             }}
                         />
-
-
-                        {/* =========================
-                            ENTRAR
-                        ========================= */}
-
                         <button
                             type="submit"
                             className="btn__subscription"
                         >
                             Entrar
                         </button>
-
-
-                        {/* =========================
-                            CRIAR CONTA
-                        ========================= */}
-
                         <p className="text_noAcc">
                             Ainda não tem uma conta?
                         </p>
@@ -355,57 +229,29 @@ const Subscription = () => {
                     </form>
 
                 </div>
-
-
-                {/* =========================
-                    CEP MODAL
-                ========================= */}
-
                 <CepModal
                     show={showModal}
-
                     onClose={() => {
-
                         closeModal();
-
                         setShowUnavailable(true);
-
                     }}
 
                     cep={cep}
                     setCep={setCep}
                     onSubmit={handleCepSubmit}
                 />
-
-
-                {/* =========================
-                    UNAVAILABLE MODAL
-                ========================= */}
-
                 <UnavailableModal
                     show={showUnavailable}
                     onClose={() =>
                         setShowUnavailable(false)
                     }
                 />
-
-
-                {/* =========================
-                    REGISTER MODAL
-                ========================= */}
-
                 <RegisterModal
                     show={showRegister}
                     onClose={() =>
                         setShowRegister(false)
                     }
                 />
-
-
-                {/* =========================
-                    FORGOT PASSWORD MODAL
-                ========================= */}
-
                 {showForgotPassword && (
 
                     <div className="forgot-password-modal">
@@ -416,16 +262,12 @@ const Subscription = () => {
                                 setShowForgotPassword(false)
                             }
                         >
-
                             <div
                                 className="forgot-password-modal__content"
                                 onClick={(e) =>
                                     e.stopPropagation()
                                 }
                             >
-
-                                {/* FECHAR */}
-
                                 <button
                                     type="button"
                                     className="forgot-password-modal__close"
@@ -435,10 +277,6 @@ const Subscription = () => {
                                 >
                                     ×
                                 </button>
-
-
-                                {/* TEXTO */}
-
                                 <div className="forgot-password-modal__header">
 
                                     <h2>
@@ -451,8 +289,6 @@ const Subscription = () => {
                                     </p>
 
                                 </div>
-
-
                                 {/* EMAIL */}
 
                                 <div className="forgot-password-modal__input">
@@ -474,10 +310,6 @@ const Subscription = () => {
                                     />
 
                                 </div>
-
-
-                                {/* MENSAGEM */}
-
                                 {forgotMessage && (
 
                                     <p
@@ -492,10 +324,6 @@ const Subscription = () => {
                                     </p>
 
                                 )}
-
-
-                                {/* ENVIAR */}
-
                                 <button
                                     type="button"
                                     className="forgot-password-modal__submit"
@@ -503,10 +331,6 @@ const Subscription = () => {
                                 >
                                     Enviar link
                                 </button>
-
-
-                                {/* CANCELAR */}
-
                                 <button
                                     type="button"
                                     className="forgot-password-modal__cancel"
@@ -524,7 +348,6 @@ const Subscription = () => {
                     </div>
 
                 )}
-
             </section>
 
         </>
