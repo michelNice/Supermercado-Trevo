@@ -1,18 +1,22 @@
-
 import "./Payment.scss";
+
 import { useEffect, useState } from "react";
+
 import {
   initMercadoPago,
   Payment as MercadoPagoPayment,
 } from "@mercadopago/sdk-react";
+
 import { useCart } from "../../context/CartContext";
 import { useCheckout } from "../../context/CheckoutContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/Supabase/supabaseClient";
+
 const Payment = () => {
   const { cartItem, clearCart } = useCart();
-  const { address,deliveryMethod,selectedStore} = useCheckout();
+  const { address, deliveryMethod, selectedStore } = useCheckout();
   const navigate = useNavigate();
+
   const [method, setMethod] = useState<"card" | "pix">("card");
   const [qrCode, setQrCode] = useState("");
   const [paymentId, setPaymentId] = useState<number | null>(null);
@@ -20,6 +24,7 @@ const Payment = () => {
   const [loadingPix, setLoadingPix] = useState(false);
   const [loadingPayment, setLoadingPayment] = useState(false);
   const [paymentFinished, setPaymentFinished] = useState(false);
+
   useEffect(() => {
     initMercadoPago(
       import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY
@@ -31,6 +36,7 @@ const Payment = () => {
       acc + Number(item.price) * item.quantity,
     0
   );
+
   const saveOrder = async (
     paymentMethod: string,
     cardName: string | null = null
@@ -42,8 +48,7 @@ const Payment = () => {
 
       const userId = session?.user?.id ?? null;
 
-    
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("orders")
         .insert({
           user_id: userId,
@@ -62,14 +67,9 @@ const Payment = () => {
 
       return true;
     } catch (error) {
-      
       return false;
     }
   };
-
-  // ===============================
-  // CRIAR PIX
-  // ===============================
 
   async function gerarPix() {
     if (qrCode || loadingPix) return;
@@ -127,10 +127,6 @@ const Payment = () => {
     }
   }
 
-  // =====================================================
-  // VERIFICAR STATUS DO PIX
-  // =====================================================
-
   useEffect(() => {
     if (!paymentId || paymentFinished) return;
 
@@ -153,7 +149,6 @@ const Payment = () => {
           !paymentFinished
         ) {
           setPaymentFinished(true);
-
           clearInterval(interval);
 
           const orderSaved = await saveOrder("pix");
@@ -162,7 +157,6 @@ const Payment = () => {
             setPaymentMessage(
               "Pagamento aprovado, mas não foi possível salvar o pedido. Entre em contato com o suporte."
             );
-
             return;
           }
 
@@ -176,9 +170,11 @@ const Payment = () => {
           }, 3000);
         }
       } catch (error) {
-        setPaymentMessage(
-          "Erro ao verificar pagamento."
-        );
+        if (!paymentFinished) {
+          setPaymentMessage(
+            "Erro ao verificar pagamento."
+          );
+        }
       }
     }, 5000);
 
@@ -189,10 +185,6 @@ const Payment = () => {
     clearCart,
     navigate,
   ]);
-
-  // =====================================================
-  // PAGAMENTO COM CARTÃO
-  // =====================================================
 
   async function handlePayment(formData: any) {
     try {
@@ -208,14 +200,11 @@ const Payment = () => {
           },
           body: JSON.stringify({
             ...formData,
-
             transaction_amount:
               Number(total.toFixed(2)),
-
             payer: {
               email: address.email,
             },
-
             address,
             items: cartItem,
           }),
@@ -231,6 +220,8 @@ const Payment = () => {
       const result = await response.json();
 
       if (result.status === "approved") {
+        setPaymentFinished(true);
+
         const orderSaved = await saveOrder(
           "card",
           formData?.payer?.first_name ||
@@ -242,7 +233,6 @@ const Payment = () => {
           setPaymentMessage(
             "Pagamento aprovado, mas não foi possível salvar o pedido. Entre em contato com o suporte."
           );
-
           return;
         }
 
@@ -260,10 +250,11 @@ const Payment = () => {
         );
       }
     } catch (error) {
-     
-      setPaymentMessage(
-        "Erro ao processar pagamento."
-      );
+      if (!paymentFinished) {
+        setPaymentMessage(
+          "Erro ao processar pagamento."
+        );
+      }
     } finally {
       setLoadingPayment(false);
     }
@@ -272,9 +263,7 @@ const Payment = () => {
   return (
     <section className="payment">
       <div className="payment__container">
-
         <div className="payment__summary">
-
           <h2>Resumo do Pedido</h2>
 
           <div className="payment__card">
@@ -313,60 +302,60 @@ const Payment = () => {
           </div>
 
           {deliveryMethod === "delivery" ? (
-  <div className="payment__card">
-    <h3>Endereço de entrega</h3>
+            <div className="payment__card">
+              <h3>Endereço de entrega</h3>
 
-    <p>{address.name}</p>
-    <p>{address.email}</p>
+              <p>{address.name}</p>
 
-    <p>
-      {address.street}, {address.number}
-    </p>
+              <p>{address.email}</p>
 
-    {address.complemento && (
-      <p>{address.complemento}</p>
-    )}
+              <p>
+                {address.street},{" "}
+                {address.number}
+              </p>
 
-    <p>
-      {address.neighborhood}
-    </p>
+              {address.complemento && (
+                <p>{address.complemento}</p>
+              )}
 
-    <p>
-      {address.city} - {address.state}
-    </p>
+              <p>
+                {address.neighborhood}
+              </p>
 
-    <p>
-      CEP: {address.zipCode}
-    </p>
-  </div>
-) : (
-  <div className="payment__card">
-    <h3>Retirada na loja</h3>
+              <p>
+                {address.city} -{" "}
+                {address.state}
+              </p>
 
-    <div className="payment__pickup">
-      <strong>
-        {selectedStore?.name}
-      </strong>
+              <p>
+                CEP: {address.zipCode}
+              </p>
+            </div>
+          ) : (
+            <div className="payment__card">
+              <h3>Retirada na loja</h3>
 
-      <p>
-        {selectedStore?.adress}
-      </p>
+              <div className="payment__pickup">
+                <strong>
+                  {selectedStore?.name}
+                </strong>
 
-      <span>
-        Você irá retirar seu pedido nesta loja.
-      </span>
-    </div>
-  </div>
-)}
+                <p>
+                  {selectedStore?.adress}
+                </p>
 
+                <span>
+                  Você irá retirar seu pedido nesta loja.
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="payment__methods">
-
           <h2>Forma de pagamento</h2>
 
           <div className="payment__buttons">
-
             <button
               type="button"
               onClick={() => {
@@ -390,7 +379,6 @@ const Payment = () => {
             >
               PIX
             </button>
-
           </div>
 
           {method === "card" && (
@@ -412,7 +400,6 @@ const Payment = () => {
 
           {method === "pix" && (
             <div className="payment__pix">
-
               {loadingPix && (
                 <p>
                   Gerando PIX...
@@ -437,7 +424,6 @@ const Payment = () => {
                   </p>
                 </>
               )}
-
             </div>
           )}
 
@@ -448,6 +434,7 @@ const Payment = () => {
           )}
         </div>
       </div>
+
       {paymentMessage && (
         <div className="payment__message">
           <p>
@@ -460,4 +447,3 @@ const Payment = () => {
 };
 
 export default Payment;
-
