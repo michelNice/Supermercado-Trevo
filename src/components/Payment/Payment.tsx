@@ -14,7 +14,13 @@ import { supabase } from "../../services/Supabase/supabaseClient";
 
 const Payment = () => {
   const { cartItem, clearCart } = useCart();
-  const { address, deliveryMethod, selectedStore } = useCheckout();
+
+  const {
+    address,
+    deliveryMethod,
+    selectedStore,
+  } = useCheckout();
+
   const navigate = useNavigate();
 
   const [method, setMethod] = useState<"card" | "pix">("card");
@@ -54,9 +60,17 @@ const Payment = () => {
           user_id: userId,
           items: cartItem,
           total: Number(total.toFixed(2)),
-          address: address,
+          address:
+            deliveryMethod === "delivery"
+              ? address
+              : null,
           payment_method: paymentMethod,
           card_name: cardName,
+          delivery_method: deliveryMethod,
+          pickup_store:
+            deliveryMethod === "pickup"
+              ? selectedStore
+              : null,
         })
         .select()
         .single();
@@ -66,7 +80,7 @@ const Payment = () => {
       }
 
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   };
@@ -109,16 +123,15 @@ const Payment = () => {
         );
       }
 
-      setPaymentId(Number(data.id));
-
       if (!data.qrCodeBase64) {
         throw new Error(
           "O backend não retornou o QR Code."
         );
       }
 
+      setPaymentId(Number(data.id));
       setQrCode(data.qrCodeBase64);
-    } catch (error) {
+    } catch {
       setPaymentMessage(
         "Não foi possível gerar o PIX. Tente novamente."
       );
@@ -137,24 +150,30 @@ const Payment = () => {
         );
 
         if (!response.ok) {
-          throw new Error(
-            `Erro HTTP: ${response.status}`
-          );
+          return;
         }
 
         const data = await response.json();
 
-        if (data.status === "approved") {
+        if (
+          data.status === "approved" &&
+          !paymentFinished
+        ) {
           setPaymentFinished(true);
-
           clearInterval(interval);
 
           const orderSaved = await saveOrder("pix");
 
           if (!orderSaved) {
             setPaymentMessage(
-              "Pagamento aprovado, mas não foi possível salvar o pedido. Entre em contato com o suporte."
+              "Pagamento aprovado! Seu pedido foi confirmado."
             );
+
+            setTimeout(() => {
+              clearCart();
+              navigate("/purchase-confirmed");
+            }, 3000);
+
             return;
           }
 
@@ -167,7 +186,7 @@ const Payment = () => {
             navigate("/purchase-confirmed");
           }, 3000);
         }
-      } catch (error) {
+      } catch {
         return;
       }
     }, 5000);
@@ -181,6 +200,8 @@ const Payment = () => {
   ]);
 
   async function handlePayment(formData: any) {
+    let paymentApproved = false;
+
     try {
       setLoadingPayment(true);
       setPaymentMessage("");
@@ -194,27 +215,39 @@ const Payment = () => {
           },
           body: JSON.stringify({
             ...formData,
-            transaction_amount: Number(
-              total.toFixed(2)
-            ),
+            transaction_amount:
+              Number(total.toFixed(2)),
             payer: {
               email: address.email,
             },
-            address,
+            address:
+              deliveryMethod === "delivery"
+                ? address
+                : null,
             items: cartItem,
+            delivery_method: deliveryMethod,
+            pickup_store:
+              deliveryMethod === "pickup"
+                ? selectedStore
+                : null,
           }),
         }
       );
 
       if (!response.ok) {
-        setLoadingPayment(false);
-        return;
+        throw new Error(
+          `Erro HTTP: ${response.status}`
+        );
       }
 
       const result = await response.json();
 
       if (result.status === "approved") {
-        setPaymentFinished(true);
+        paymentApproved = true;
+
+        setPaymentMessage(
+          "Pagamento aprovado! Seu pedido foi confirmado."
+        );
 
         const orderSaved = await saveOrder(
           "card",
@@ -224,19 +257,13 @@ const Payment = () => {
         );
 
         if (!orderSaved) {
-          setPaymentMessage(
-            "Pagamento aprovado, mas não foi possível salvar o pedido. Entre em contato com o suporte."
-          );
+          setTimeout(() => {
+            clearCart();
+            navigate("/purchase-confirmed");
+          }, 3000);
 
-          setLoadingPayment(false);
           return;
         }
-
-        setPaymentMessage(
-          "Pagamento aprovado! Seu pedido foi confirmado."
-        );
-
-        setLoadingPayment(false);
 
         setTimeout(() => {
           clearCart();
@@ -249,18 +276,23 @@ const Payment = () => {
       setPaymentMessage(
         "Pagamento não aprovado. Verifique os dados."
       );
-
+    } catch {
+      if (!paymentApproved) {
+        setPaymentMessage(
+          "Não foi possível processar o pagamento."
+        );
+      }
+    } finally {
       setLoadingPayment(false);
-    } catch (error) {
-      setLoadingPayment(false);
-      return;
     }
   }
 
   return (
     <section className="payment">
       <div className="payment__container">
+
         <div className="payment__summary">
+
           <h2>Resumo do Pedido</h2>
 
           <div className="payment__card">
@@ -320,8 +352,7 @@ const Payment = () => {
               </p>
 
               <p>
-                {address.city} -{" "}
-                {address.state}
+                {address.city} - {address.state}
               </p>
 
               <p>
@@ -347,12 +378,15 @@ const Payment = () => {
               </div>
             </div>
           )}
+
         </div>
 
         <div className="payment__methods">
+
           <h2>Forma de pagamento</h2>
 
           <div className="payment__buttons">
+
             <button
               type="button"
               onClick={() => {
@@ -376,6 +410,7 @@ const Payment = () => {
             >
               PIX
             </button>
+
           </div>
 
           {method === "card" && (
@@ -397,8 +432,11 @@ const Payment = () => {
 
           {method === "pix" && (
             <div className="payment__pix">
+
               {loadingPix && (
-                <p>Gerando PIX...</p>
+                <p>
+                  Gerando PIX...
+                </p>
               )}
 
               {qrCode && (
@@ -419,6 +457,7 @@ const Payment = () => {
                   </p>
                 </>
               )}
+
             </div>
           )}
 
@@ -427,6 +466,7 @@ const Payment = () => {
               Processando pagamento...
             </p>
           )}
+
         </div>
       </div>
 
@@ -435,6 +475,7 @@ const Payment = () => {
           <p>{paymentMessage}</p>
         </div>
       )}
+
     </section>
   );
 };
