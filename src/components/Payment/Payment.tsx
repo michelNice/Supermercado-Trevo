@@ -144,10 +144,7 @@ const Payment = () => {
 
         const data = await response.json();
 
-        if (
-          data.status === "approved" &&
-          !paymentFinished
-        ) {
+        if (data.status === "approved") {
           setPaymentFinished(true);
 
           clearInterval(interval);
@@ -171,11 +168,7 @@ const Payment = () => {
           }, 3000);
         }
       } catch (error) {
-        if (!paymentFinished) {
-          setPaymentMessage(
-            "Erro ao verificar pagamento."
-          );
-        }
+        return;
       }
     }, 5000);
 
@@ -201,8 +194,9 @@ const Payment = () => {
           },
           body: JSON.stringify({
             ...formData,
-            transaction_amount:
-              Number(total.toFixed(2)),
+            transaction_amount: Number(
+              total.toFixed(2)
+            ),
             payer: {
               email: address.email,
             },
@@ -213,9 +207,8 @@ const Payment = () => {
       );
 
       if (!response.ok) {
-        throw new Error(
-          `Erro HTTP: ${response.status}`
-        );
+        setLoadingPayment(false);
+        return;
       }
 
       const result = await response.json();
@@ -234,12 +227,16 @@ const Payment = () => {
           setPaymentMessage(
             "Pagamento aprovado, mas não foi possível salvar o pedido. Entre em contato com o suporte."
           );
+
+          setLoadingPayment(false);
           return;
         }
 
         setPaymentMessage(
           "Pagamento aprovado! Seu pedido foi confirmado."
         );
+
+        setLoadingPayment(false);
 
         setTimeout(() => {
           clearCart();
@@ -252,10 +249,11 @@ const Payment = () => {
       setPaymentMessage(
         "Pagamento não aprovado. Verifique os dados."
       );
-    } catch (error) {
-      setPaymentMessage("");
-    } finally {
+
       setLoadingPayment(false);
+    } catch (error) {
+      setLoadingPayment(false);
+      return;
     }
   }
 
@@ -400,9 +398,7 @@ const Payment = () => {
           {method === "pix" && (
             <div className="payment__pix">
               {loadingPix && (
-                <p>
-                  Gerando PIX...
-                </p>
+                <p>Gerando PIX...</p>
               )}
 
               {qrCode && (
@@ -436,9 +432,7 @@ const Payment = () => {
 
       {paymentMessage && (
         <div className="payment__message">
-          <p>
-            {paymentMessage}
-          </p>
+          <p>{paymentMessage}</p>
         </div>
       )}
     </section>
