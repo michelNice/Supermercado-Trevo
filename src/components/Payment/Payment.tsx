@@ -149,6 +149,7 @@ const Payment = () => {
           !paymentFinished
         ) {
           setPaymentFinished(true);
+
           clearInterval(interval);
 
           const orderSaved = await saveOrder("pix");
@@ -244,17 +245,15 @@ const Payment = () => {
           clearCart();
           navigate("/purchase-confirmed");
         }, 3000);
-      } else {
-        setPaymentMessage(
-          "Pagamento não aprovado. Verifique os dados."
-        );
+
+        return;
       }
+
+      setPaymentMessage(
+        "Pagamento não aprovado. Verifique os dados."
+      );
     } catch (error) {
-      if (!paymentFinished) {
-        setPaymentMessage(
-          "Erro ao processar pagamento."
-        );
-      }
+      setPaymentMessage("");
     } finally {
       setLoadingPayment(false);
     }
