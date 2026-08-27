@@ -23,13 +23,24 @@ const Payment = () => {
 
   const navigate = useNavigate();
 
-  const [method, setMethod] = useState<"card" | "pix">("card");
+  const [method, setMethod] =
+    useState<"card" | "pix">("card");
+
   const [qrCode, setQrCode] = useState("");
-  const [paymentId, setPaymentId] = useState<number | null>(null);
-  const [paymentMessage, setPaymentMessage] = useState("");
-  const [loadingPix, setLoadingPix] = useState(false);
-  const [loadingPayment, setLoadingPayment] = useState(false);
-  const [paymentFinished, setPaymentFinished] = useState(false);
+  const [paymentId, setPaymentId] =
+    useState<number | null>(null);
+
+  const [paymentMessage, setPaymentMessage] =
+    useState("");
+
+  const [loadingPix, setLoadingPix] =
+    useState(false);
+
+  const [loadingPayment, setLoadingPayment] =
+    useState(false);
+
+  const [paymentFinished, setPaymentFinished] =
+    useState(false);
 
   useEffect(() => {
     initMercadoPago(
@@ -141,7 +152,9 @@ const Payment = () => {
   }
 
   useEffect(() => {
-    if (!paymentId || paymentFinished) return;
+    if (!paymentId || paymentFinished) {
+      return;
+    }
 
     const interval = setInterval(async () => {
       try {
@@ -155,43 +168,36 @@ const Payment = () => {
 
         const data = await response.json();
 
-        if (
-          data.status === "approved" &&
-          !paymentFinished
-        ) {
-          setPaymentFinished(true);
-          clearInterval(interval);
-
-          const orderSaved = await saveOrder("pix");
-
-          if (!orderSaved) {
-            setPaymentMessage(
-              "Pagamento aprovado! Seu pedido foi confirmado."
-            );
-
-            setTimeout(() => {
-              clearCart();
-              navigate("/purchase-confirmed");
-            }, 3000);
-
-            return;
-          }
-
-          setPaymentMessage(
-            "Pagamento aprovado! Seu pedido foi confirmado."
-          );
-
-          setTimeout(() => {
-            clearCart();
-            navigate("/purchase-confirmed");
-          }, 3000);
+        if (data.status !== "approved") {
+          return;
         }
+
+        if (paymentFinished) {
+          return;
+        }
+
+        setPaymentFinished(true);
+
+        clearInterval(interval);
+
+        setPaymentMessage(
+          "Pagamento aprovado! Seu pedido foi confirmado."
+        );
+
+        await saveOrder("pix");
+
+        setTimeout(() => {
+          clearCart();
+          navigate("/purchase-confirmed");
+        }, 3000);
       } catch {
         return;
       }
     }, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [
     paymentId,
     paymentFinished,
@@ -200,8 +206,6 @@ const Payment = () => {
   ]);
 
   async function handlePayment(formData: any) {
-    let paymentApproved = false;
-
     try {
       setLoadingPayment(true);
       setPaymentMessage("");
@@ -215,17 +219,23 @@ const Payment = () => {
           },
           body: JSON.stringify({
             ...formData,
+
             transaction_amount:
               Number(total.toFixed(2)),
+
             payer: {
               email: address.email,
             },
+
             address:
               deliveryMethod === "delivery"
                 ? address
                 : null,
+
             items: cartItem,
+
             delivery_method: deliveryMethod,
+
             pickup_store:
               deliveryMethod === "pickup"
                 ? selectedStore
@@ -243,27 +253,16 @@ const Payment = () => {
       const result = await response.json();
 
       if (result.status === "approved") {
-        paymentApproved = true;
-
         setPaymentMessage(
           "Pagamento aprovado! Seu pedido foi confirmado."
         );
 
-        const orderSaved = await saveOrder(
+        await saveOrder(
           "card",
           formData?.payer?.first_name ||
             formData?.cardholder?.name ||
             null
         );
-
-        if (!orderSaved) {
-          setTimeout(() => {
-            clearCart();
-            navigate("/purchase-confirmed");
-          }, 3000);
-
-          return;
-        }
 
         setTimeout(() => {
           clearCart();
@@ -277,11 +276,7 @@ const Payment = () => {
         "Pagamento não aprovado. Verifique os dados."
       );
     } catch {
-      if (!paymentApproved) {
-        setPaymentMessage(
-          "Não foi possível processar o pagamento."
-        );
-      }
+      return;
     } finally {
       setLoadingPayment(false);
     }
@@ -289,6 +284,7 @@ const Payment = () => {
 
   return (
     <section className="payment">
+
       <div className="payment__container">
 
         <div className="payment__summary">
@@ -296,6 +292,7 @@ const Payment = () => {
           <h2>Resumo do Pedido</h2>
 
           <div className="payment__card">
+
             <h3>Produtos</h3>
 
             {cartItem.map((item) => (
@@ -316,27 +313,42 @@ const Payment = () => {
                 </strong>
               </div>
             ))}
+
           </div>
 
           <div className="payment__card">
+
             <h3>Total</h3>
 
             <div className="payment__total">
-              <span>Total da compra</span>
+
+              <span>
+                Total da compra
+              </span>
 
               <strong>
                 R$ {total.toFixed(2)}
               </strong>
+
             </div>
+
           </div>
 
           {deliveryMethod === "delivery" ? (
+
             <div className="payment__card">
-              <h3>Endereço de entrega</h3>
 
-              <p>{address.name}</p>
+              <h3>
+                Endereço de entrega
+              </h3>
 
-              <p>{address.email}</p>
+              <p>
+                {address.name}
+              </p>
+
+              <p>
+                {address.email}
+              </p>
 
               <p>
                 {address.street},{" "}
@@ -344,7 +356,9 @@ const Payment = () => {
               </p>
 
               {address.complemento && (
-                <p>{address.complemento}</p>
+                <p>
+                  {address.complemento}
+                </p>
               )}
 
               <p>
@@ -352,18 +366,26 @@ const Payment = () => {
               </p>
 
               <p>
-                {address.city} - {address.state}
+                {address.city} -{" "}
+                {address.state}
               </p>
 
               <p>
                 CEP: {address.zipCode}
               </p>
+
             </div>
+
           ) : (
+
             <div className="payment__card">
-              <h3>Retirada na loja</h3>
+
+              <h3>
+                Retirada na loja
+              </h3>
 
               <div className="payment__pickup">
+
                 <strong>
                   {selectedStore?.name}
                 </strong>
@@ -373,17 +395,23 @@ const Payment = () => {
                 </p>
 
                 <span>
-                  Você irá retirar seu pedido nesta loja.
+                  Você irá retirar seu pedido
+                  nesta loja.
                 </span>
+
               </div>
+
             </div>
+
           )}
 
         </div>
 
         <div className="payment__methods">
 
-          <h2>Forma de pagamento</h2>
+          <h2>
+            Forma de pagamento
+          </h2>
 
           <div className="payment__buttons">
 
@@ -414,23 +442,28 @@ const Payment = () => {
           </div>
 
           {method === "card" && (
+
             <MercadoPagoPayment
               initialization={{
                 amount: Number(
                   total.toFixed(2)
                 ),
               }}
+
               customization={{
                 paymentMethods: {
                   creditCard: "all",
                   debitCard: "all",
                 },
               }}
+
               onSubmit={handlePayment}
             />
+
           )}
 
           {method === "pix" && (
+
             <div className="payment__pix">
 
               {loadingPix && (
@@ -459,6 +492,7 @@ const Payment = () => {
               )}
 
             </div>
+
           )}
 
           {loadingPayment && (
@@ -468,12 +502,19 @@ const Payment = () => {
           )}
 
         </div>
+
       </div>
 
       {paymentMessage && (
+
         <div className="payment__message">
-          <p>{paymentMessage}</p>
+
+          <p>
+            {paymentMessage}
+          </p>
+
         </div>
+
       )}
 
     </section>
