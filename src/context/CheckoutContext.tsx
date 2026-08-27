@@ -1,4 +1,12 @@
 import {createContext, useContext, useState } from "react"
+
+type   DeliveryMethod = 'delivery' | 'pickup'
+
+interface Store {
+    id:string
+    name:string
+    adress:string
+}
 interface PaymentData {
     method: string
     cardNumber: string
@@ -23,6 +31,12 @@ interface CheckoutContextType{
     setPayment: React.Dispatch<React.SetStateAction<PaymentData>>
     address: AddressData
     setAddress: React.Dispatch<React.SetStateAction<AddressData>>
+
+
+    deliveryMethod:DeliveryMethod;
+    setDeliveryMethod: React.Dispatch<React.SetStateAction<DeliveryMethod>>;
+    selectedStore:Store | null
+    setSelectedStore: React.Dispatch<React.SetStateAction<Store | null>>;
 }
 const CheckoutContext  = createContext<CheckoutContextType | null>(null)
 
@@ -50,13 +64,21 @@ children
     name:'',
     email:''
 })
+
+const [deliveryMethod, setDeliveryMethod] =  useState<DeliveryMethod>("delivery");
+
+const [selectedStore, setSelectedStore] = useState<Store | null>(null);
     return (
         <CheckoutContext.Provider 
            value={{
                 payment,
                 setPayment,
                 address,
-                setAddress
+                setAddress,
+                deliveryMethod,
+                setDeliveryMethod,
+                setSelectedStore
+                ,selectedStore
             }}
          >
             {children}

@@ -1,6 +1,6 @@
-
 import "./Address.scss";
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import { formatCep } from "../../modals/CepModal/CepModalUtils";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom";
@@ -88,7 +88,9 @@ function ChangeView({
 }) {
   const map = useMap();
 
-  map.setView(center, 16);
+  useEffect(() => {
+    map.setView(center, 16);
+  }, [center, map]);
 
   return null;
 }
@@ -106,101 +108,137 @@ const emptyAddress = {
 };
 
 const Address = () => {
-  const { address, setAddress } = useCheckout();
+  const {
+  address,
+  setAddress,
+  selectedStore,
+  deliveryMethod,
+  setDeliveryMethod,
+} = useCheckout();
 
   const [savedAddress, setSavedAddress] = useState(false);
-  const [editingAddress, setEditingAddress] = useState(false);
 
-  // ID do endereço salvo no banco
-  const [savedAddressId, setSavedAddressId] = useState<string | null>(
-    null
-  );
+  const [editingAddress, setEditingAddress] =
+    useState(false);
 
-  const [position, setPosition] = useState<[number, number]>([
-    -23.5505,
-    -46.6333,
-  ]);
+  const [savedAddressId, setSavedAddressId] =
+    useState<string | null>(null);
+
+  const [position, setPosition] =
+    useState<[number, number]>([
+      -23.5505,
+      -46.6333,
+    ]);
 
   const navigate = useNavigate();
 
-  /*
-  ============================================================
-  BUSCAR LOCALIZAÇÃO NO MAPA
-  ============================================================
-  */
+  // =====================================================
+  // BUSCAR ENDEREÇO NO OPENSTREETMAP
+  // =====================================================
 
-  const handleSearchLocation = async (address: string) => {
+  const handleSearchLocation = async (
+    addressValue: string
+  ) => {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        address
+        addressValue
       )}`
     );
 
     if (!response.ok) {
-      throw new Error("Erro ao buscar localização");
+      throw new Error(
+        "Erro ao buscar localização"
+      );
     }
 
-    return await response.json();
+    return response.json();
   };
 
-  /*
-  ============================================================
-  CARREGAR ENDEREÇO
-  ============================================================
-  */
+  // =====================================================
+  // ATUALIZAR POSIÇÃO DO MAPA
+  // =====================================================
+
+  const updateMapPosition = async (
+    street: string,
+    city: string,
+    state: string
+  ) => {
+    if (!street || !city || !state) {
+      return;
+    }
+
+    try {
+      const fullAddress = `${street}, ${city}, ${state}`;
+
+      const location =
+        await handleSearchLocation(
+          fullAddress
+        );
+
+      if (location.length > 0) {
+        setPosition([
+          Number(location[0].lat),
+          Number(location[0].lon),
+        ]);
+      }
+    } catch (error) {
+      console.error(
+        "Erro ao localizar endereço:",
+        error
+      );
+    }
+  };
+
+  // =====================================================
+  // CARREGAR ENDEREÇO SALVO
+  // =====================================================
 
   useEffect(() => {
     const loadSavedAddress = async () => {
       try {
-        /*
-        ========================================================
-        1. VERIFICAR SESSÃO
-        ========================================================
-        */
-
         const {
           data: { session },
         } = await supabase.auth.getSession();
 
-        console.log("SESSION:", session);
-
-        /*
-        ========================================================
-        2. USUÁRIO LOGADO
-        ========================================================
-        */
+        // =================================================
+        // USUÁRIO LOGADO
+        // =================================================
 
         if (session?.user) {
           const user = session.user;
 
-          console.log("USUÁRIO LOGADO:", user.id);
+          console.log(
+            "USUÁRIO LOGADO:",
+            user.id
+          );
 
-          /*
-          ------------------------------------------------------
-          BUSCAR SOMENTE O ENDEREÇO DESSE USUÁRIO
-          ------------------------------------------------------
-          */
+          const { data, error } =
+            await supabase
+              .from("addresses")
+              .select("*")
+              .eq("user_id", user.id)
+              .order("created_at", {
+                ascending: false,
+              })
+              .limit(1)
+              .maybeSingle();
 
-          const { data, error } = await supabase
-            .from("addresses")
-            .select("*")
-            .eq("user_id", user.id)
-            .order("created_at", {
-              ascending: false,
-            })
-            .limit(1)
-            .maybeSingle();
+          console.log(
+            "ENDEREÇO ENCONTRADO:",
+            data
+          );
 
-          console.log("ENDEREÇO DO BANCO:", data);
-          console.log("ERRO DO BANCO:", error);
+          console.log(
+            "ERRO ADDRESS:",
+            error
+          );
 
           if (error) {
             console.error(
-              "Erro ao buscar endereço:",
+              "ERRO AO BUSCAR ENDEREÇO:",
               error
             );
 
-            // Limpa endereço antigo do CheckoutContext
             setAddress({
               ...emptyAddress,
               email: user.email || "",
@@ -213,81 +251,54 @@ const Address = () => {
             return;
           }
 
-          /*
-          ======================================================
-          USUÁRIO TEM ENDEREÇO
-          ======================================================
-          */
+          // ===============================================
+          // ENDEREÇO ENCONTRADO
+          // ===============================================
 
           if (data) {
-            console.log(
-              "Endereço encontrado para o usuário."
-            );
-
-            setSavedAddressId(data.id);
-
-            setAddress({
+            const loadedAddress = {
               name: data.name || "",
               email: user.email || "",
               zipCode: data.zip_code || "",
               street: data.street || "",
               number: data.number || "",
-              complemento: data.complement || "",
-              neighborhood: data.neighborhood || "",
+              complemento:
+                data.complement || "",
+              neighborhood:
+                data.neighborhood || "",
               city: data.city || "",
               state: data.state || "",
-            });
+            };
+
+            console.log(
+              "ENDEREÇO CARREGADO:",
+              loadedAddress
+            );
+
+            setAddress(loadedAddress);
+
+            setSavedAddressId(data.id);
 
             setSavedAddress(true);
+
             setEditingAddress(false);
 
-            /*
-            ------------------------------------------------------
-            Atualizar mapa
-            ------------------------------------------------------
-            */
-
-            const fullAddress = `
-              ${data.street},
-              ${data.city},
-              ${data.state}
-            `;
-
-            try {
-              const location =
-                await handleSearchLocation(fullAddress);
-
-              if (location.length > 0) {
-                setPosition([
-                  Number(location[0].lat),
-                  Number(location[0].lon),
-                ]);
-              }
-            } catch (error) {
-              console.error(
-                "Erro ao localizar endereço:",
-                error
-              );
-            }
+            await updateMapPosition(
+              loadedAddress.street,
+              loadedAddress.city,
+              loadedAddress.state
+            );
 
             return;
           }
 
-          /*
-          ======================================================
-          USUÁRIO LOGADO, MAS SEM ENDEREÇO
-          ======================================================
-          */
+          // ===============================================
+          // USUÁRIO LOGADO SEM ENDEREÇO
+          // ===============================================
 
           console.log(
-            "Usuário logado, mas não possui endereço."
+            "USUÁRIO LOGADO SEM ENDEREÇO"
           );
-
-          /*
-          IMPORTANTE:
-          Limpa qualquer endereço antigo que possa estar
-          dentro do CheckoutContext.
-          */
 
           setAddress({
             ...emptyAddress,
@@ -295,132 +306,69 @@ const Address = () => {
           });
 
           setSavedAddress(false);
+
           setEditingAddress(false);
+
           setSavedAddressId(null);
 
           return;
         }
 
-        /*
-        ========================================================
-        3. USUÁRIO NÃO LOGADO
-        ========================================================
-        */
-
-        console.log(
-          "Usuário não está logado."
-        );
-
-        /*
-        --------------------------------------------------------
-        Procurar endereço do visitante.
-        --------------------------------------------------------
-        */
+        // =================================================
+        // USUÁRIO NÃO LOGADO
+        // =================================================
 
         const savedGuestAddress =
-          localStorage.getItem("guest_address");
-
-        /*
-        ========================================================
-        VISITANTE TEM ENDEREÇO SALVO
-        ========================================================
-        */
+          localStorage.getItem(
+            "guest_address"
+          );
 
         if (savedGuestAddress) {
           try {
             const parsedAddress =
               JSON.parse(savedGuestAddress);
 
-            console.log(
-              "ENDEREÇO DO VISITANTE:",
-              parsedAddress
-            );
-
             setAddress(parsedAddress);
+
             setSavedAddress(true);
+
             setEditingAddress(false);
+
             setSavedAddressId(null);
 
-            /*
-            ----------------------------------------------------
-            Atualizar mapa
-            ----------------------------------------------------
-            */
-
-            const fullAddress = `
-              ${parsedAddress.street},
-              ${parsedAddress.city},
-              ${parsedAddress.state}
-            `;
-
-            try {
-              const location =
-                await handleSearchLocation(fullAddress);
-
-              if (location.length > 0) {
-                setPosition([
-                  Number(location[0].lat),
-                  Number(location[0].lon),
-                ]);
-              }
-            } catch (error) {
-              console.error(
-                "Erro ao localizar endereço:",
-                error
-              );
-            }
-
-            return;
-          } catch (error) {
-            console.error(
-              "Erro ao carregar endereço do visitante:",
-              error
+            await updateMapPosition(
+              parsedAddress.street,
+              parsedAddress.city,
+              parsedAddress.state
             );
 
+            return;
+          } catch {
             localStorage.removeItem(
               "guest_address"
             );
           }
         }
 
-        /*
-        ========================================================
-        VISITANTE SEM ENDEREÇO
-        ========================================================
-        */
-
-        console.log(
-          "Visitante não possui endereço salvo."
-        );
-
-        /*
-        IMPORTANTE:
-        Aqui estava faltando limpar o address do Context.
-        */
-
-        setAddress({
-          ...emptyAddress,
-        });
+        setAddress(emptyAddress);
 
         setSavedAddress(false);
+
         setEditingAddress(false);
+
         setSavedAddressId(null);
       } catch (error) {
         console.error(
-          "Erro ao carregar endereço:",
+          "ERRO AO CARREGAR ENDEREÇO:",
           error
         );
 
-        /*
-        Limpa endereço antigo em caso de erro.
-        */
-
-        setAddress({
-          ...emptyAddress,
-        });
+        setAddress(emptyAddress);
 
         setSavedAddress(false);
+
         setEditingAddress(false);
+
         setSavedAddressId(null);
       }
     };
@@ -428,45 +376,31 @@ const Address = () => {
     loadSavedAddress();
   }, [setAddress]);
 
-  /*
-  ============================================================
-  BUSCAR CEP
-  ============================================================
-  */
+  // =====================================================
+  // BUSCAR CEP
+  // =====================================================
 
-  const handleSearchCep = async (cep: string) => {
-    try {
-      const cleanCep = cep.replace(/\D/g, "");
+  const handleSearchCep = async (
+    cep: string
+  ) => {
+    const cleanCep = cep.replace(/\D/g, "");
 
-      const response = await fetch(
-        `https://viacep.com.br/ws/${cleanCep}/json/`
-      );
+    const response = await fetch(
+      `https://viacep.com.br/ws/${cleanCep}/json/`
+    );
 
-      if (!response.ok) {
-        throw new Error("Erro ao buscar CEP");
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-
+    if (!response.ok) {
       throw new Error(
-        "Algo de errado aconteceu"
+        "Erro ao buscar CEP"
       );
     }
+
+    return response.json();
   };
 
-  /*
-  ============================================================
-  QUANDO O USUÁRIO INFORMA O CEP
-  ============================================================
-  */
-
   const handleCep = async () => {
-    const cleanCep = address.zipCode.replace(
-      /\D/g,
-      ""
-    );
+    const cleanCep =
+      address.zipCode.replace(/\D/g, "");
 
     if (cleanCep.length !== 8) {
       return;
@@ -483,52 +417,39 @@ const Address = () => {
 
       setAddress((prev) => ({
         ...prev,
-        street: data.logradouro || "",
-        neighborhood: data.bairro || "",
-        city: data.localidade || "",
-        state: data.uf || "",
+        street:
+          data.logradouro || "",
+        neighborhood:
+          data.bairro || "",
+        city:
+          data.localidade || "",
+        state:
+          data.uf || "",
       }));
 
-      const fullAddress = `${data.logradouro}, ${data.localidade}, ${data.uf}`;
-
-      try {
-        const location =
-          await handleSearchLocation(fullAddress);
-
-        if (location.length > 0) {
-          setPosition([
-            Number(location[0].lat),
-            Number(location[0].lon),
-          ]);
-        }
-      } catch (error) {
-        console.error(
-          "Erro ao buscar localização:",
-          error
-        );
-      }
-    } catch (error) {
-      console.error(
-        "Erro ao buscar CEP:",
-        error
+      await updateMapPosition(
+        data.logradouro,
+        data.localidade,
+        data.uf
       );
-
+    } catch {
       alert(
         "Não foi possível buscar o CEP."
       );
     }
   };
 
-  /*
-  ============================================================
-  ALTERAR CAMPOS
-  ============================================================
-  */
+  // =====================================================
+  // ALTERAR CAMPOS
+  // =====================================================
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value } = event.target;
+    const {
+      name,
+      value,
+    } = event.target;
 
     setAddress((prev) => ({
       ...prev,
@@ -539,11 +460,9 @@ const Address = () => {
     }));
   };
 
-  /*
-  ============================================================
-  SALVAR / ATUALIZAR ENDEREÇO
-  ============================================================
-  */
+  // =====================================================
+  // SALVAR / ATUALIZAR ENDEREÇO
+  // =====================================================
 
   const handleSubmit = async (
     event: React.FormEvent
@@ -551,39 +470,22 @@ const Address = () => {
     event.preventDefault();
 
     try {
-      /*
-      ========================================================
-      VERIFICAR USUÁRIO
-      ========================================================
-      */
-
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
-      /*
-      ========================================================
-      VISITANTE
-      ========================================================
-      */
+      // =================================================
+      // USUÁRIO NÃO LOGADO
+      // =================================================
 
       if (!session?.user) {
-        console.log(
-          "Salvando endereço de visitante..."
-        );
-
-        /*
-        ------------------------------------------------------
-        O visitante salva o endereço no navegador.
-        ------------------------------------------------------
-        */
-
         localStorage.setItem(
           "guest_address",
           JSON.stringify(address)
         );
 
         setSavedAddress(true);
+
         setEditingAddress(false);
 
         navigate("/pagamento");
@@ -591,103 +493,77 @@ const Address = () => {
         return;
       }
 
-      /*
-      ========================================================
-      USUÁRIO LOGADO
-      ========================================================
-      */
-
       const user = session.user;
 
-      console.log(
-        "Salvando endereço para:",
-        user.id
-      );
+      // =================================================
+      // DADOS DO ENDEREÇO
+      // =================================================
 
       const addressData = {
         user_id: user.id,
         name: address.name,
         street: address.street,
         number: address.number,
-        neighborhood: address.neighborhood,
+        neighborhood:
+          address.neighborhood,
         city: address.city,
         state: address.state,
         zip_code: address.zipCode,
-        complement: address.complemento,
+        complement:
+          address.complemento,
         is_default: true,
       };
 
-      /*
-      ========================================================
-      ATUALIZAR ENDEREÇO EXISTENTE
-      ========================================================
-      */
+      console.log(
+        "ENDEREÇO QUE SERÁ SALVO:",
+        addressData
+      );
+
+      // =================================================
+      // ATUALIZAR ENDEREÇO EXISTENTE
+      // =================================================
 
       if (savedAddressId) {
         console.log(
-          "Atualizando endereço:",
+          "ATUALIZANDO ENDEREÇO:",
           savedAddressId
         );
 
-        const {
-          data,
-          error,
-        } = await supabase
-          .from("addresses")
-          .update(addressData)
-          .eq("id", savedAddressId)
-          .eq("user_id", user.id)
-          .select()
-          .single();
+        const { error } =
+          await supabase
+            .from("addresses")
+            .update(addressData)
+            .eq("id", savedAddressId)
+            .eq("user_id", user.id);
 
         console.log(
-          "UPDATE DATA:",
-          data
-        );
-
-        console.log(
-          "UPDATE ERROR:",
+          "ERRO DO UPDATE:",
           error
         );
 
         if (error) {
           console.error(
-            "Erro ao atualizar endereço:",
+            "ERRO AO ATUALIZAR ENDEREÇO:",
             error
           );
 
-          alert(error.message);
-          return;
-        }
-
-        if (!data) {
           alert(
-            "Não foi possível encontrar o endereço."
+            `Não foi possível atualizar o endereço: ${error.message}`
           );
+
           return;
         }
 
-        /*
-        ------------------------------------------------------
-        Atualiza o estado com os dados salvos.
-        ------------------------------------------------------
-        */
+        // ===============================================
+        // UPDATE REALIZADO
+        // ===============================================
 
-        setSavedAddressId(data.id);
-
-        setAddress({
-          name: data.name || "",
-          email: user.email || "",
-          zipCode: data.zip_code || "",
-          street: data.street || "",
-          number: data.number || "",
-          complemento: data.complement || "",
-          neighborhood: data.neighborhood || "",
-          city: data.city || "",
-          state: data.state || "",
-        });
+        console.log(
+          "ENDEREÇO ATUALIZADO COM SUCESSO!"
+        );
 
         setSavedAddress(true);
+
         setEditingAddress(false);
 
         navigate("/pagamento");
@@ -695,62 +571,51 @@ const Address = () => {
         return;
       }
 
-      /*
-      ========================================================
-      CRIAR PRIMEIRO ENDEREÇO
-      ========================================================
-      */
+      // =================================================
+      // CRIAR PRIMEIRO ENDEREÇO
+      // =================================================
 
       console.log(
-        "Criando primeiro endereço..."
+        "CRIANDO PRIMEIRO ENDEREÇO"
       );
 
-      const {
-        data,
-        error,
-      } = await supabase
-        .from("addresses")
-        .insert(addressData)
-        .select()
-        .single();
-
-      console.log(
-        "INSERT DATA:",
-        data
-      );
-
-      console.log(
-        "INSERT ERROR:",
-        error
-      );
+      const { data, error } =
+        await supabase
+          .from("addresses")
+          .insert(addressData)
+          .select()
+          .single();
 
       if (error) {
         console.error(
-          "Erro ao salvar endereço:",
+          "ERRO AO CRIAR ENDEREÇO:",
           error
         );
 
-        alert(error.message);
+        alert(
+          `Não foi possível salvar o endereço: ${error.message}`
+        );
+
         return;
       }
 
-      /*
-      ========================================================
-      GUARDAR ID DO ENDEREÇO
-      ========================================================
-      */
+      console.log(
+        "ENDEREÇO CRIADO:",
+        data
+      );
 
       if (data) {
         setSavedAddressId(data.id);
       }
 
       setSavedAddress(true);
+
       setEditingAddress(false);
 
       navigate("/pagamento");
     } catch (error) {
       console.error(
-        "Erro ao salvar endereço:",
+        "ERRO AO SALVAR ENDEREÇO:",
         error
       );
 
@@ -760,165 +625,243 @@ const Address = () => {
     }
   };
 
-  /*
-  ============================================================
-  JSX
-  ============================================================
-  */
+  // =====================================================
+  // JSX
+  // =====================================================
 
   return (
     <section className="address">
 
-      <div className="address-content">
+      {deliveryMethod === "pickup" ? (
 
-        {savedAddress && !editingAddress ? (
-          <div className="saved-address">
+         <div className="address-content">
 
-            <h2>
-              Endereço de entrega
-            </h2>
+    <div className="pickup-store">
 
-            <div className="saved-address__card">
+      <h2>
+        Retirada na loja
+      </h2>
 
-              <h3>
-                {address.name}
-              </h3>
+      {selectedStore ? (
+        <>
+          <div className="pickup-store__card">
 
-              <p>
-                {address.street},{" "}
-                {address.number}
-              </p>
+            <h3>
+              {selectedStore.name}
+            </h3>
 
-              {address.complemento && (
-                <p>
-                  {address.complemento}
-                </p>
-              )}
-
-              <p>
-                {address.neighborhood}
-              </p>
-
-              <p>
-                {address.city} -{" "}
-                {address.state}
-              </p>
-
-              <p>
-                CEP: {address.zipCode}
-              </p>
-
-            </div>
-
-            <button
-              type="button"
-              className="address-form__button"
-              onClick={() => {
-                setEditingAddress(true);
-              }}
-            >
-              Alterar endereço
-            </button>
-
-            <button
-              type="button"
-              className="address-form__button"
-              onClick={() =>
-                navigate("/pagamento")
-              }
-            >
-              Continuar para pagamento
-            </button>
+            <p>
+              {selectedStore.adress}
+            </p>
 
           </div>
-        ) : (
-          <form
-            className="address-form"
-            onSubmit={handleSubmit}
+
+          {/* NOVO BOTÃO */}
+          <button
+            type="button"
+            className="address-form__button"
+            onClick={() =>
+              setDeliveryMethod("delivery")
+            }
           >
+            Receber em casa
+          </button>
 
-            <h2>
-              Endereço de entrega
-            </h2>
+          <button
+            type="button"
+            className="address-form__button"
+            onClick={() =>
+              navigate("/pagamento")
+            }
+          >
+            Continuar para pagamento
+          </button>
+        </>
+      ) : (
+        <p>
+          Nenhuma loja foi selecionada.
+        </p>
+      )}
 
-            {fields.map((field) => (
-              <div
-                className="address-form__group"
-                key={field.name}
-              >
+    </div>
 
-                <label
-                  htmlFor={field.name}
-                >
-                  {field.label}
-                </label>
+  </div>
 
-                <input
-                  id={field.name}
-                  name={field.name}
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  value={address[field.name]}
-                  onChange={handleChange}
-                  required={field.required}
-                  onBlur={
-                    field.name === "zipCode"
-                      ? handleCep
-                      : undefined
+      ) : (
+
+        <>
+
+          <div className="address-content">
+
+            {savedAddress &&
+            !editingAddress ? (
+
+              <div className="saved-address">
+
+                <h2>
+                  Endereço de entrega
+                </h2>
+
+                <div className="saved-address__card">
+
+                  <h3>
+                    {address.name}
+                  </h3>
+
+                  <p>
+                    {address.street},{" "}
+                    {address.number}
+                  </p>
+
+                  {address.complemento && (
+                    <p>
+                      {address.complemento}
+                    </p>
+                  )}
+
+                  <p>
+                    {address.neighborhood}
+                  </p>
+
+                  <p>
+                    {address.city} -{" "}
+                    {address.state}
+                  </p>
+
+                  <p>
+                    CEP: {address.zipCode}
+                  </p>
+
+                </div>
+
+                <button
+                  type="button"
+                  className="address-form__button"
+                  onClick={() =>
+                    setEditingAddress(true)
                   }
-                />
+                >
+                  Alterar endereço
+                </button>
+
+                <button
+                  type="button"
+                  className="address-form__button"
+                  onClick={() =>
+                    navigate("/pagamento")
+                  }
+                >
+                  Continuar para pagamento
+                </button>
 
               </div>
-            ))}
 
-            <button
-              className="address-form__button"
-              type="submit"
+            ) : (
+
+              <form
+                className="address-form"
+                onSubmit={handleSubmit}
+              >
+
+                <h2>
+                  Endereço de entrega
+                </h2>
+
+                {fields.map((field) => (
+
+                  <div
+                    className="address-form__group"
+                    key={field.name}
+                  >
+
+                    <label
+                      htmlFor={field.name}
+                    >
+                      {field.label}
+                    </label>
+
+                    <input
+                      id={field.name}
+                      name={field.name}
+                      type={field.type}
+                      placeholder={
+                        field.placeholder
+                      }
+                      value={
+                        address[field.name]
+                      }
+                      onChange={
+                        handleChange
+                      }
+                      required={
+                        field.required
+                      }
+                      onBlur={
+                        field.name ===
+                        "zipCode"
+                          ? handleCep
+                          : undefined
+                      }
+                    />
+
+                  </div>
+
+                ))}
+
+                <button
+                  className="address-form__button"
+                  type="submit"
+                >
+                  Salvar endereço e continuar
+                </button>
+
+              </form>
+
+            )}
+
+          </div>
+
+          <div className="address-map">
+
+            <MapContainer
+              center={position}
+              zoom={16}
+              scrollWheelZoom={false}
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
             >
-              Salvar endereço e continuar
-            </button>
 
-          </form>
-        )}
+              <ChangeView
+                center={position}
+              />
 
-      </div>
+              <TileLayer
+                attribution="© OpenStreetMap"
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
 
-      <div className="address-map">
+              <Marker
+                position={position}
+              >
 
-        <MapContainer
-          center={position}
-          zoom={16}
-          scrollWheelZoom={false}
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-        >
+                <Popup>
+                  Local da entrega
+                </Popup>
 
-          <ChangeView
-            center={position}
-          />
+              </Marker>
 
-          <TileLayer
-            attribution="© OpenStreetMap"
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+            </MapContainer>
 
-          <Marker
-            position={position}
-          >
-            <Popup>
-              Local da entrega
-            </Popup>
-          </Marker>
+          </div>
 
-        </MapContainer>
+        </>
 
-      </div>
+      )}
 
     </section>
   );
 };
 
 export default Address;
-

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/Supabase/supabaseClient";
 const Payment = () => {
   const { cartItem, clearCart } = useCart();
-  const { address } = useCheckout();
+  const { address,deliveryMethod,selectedStore} = useCheckout();
   const navigate = useNavigate();
   const [method, setMethod] = useState<"card" | "pix">("card");
   const [qrCode, setQrCode] = useState("");
@@ -312,26 +312,52 @@ const Payment = () => {
             </div>
           </div>
 
-          <div className="payment__card">
-            <h3>Endereço</h3>
+          {deliveryMethod === "delivery" ? (
+  <div className="payment__card">
+    <h3>Endereço de entrega</h3>
 
-            <p>{address.name}</p>
-            <p>{address.email}</p>
+    <p>{address.name}</p>
+    <p>{address.email}</p>
 
-            <p>
-              {address.street},{" "}
-              {address.number}
-            </p>
+    <p>
+      {address.street}, {address.number}
+    </p>
 
-            <p>
-              {address.city} -{" "}
-              {address.state}
-            </p>
+    {address.complemento && (
+      <p>{address.complemento}</p>
+    )}
 
-            <p>
-              CEP: {address.zipCode}
-            </p>
-          </div>
+    <p>
+      {address.neighborhood}
+    </p>
+
+    <p>
+      {address.city} - {address.state}
+    </p>
+
+    <p>
+      CEP: {address.zipCode}
+    </p>
+  </div>
+) : (
+  <div className="payment__card">
+    <h3>Retirada na loja</h3>
+
+    <div className="payment__pickup">
+      <strong>
+        {selectedStore?.name}
+      </strong>
+
+      <p>
+        {selectedStore?.adress}
+      </p>
+
+      <span>
+        Você irá retirar seu pedido nesta loja.
+      </span>
+    </div>
+  </div>
+)}
 
         </div>
 

@@ -5,6 +5,7 @@ import CepModal from "../../modals/CepModal/CepModal";
 import { useLockBodyScroll } from "../../modals/CepModal/CepModalUtils";
 import { useModal } from "../../modals/CepModal/CepModalUtils";
 import './DeliveryOptions.scss';
+import { useCheckout } from "../../context/CheckoutContext";
 import {
   getSelectedStore,
   getSelectedAddress,
@@ -23,6 +24,7 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
     const [selectedStore, setSelectedStore] = useState<number | null>(null);
     const [showUnavailable,setShowUnavailable] = useState(false)
     const [cep,setCep] = useState('')
+    const { setDeliveryMethod, setSelectedStore: setCheckoutStore } = useCheckout()
     useEffect(()=> {
       const savedStore = getSelectedStore()
       const savedAdress = getSelectedAddress()
@@ -84,8 +86,16 @@ const DeliveryOptions: React.FC <props> = ({ onSelectStore}) => {
              className={`store__item ${isSelected ? "selected" : ""}`}
             onClick={() => {
                setSelectedStore(store.id);
-               onSelectStore(store.address);
+              setDeliveryMethod('pickup')
                setSelectedAddress(store.address);
+               setCheckoutStore({
+                      id: String(store.id),
+                      name:store.name,
+                      adress: store.address,
+               })
+                 onSelectStore(store.address);
+                setSelectedAddress(store.address);
+               onSelectStore(store.address);
             }}
           >
             <i className="fas fa-map-marker-alt store-icon"></i>

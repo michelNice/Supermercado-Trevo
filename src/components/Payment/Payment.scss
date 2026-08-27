@@ -1,8 +1,9 @@
+@use '../../Styles/mixins' as *;
+@use '../../Styles/variables' as *;
+
 $background: #f5f5f5;
 $text: #333;
 $text-light: #666;
-@use '../../Styles/mixins' as *;
-@use '../../Styles/variables' as *;
 
 .payment {
   max-width: 87.5rem;
@@ -31,7 +32,6 @@ $text-light: #666;
   }
 }
 
-
 .payment__summary,
 .payment__methods {
   display: flex;
@@ -39,57 +39,88 @@ $text-light: #666;
   gap: 1.5rem;
 }
 
-
 .payment__card {
-  background: $white;
   padding: 1.5rem;
+  background: $white;
   border-radius: 1rem;
   border-top: 0.35rem solid $primary;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .08);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
 
   p {
+    margin: 0;
     color: $text-light;
     line-height: 1.6;
   }
 }
 
-.payment__email {
+.payment__pickup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 
-  input {
-    width: 100%;
-    padding: 1rem;
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
 
-    border: 1px solid #ddd;
-    border-radius: .75rem;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 0.75rem;
 
-    font-size: 1rem;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    bottom: 1rem;
+    left: 0;
+
+    width: 0.25rem;
+
+    background: $primary;
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+
+  strong {
+    color: $text-dark-bg;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
     color: $text;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
 
-    transition: .3s;
-
-    &::placeholder {
-      color: $text-light;
-    }
-
-    &:focus {
-      outline: none;
-      border-color: $primary;
-      box-shadow: 0 0 0 .2rem rgba(238, 113, 4, .15);
-    }
+  span {
+    margin-top: 0.25rem;
+    color: $text-light;
+    font-size: 0.875rem;
+    line-height: 1.5;
   }
 }
+
 .payment__product {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding: 1rem 0;
 
-  &:not(:last-child) {border-bottom: 1px solid #ececec;}
+  &:not(:last-child) {
+    border-bottom: 1px solid #ececec;
+  }
 
-  span {color: $text;}
+  span {
+    color: $text;
+  }
 
-  strong {color: $text-dark-bg;}
+  strong {
+    color: $text-dark-bg;
+    white-space: nowrap;
+  }
 }
+
 .payment__total {
   display: flex;
   justify-content: space-between;
@@ -101,82 +132,89 @@ $text-light: #666;
   }
 }
 
-
-.payment__address {
-  display: flex;
-  flex-direction: column;
-  gap: .5rem;
-
-  p { margin: 0;}
-}
-
-
 .payment__buttons {
   display: flex;
   gap: 1rem;
+
+  button {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.75rem;
+    background: $primary;
+    color: $white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      transform 0.2s ease,
+      box-shadow 0.25s ease;
+
+    &:hover {
+      box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.12);
+      transform: translateY(-0.1rem);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &.active {
+      background: $text-dark-bg;
+      box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.15);
+    }
+  }
 }
-
-
-.payment__buttons button {
-  flex: 1;
-  padding: 1rem;
-  border: none;
-  border-radius: .75rem;
-
-  background: $primary;
-  color: $white;
-
-  font-size: 1rem;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: .25s;
-
-  //&:hover {background: darken($primary, 8%);}
-}
-
 
 .payment__mercadopago,
 .payment__pix {
+  padding: 1.5rem;
   background: $white;
   border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .08);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
 }
 
+.payment__mercadopago {
+  min-height: 40rem;
+}
 
-.payment__mercadopago {min-height: 40rem;}
+.payment__pix {
+  text-align: center;
+}
 
-.payment__pix {text-align: center;}
 .payment__qrcode {
   width: 12.5rem;
   height: 12.5rem;
-  margin: 1.5rem auto;
   display: block;
+  margin: 1.5rem auto;
 }
 
 .payment__message {
   position: fixed;
-  top: 110px;
-  right: 20px;
+  top: 6.875rem;
+  right: 1.25rem;
+  z-index: 1000;
+
+  padding: 1rem 1.5rem;
 
   background: $text-dark-bg;
   color: $white;
 
-  padding: 1rem 25px;
-  border-radius: 10px;
+  border-radius: 0.625rem;
 
   font-size: 1rem;
   font-weight: 600;
 
-  box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
-  z-index: 1000;
+  box-shadow: 0 0.3125rem 1.25rem rgba(0, 0, 0, 0.2);
+
+  animation: slideIn 0.3s ease;
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
 
   to {
@@ -185,9 +223,7 @@ $text-light: #666;
   }
 }
 
-
 @media (max-width: 62rem) {
-
   .payment {
     padding: 1.5rem;
 
@@ -195,21 +231,66 @@ $text-light: #666;
       grid-template-columns: 1fr;
     }
   }
-  .payment__mercadopago {min-height: 35rem;}
+
+  .payment__mercadopago {
+    min-height: 35rem;
+  }
 }
 
-
 @media (max-width: 37.5rem) {
-
   .payment {
     margin: 1rem;
     padding: 1rem;
 
-    h2 {font-size: 1.6rem;}
+    h2 {
+      font-size: 1.6rem;
+    }
 
-    h3 {font-size: 1.1rem;}
+    h3 {
+      font-size: 1.1rem;
+    }
   }
-  .payment__buttons {flex-direction: column;}
 
-  .payment__mercadopago { min-height: 32rem;}
+  .payment__buttons {
+    flex-direction: column;
+  }
+
+  .payment__product {
+    align-items: flex-start;
+
+    span {
+      font-size: 0.9rem;
+    }
+
+    strong {
+      font-size: 0.9rem;
+    }
+  }
+
+  .payment__pickup {
+    padding: 1rem 1rem 1rem 1.25rem;
+
+    strong {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+
+    span {
+      font-size: 0.8rem;
+    }
+  }
+
+  .payment__mercadopago {
+    min-height: 32rem;
+  }
+
+  .payment__message {
+    top: 6rem;
+    right: 1rem;
+    left: 1rem;
+    text-align: center;
+  }
 }
