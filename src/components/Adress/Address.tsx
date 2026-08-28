@@ -109,26 +109,21 @@ const emptyAddress = {
 
 const Address = () => {
   const {
-  address,
-  setAddress,
-  selectedStore,
-  deliveryMethod,
-  setDeliveryMethod,
-} = useCheckout();
+    address,
+    setAddress,
+    selectedStore,
+    deliveryMethod,
+    setDeliveryMethod,
+  } = useCheckout();
 
   const [savedAddress, setSavedAddress] = useState(false);
+  const [editingAddress, setEditingAddress] = useState(false);
+  const [savedAddressId, setSavedAddressId] = useState<string | null>(null);
 
-  const [editingAddress, setEditingAddress] =
-    useState(false);
-
-  const [savedAddressId, setSavedAddressId] =
-    useState<string | null>(null);
-
-  const [position, setPosition] =
-    useState<[number, number]>([
-      -23.5505,
-      -46.6333,
-    ]);
+  const [position, setPosition] = useState<[number, number]>([
+    -8.0476,
+    -34.877,
+  ]);
 
   const navigate = useNavigate();
 
@@ -136,9 +131,7 @@ const Address = () => {
   // BUSCAR ENDEREÇO NO OPENSTREETMAP
   // =====================================================
 
-  const handleSearchLocation = async (
-    addressValue: string
-  ) => {
+  const handleSearchLocation = async (addressValue: string) => {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
         addressValue
@@ -146,9 +139,7 @@ const Address = () => {
     );
 
     if (!response.ok) {
-      throw new Error(
-        "Erro ao buscar localização"
-      );
+      throw new Error("Erro ao buscar localização");
     }
 
     return response.json();
@@ -170,10 +161,7 @@ const Address = () => {
     try {
       const fullAddress = `${street}, ${city}, ${state}`;
 
-      const location =
-        await handleSearchLocation(
-          fullAddress
-        );
+      const location = await handleSearchLocation(fullAddress);
 
       if (location.length > 0) {
         setPosition([
@@ -182,85 +170,125 @@ const Address = () => {
         ]);
       }
     } catch (error) {
-      console.error(
-        "Erro ao localizar endereço:",
-        error
-      );
+      console.error("Erro ao localizar endereço:", error);
     }
   };
 
   // =====================================================
-  // CARREGAR ENDEREÇO SALVO
+  // CARREGAR ENDEREÇO
   // =====================================================
 
+  useEffect(() => {
+    const loadSavedAddress = async () => {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
-// =====================================================
-// CARREGAR ENDEREÇO SALVO
-// =====================================================
+        // =================================================
+        // USUÁRIO NÃO LOGADO
+        // =================================================
 
-useEffect(() => {
-  const loadSavedAddress = async () => {
-    try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        if (!session?.user) {
+          console.log(
+            "USUÁRIO NÃO LOGADO - FORMULÁRIO VAZIO"
+          );
 
-      // =================================================
-      // USUÁRIO NÃO LOGADO
-      // =================================================
+          // IMPORTANTE:
+          // Não buscamos mais guest_address no localStorage.
+          // Usuário convidado NÃO possui endereço salvo.
 
-      if (!session?.user) {
-        console.log("USUÁRIO NÃO LOGADO");
+          setAddress(emptyAddress);
+          setSavedAddress(false);
+          setEditingAddress(false);
+          setSavedAddressId(null);
 
-        // Sempre começa com formulário vazio
-        setAddress(emptyAddress);
+          return;
+        }
 
-        setSavedAddress(false);
-        setEditingAddress(false);
-        setSavedAddressId(null);
+        // =================================================
+        // USUÁRIO LOGADO
+        // =================================================
 
-        return;
-      }
+        const user = session.user;
 
-      // =================================================
-      // USUÁRIO LOGADO
-      // =================================================
+        console.log("USUÁRIO LOGADO:", user.id);
 
-      const user = session.user;
+        const { data, error } = await supabase
+          .from("addresses")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", {
+            ascending: false,
+          })
+          .limit(1);
 
-      console.log(
-        "USUÁRIO LOGADO:",
-        user.id
-      );
+        console.log("ENDEREÇO ENCONTRADO:", data);
+        console.log("ERRO ADDRESS:", error);
 
-      const { data, error } = await supabase
-        .from("addresses")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", {
-          ascending: false,
-        })
-        .limit(1)
-        .maybeSingle();
+        if (error) {
+          console.error(
+            "ERRO AO BUSCAR ENDEREÇO:",
+            error
+          );
 
-      console.log(
-        "ENDEREÇO ENCONTRADO:",
-        data
-      );
+          setAddress({
+            ...emptyAddress,
+            email: user.email || "",
+          });
 
-      console.log(
-        "ERRO ADDRESS:",
-        error
-      );
+          setSavedAddress(false);
+          setEditingAddress(false);
+          setSavedAddressId(null);
 
-      // =================================================
-      // ERRO AO BUSCAR
-      // =================================================
+          return;
+        }
 
-      if (error) {
-        console.error(
-          "ERRO AO BUSCAR ENDEREÇO:",
-          error
+        // =================================================
+        // ENDEREÇO ENCONTRADO
+        // =================================================
+
+        if (data && data.length > 0) {
+          const saved = data[0];
+
+          const loadedAddress = {
+            name: saved.name || "",
+            email: user.email || "",
+            zipCode: saved.zip_code || "",
+            street: saved.street || "",
+            number: saved.number || "",
+            complemento: saved.complement || "",
+            neighborhood: saved.neighborhood || "",
+            city: saved.city || "",
+            state: saved.state || "",
+          };
+
+          console.log(
+            "ENDEREÇO CARREGADO:",
+            loadedAddress
+          );
+
+          setAddress(loadedAddress);
+
+          setSavedAddressId(saved.id);
+          setSavedAddress(true);
+          setEditingAddress(false);
+
+          await updateMapPosition(
+            loadedAddress.street,
+            loadedAddress.city,
+            loadedAddress.state
+          );
+
+          return;
+        }
+
+        // =================================================
+        // USUÁRIO LOGADO SEM ENDEREÇO
+        // =================================================
+
+        console.log(
+          "USUÁRIO LOGADO SEM ENDEREÇO"
         );
 
         setAddress({
@@ -271,92 +299,27 @@ useEffect(() => {
         setSavedAddress(false);
         setEditingAddress(false);
         setSavedAddressId(null);
-
-        return;
-      }
-
-      // =================================================
-      // ENDEREÇO ENCONTRADO
-      // =================================================
-
-      if (data) {
-        const loadedAddress = {
-          name: data.name || "",
-          email: user.email || "",
-          zipCode: data.zip_code || "",
-          street: data.street || "",
-          number: data.number || "",
-          complemento: data.complement || "",
-          neighborhood: data.neighborhood || "",
-          city: data.city || "",
-          state: data.state || "",
-        };
-
-        console.log(
-          "ENDEREÇO CARREGADO:",
-          loadedAddress
+      } catch (error) {
+        console.error(
+          "ERRO AO CARREGAR ENDEREÇO:",
+          error
         );
 
-        setAddress(loadedAddress);
-
-        setSavedAddressId(data.id);
-
-        setSavedAddress(true);
-
+        setAddress(emptyAddress);
+        setSavedAddress(false);
         setEditingAddress(false);
-
-        await updateMapPosition(
-          loadedAddress.street,
-          loadedAddress.city,
-          loadedAddress.state
-        );
-
-        return;
+        setSavedAddressId(null);
       }
+    };
 
-      // =================================================
-      // USUÁRIO LOGADO SEM ENDEREÇO
-      // =================================================
-
-      console.log(
-        "USUÁRIO LOGADO SEM ENDEREÇO"
-      );
-
-      setAddress({
-        ...emptyAddress,
-        email: user.email || "",
-      });
-
-      setSavedAddress(false);
-      setEditingAddress(false);
-      setSavedAddressId(null);
-
-    } catch (error) {
-      console.error(
-        "ERRO AO CARREGAR ENDEREÇO:",
-        error
-      );
-
-      setAddress(emptyAddress);
-
-      setSavedAddress(false);
-      setEditingAddress(false);
-      setSavedAddressId(null);
-    }
-  };
-
-  loadSavedAddress();
-}, [setAddress]);
-
-
+    loadSavedAddress();
+  }, [setAddress]);
 
   // =====================================================
   // BUSCAR CEP
   // =====================================================
 
-  const handleSearchCep = async (
-    cep: string
-  ) => {
+  const handleSearchCep = async (cep: string) => {
     const cleanCep = cep.replace(/\D/g, "");
 
     const response = await fetch(
@@ -364,25 +327,21 @@ useEffect(() => {
     );
 
     if (!response.ok) {
-      throw new Error(
-        "Erro ao buscar CEP"
-      );
+      throw new Error("Erro ao buscar CEP");
     }
 
     return response.json();
   };
 
   const handleCep = async () => {
-    const cleanCep =
-      address.zipCode.replace(/\D/g, "");
+    const cleanCep = address.zipCode.replace(/\D/g, "");
 
     if (cleanCep.length !== 8) {
       return;
     }
 
     try {
-      const data =
-        await handleSearchCep(cleanCep);
+      const data = await handleSearchCep(cleanCep);
 
       if (!data || data.erro) {
         alert("CEP não encontrado");
@@ -391,14 +350,10 @@ useEffect(() => {
 
       setAddress((prev) => ({
         ...prev,
-        street:
-          data.logradouro || "",
-        neighborhood:
-          data.bairro || "",
-        city:
-          data.localidade || "",
-        state:
-          data.uf || "",
+        street: data.logradouro || "",
+        neighborhood: data.bairro || "",
+        city: data.localidade || "",
+        state: data.uf || "",
       }));
 
       await updateMapPosition(
@@ -406,7 +361,9 @@ useEffect(() => {
         data.localidade,
         data.uf
       );
-    } catch {
+    } catch (error) {
+      console.error(error);
+
       alert(
         "Não foi possível buscar o CEP."
       );
@@ -420,10 +377,7 @@ useEffect(() => {
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const {
-      name,
-      value,
-    } = event.target;
+    const { name, value } = event.target;
 
     setAddress((prev) => ({
       ...prev,
@@ -435,13 +389,93 @@ useEffect(() => {
   };
 
   // =====================================================
+  // RETIRADA NA LOJA
+  // =====================================================
+
+  const handlePickupSubmit = (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    const name = address.name.trim();
+    const email = address.email.trim();
+
+    if (!name) {
+      alert("Digite seu nome completo.");
+      return;
+    }
+
+    if (!email) {
+      alert("Digite seu e-mail.");
+      return;
+    }
+
+    // Apenas mantém os dados no CheckoutContext.
+    // NÃO salva no localStorage.
+
+    setAddress((prev) => ({
+      ...prev,
+      name,
+      email,
+    }));
+
+    console.log("DADOS DA RETIRADA:", {
+      name,
+      email,
+      store: selectedStore,
+    });
+
+    navigate("/pagamento");
+  };
+
+  // =====================================================
   // SALVAR / ATUALIZAR ENDEREÇO
   // =====================================================
 
   const handleSubmit = async (
-    event: React.FormEvent
+    event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+
+    if (!address.name.trim()) {
+      alert("Digite seu nome completo.");
+      return;
+    }
+
+    if (!address.email.trim()) {
+      alert("Digite seu e-mail.");
+      return;
+    }
+
+    if (!address.zipCode.trim()) {
+      alert("Digite seu CEP.");
+      return;
+    }
+
+    if (!address.street.trim()) {
+      alert("Digite sua rua.");
+      return;
+    }
+
+    if (!address.number.trim()) {
+      alert("Digite o número.");
+      return;
+    }
+
+    if (!address.neighborhood.trim()) {
+      alert("Digite seu bairro.");
+      return;
+    }
+
+    if (!address.city.trim()) {
+      alert("Digite sua cidade.");
+      return;
+    }
+
+    if (!address.state.trim()) {
+      alert("Digite seu estado.");
+      return;
+    }
 
     try {
       const {
@@ -453,38 +487,49 @@ useEffect(() => {
       // =================================================
 
       if (!session?.user) {
-        localStorage.setItem(
-          "guest_address",
-          JSON.stringify(address)
+        console.log(
+          "USUÁRIO CONVIDADO - NÃO SALVAR ENDEREÇO"
         );
 
-        setSavedAddress(true);
+        // Mantém apenas no CheckoutContext durante o checkout.
+        setAddress((prev) => ({
+          ...prev,
+          name: prev.name.trim(),
+          email: prev.email.trim(),
+          zipCode: prev.zipCode.trim(),
+          street: prev.street.trim(),
+          number: prev.number.trim(),
+          complemento: prev.complemento.trim(),
+          neighborhood: prev.neighborhood.trim(),
+          city: prev.city.trim(),
+          state: prev.state.trim(),
+        }));
 
-        setEditingAddress(false);
+        // IMPORTANTE:
+        // NÃO usar localStorage aqui.
+        // O endereço de convidado não será persistido.
 
         navigate("/pagamento");
 
         return;
       }
 
-      const user = session.user;
+      // =================================================
+      // USUÁRIO LOGADO
+      // =================================================
 
-      // =================================================
-      // DADOS DO ENDEREÇO
-      // =================================================
+      const user = session.user;
 
       const addressData = {
         user_id: user.id,
-        name: address.name,
-        street: address.street,
-        number: address.number,
-        neighborhood:
-          address.neighborhood,
-        city: address.city,
-        state: address.state,
-        zip_code: address.zipCode,
-        complement:
-          address.complemento,
+        name: address.name.trim(),
+        street: address.street.trim(),
+        number: address.number.trim(),
+        neighborhood: address.neighborhood.trim(),
+        city: address.city.trim(),
+        state: address.state.trim(),
+        zip_code: address.zipCode.trim(),
+        complement: address.complemento.trim(),
         is_default: true,
       };
 
@@ -503,21 +548,15 @@ useEffect(() => {
           savedAddressId
         );
 
-        const { error } =
-          await supabase
-            .from("addresses")
-            .update(addressData)
-            .eq("id", savedAddressId)
-            .eq("user_id", user.id);
-
-        console.log(
-          "ERRO DO UPDATE:",
-          error
-        );
+        const { error } = await supabase
+          .from("addresses")
+          .update(addressData)
+          .eq("id", savedAddressId)
+          .eq("user_id", user.id);
 
         if (error) {
           console.error(
-            "ERRO AO ATUALIZAR ENDEREÇO:",
+            "ERRO AO ATUALIZAR:",
             error
           );
 
@@ -528,16 +567,11 @@ useEffect(() => {
           return;
         }
 
-        // ===============================================
-        // UPDATE REALIZADO
-        // ===============================================
-
         console.log(
           "ENDEREÇO ATUALIZADO COM SUCESSO!"
         );
 
         setSavedAddress(true);
-
         setEditingAddress(false);
 
         navigate("/pagamento");
@@ -553,12 +587,14 @@ useEffect(() => {
         "CRIANDO PRIMEIRO ENDEREÇO"
       );
 
-      const { data, error } =
-        await supabase
-          .from("addresses")
-          .insert(addressData)
-          .select()
-          .single();
+      const {
+        data,
+        error,
+      } = await supabase
+        .from("addresses")
+        .insert(addressData)
+        .select()
+        .single();
 
       if (error) {
         console.error(
@@ -583,7 +619,6 @@ useEffect(() => {
       }
 
       setSavedAddress(true);
-
       setEditingAddress(false);
 
       navigate("/pagamento");
@@ -600,75 +635,180 @@ useEffect(() => {
   };
 
   // =====================================================
+  // ALTERAR PARA ENTREGA
+  // =====================================================
+
+  const handleDelivery = () => {
+    setDeliveryMethod("delivery");
+
+    /*
+      Não recuperamos mais guest_address.
+
+      Se o usuário estiver como convidado,
+      o formulário continuará vazio.
+
+      Se estiver logado, o useEffect poderá
+      carregar o endereço do Supabase.
+    */
+
+    setAddress((prev) => ({
+      ...emptyAddress,
+      name: prev.name || "",
+      email: prev.email || "",
+    }));
+
+    setSavedAddress(false);
+    setEditingAddress(false);
+    setSavedAddressId(null);
+  };
+
+  // =====================================================
+  // IR PARA PAGAMENTO
+  // =====================================================
+
+  const handleContinuePayment = () => {
+    if (!address.name.trim()) {
+      alert("Digite seu nome.");
+      return;
+    }
+
+    if (!address.email.trim()) {
+      alert("Digite seu e-mail.");
+      return;
+    }
+
+    navigate("/pagamento");
+  };
+
+  // =====================================================
   // JSX
   // =====================================================
 
   return (
     <section className="address">
 
+      {/* =================================================
+          RETIRADA NA LOJA
+      ================================================= */}
+
       {deliveryMethod === "pickup" ? (
+        <div className="address-content">
 
-         <div className="address-content">
+          <div className="pickup-store">
 
-    <div className="pickup-store">
+            <h2>Retirada na loja</h2>
 
-      <h2>
-        Retirada na loja
-      </h2>
+            {selectedStore ? (
+              <>
+                <div className="pickup-store__card">
 
-      {selectedStore ? (
-        <>
-          <div className="pickup-store__card">
+                  <h3>
+                    {selectedStore.name}
+                  </h3>
 
-            <h3>
-              {selectedStore.name}
-            </h3>
+                  <p>
+                    {selectedStore.address}
+                  </p>
 
-            <p>
-              {selectedStore.adress}
-            </p>
+                </div>
+
+                <div className="pickup-store__info">
+
+                  <p>
+                    Para retirar seu pedido,
+                    informe seu nome e e-mail.
+                  </p>
+
+                  <p>
+                    Enviaremos a confirmação do
+                    pedido para esse e-mail.
+                  </p>
+
+                </div>
+
+                <form
+                  className="address-form"
+                  onSubmit={handlePickupSubmit}
+                >
+
+                  <h2>
+                    Dados para retirada
+                  </h2>
+
+                  <div className="address-form__group">
+
+                    <label htmlFor="pickup-name">
+                      Nome completo
+                    </label>
+
+                    <input
+                      id="pickup-name"
+                      name="name"
+                      type="text"
+                      placeholder="Digite seu nome completo"
+                      value={address.name}
+                      onChange={handleChange}
+                      autoComplete="name"
+                      required
+                    />
+
+                  </div>
+
+                  <div className="address-form__group">
+
+                    <label htmlFor="pickup-email">
+                      E-mail
+                    </label>
+
+                    <input
+                      id="pickup-email"
+                      name="email"
+                      type="email"
+                      placeholder="Digite seu e-mail"
+                      value={address.email}
+                      onChange={handleChange}
+                      autoComplete="email"
+                      required
+                    />
+
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="address-form__button"
+                  >
+                    Continuar para pagamento
+                  </button>
+
+                </form>
+
+                <button
+                  type="button"
+                  className="pickup-store__delivery"
+                  onClick={handleDelivery}
+                >
+                  Receber em casa
+                </button>
+
+              </>
+            ) : (
+              <p>
+                Nenhuma loja foi selecionada.
+              </p>
+            )}
 
           </div>
 
-          {/* NOVO BOTÃO */}
-          <button
-            type="button"
-            className="address-form__button"
-            onClick={() =>
-              setDeliveryMethod("delivery")
-            }
-          >
-            Receber em casa
-          </button>
-
-          <button
-            type="button"
-            className="address-form__button"
-            onClick={() =>
-              navigate("/pagamento")
-            }
-          >
-            Continuar para pagamento
-          </button>
-        </>
+        </div>
       ) : (
-        <p>
-          Nenhuma loja foi selecionada.
-        </p>
-      )}
-
-    </div>
-
-  </div>
-
-      ) : (
-
         <>
+          {/* =================================================
+              ENDEREÇO
+          ================================================= */}
 
           <div className="address-content">
 
-            {savedAddress &&
-            !editingAddress ? (
+            {savedAddress && !editingAddress ? (
 
               <div className="saved-address">
 
@@ -681,6 +821,10 @@ useEffect(() => {
                   <h3>
                     {address.name}
                   </h3>
+
+                  <p>
+                    {address.email}
+                  </p>
 
                   <p>
                     {address.street},{" "}
@@ -721,9 +865,7 @@ useEffect(() => {
                 <button
                   type="button"
                   className="address-form__button"
-                  onClick={() =>
-                    navigate("/pagamento")
-                  }
+                  onClick={handleContinuePayment}
                 >
                   Continuar para pagamento
                 </button>
@@ -748,9 +890,7 @@ useEffect(() => {
                     key={field.name}
                   >
 
-                    <label
-                      htmlFor={field.name}
-                    >
+                    <label htmlFor={field.name}>
                       {field.label}
                     </label>
 
@@ -758,21 +898,19 @@ useEffect(() => {
                       id={field.name}
                       name={field.name}
                       type={field.type}
-                      placeholder={
-                        field.placeholder
-                      }
-                      value={
-                        address[field.name]
-                      }
-                      onChange={
-                        handleChange
-                      }
-                      required={
-                        field.required
+                      placeholder={field.placeholder}
+                      value={address[field.name]}
+                      onChange={handleChange}
+                      required={field.required}
+                      autoComplete={
+                        field.name === "email"
+                          ? "email"
+                          : field.name === "name"
+                          ? "name"
+                          : "off"
                       }
                       onBlur={
-                        field.name ===
-                        "zipCode"
+                        field.name === "zipCode"
                           ? handleCep
                           : undefined
                       }
@@ -795,6 +933,10 @@ useEffect(() => {
 
           </div>
 
+          {/* =================================================
+              MAPA
+          ================================================= */}
+
           <div className="address-map">
 
             <MapContainer
@@ -816,9 +958,7 @@ useEffect(() => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-              <Marker
-                position={position}
-              >
+              <Marker position={position}>
 
                 <Popup>
                   Local da entrega
@@ -831,7 +971,6 @@ useEffect(() => {
           </div>
 
         </>
-
       )}
 
     </section>

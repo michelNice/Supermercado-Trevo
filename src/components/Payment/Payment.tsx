@@ -1,12 +1,11 @@
+
 import "./Payment.scss";
 
 import { useEffect, useState } from "react";
-
 import {
   initMercadoPago,
   Payment as MercadoPagoPayment,
 } from "@mercadopago/sdk-react";
-
 import { useCart } from "../../context/CartContext";
 import { useCheckout } from "../../context/CheckoutContext";
 import { useNavigate } from "react-router-dom";
@@ -23,24 +22,14 @@ const Payment = () => {
 
   const navigate = useNavigate();
 
-  const [method, setMethod] =
-    useState<"card" | "pix">("card");
-
+  const [method, setMethod] = useState<"card" | "pix">("card");
   const [qrCode, setQrCode] = useState("");
-  const [paymentId, setPaymentId] =
-    useState<number | null>(null);
-
-  const [paymentMessage, setPaymentMessage] =
-    useState("");
-
-  const [loadingPix, setLoadingPix] =
-    useState(false);
-
-  const [loadingPayment, setLoadingPayment] =
-    useState(false);
-
-  const [paymentFinished, setPaymentFinished] =
-    useState(false);
+  const [paymentId, setPaymentId] = useState<number | null>(null);
+  const [paymentMessage, setPaymentMessage] = useState("");
+  const [loadingPix, setLoadingPix] = useState(false);
+  const [loadingPayment, setLoadingPayment] = useState(false);
+  const [paymentFinished, setPaymentFinished] = useState(false);
+  const [orderSaving, setOrderSaving] = useState(false);
 
   useEffect(() => {
     initMercadoPago(
@@ -54,39 +43,130 @@ const Payment = () => {
     0
   );
 
+  const customerName =
+    address?.name?.trim() || "Cliente";
+
+  const customerEmail =
+    address?.email?.trim() || "";
+
+  const validateCheckout = () => {
+    if (!customerName) {
+      setPaymentMessage(
+        "Não foi possível identificar o nome do cliente."
+      );
+      return false;
+    }
+
+    if (!customerEmail) {
+      setPaymentMessage(
+        "Não foi possível identificar o e-mail do cliente."
+      );
+      return false;
+    }
+
+    if (
+      deliveryMethod === "pickup" &&
+      !selectedStore
+    ) {
+      setPaymentMessage(
+        "Selecione uma loja para retirar o pedido."
+      );
+      return false;
+    }
+
+    if (
+      deliveryMethod === "delivery" &&
+      !address
+    ) {
+      setPaymentMessage(
+        "Não foi possível identificar o endereço de entrega."
+      );
+      return false;
+    }
+
+    return true;
+  };
+
   const saveOrder = async (
     paymentMethod: string,
     cardName: string | null = null
   ) => {
     try {
+      setOrderSaving(true);
+
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
-      const userId = session?.user?.id ?? null;
+      const userId =
+        session?.user?.id ?? null;
 
-      const { error } = await supabase
+      const orderData = {
+        user_id: userId,
+        items: cartItem,
+        total: Number(total.toFixed(2)),
+        address:
+          deliveryMethod === "delivery"
+            ? address
+            : null,
+        payment_method: paymentMethod,
+        card_name: cardName,
+      };
+
+      const { data, error } = await supabase
         .from("orders")
-        .insert({
-          user_id: userId,
-          items: cartItem,
-          total: Number(total.toFixed(2)),
-          address:
-            deliveryMethod === "delivery"
-              ? address
-              : null,
-          payment_method: paymentMethod,
-          card_name: cardName,
-          delivery_method: deliveryMethod,
-          pickup_store:
-            deliveryMethod === "pickup"
-              ? selectedStore
-              : null,
-        })
+        .insert(orderData)
         .select()
         .single();
 
       if (error) {
+        setPaymentMessage(
+          "O pagamento foi aprovado, mas não foi possível salvar o pedido."
+        );
+
+        return null;
+      }
+
+      return data;
+    } catch {
+      setPaymentMessage(
+        "O pagamento foi aprovado, mas não foi possível salvar o pedido."
+      );
+
+      return null;
+    } finally {
+      setOrderSaving(false);
+    }
+  };
+
+  const sendConfirmationEmail = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/email/confirmation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: customerEmail,
+            name: customerName,
+            items: cartItem,
+            address:
+              deliveryMethod === "delivery"
+                ? address
+                : null,
+            total: Number(total.toFixed(2)),
+            deliveryMethod,
+            selectedStore:
+              deliveryMethod === "pickup"
+                ? selectedStore
+                : null,
+          }),
+        }
+      );
+
+      if (!response.ok) {
         return false;
       }
 
@@ -96,12 +176,62 @@ const Payment = () => {
     }
   };
 
-  async function gerarPix() {
-    if (qrCode || loadingPix) return;
+  const finishPurchase = async (
+    paymentMethod: string,
+    cardName: string | null = null
+  ) => {
+    if (paymentFinished) {
+      return;
+    }
+
+    setPaymentFinished(true);
+    setPaymentMessage("");
+
+    const order = await saveOrder(
+      paymentMethod,
+      cardName
+    );
+
+    if (!order) {
+      setPaymentFinished(false);
+      return;
+    }
+
+    await sendConfirmationEmail();
+
+    clearCart();
+
+    navigate("/purchase-confirmed");
+  };
+
+  const gerarPix = async () => {
+    if (qrCode || loadingPix) {
+      return;
+    }
+
+    if (!validateCheckout()) {
+      return;
+    }
 
     try {
       setLoadingPix(true);
       setPaymentMessage("");
+
+      const paymentData = {
+        total: Number(total.toFixed(2)),
+        email: customerEmail,
+        name: customerName,
+        address:
+          deliveryMethod === "delivery"
+            ? address
+            : null,
+        items: cartItem,
+        delivery_method: deliveryMethod,
+        pickup_store:
+          deliveryMethod === "pickup"
+            ? selectedStore
+            : null,
+      };
 
       const response = await fetch(
         "http://localhost:3001/pix/create",
@@ -110,20 +240,28 @@ const Payment = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            total,
-            email: address.email,
-            name: address.name,
-            address,
-            items: cartItem,
-          }),
+          body: JSON.stringify(paymentData),
         }
       );
 
       if (!response.ok) {
-        throw new Error(
-          `Erro HTTP: ${response.status}`
-        );
+        let errorMessage =
+          `Erro HTTP: ${response.status}`;
+
+        try {
+          const errorData =
+            await response.json();
+
+          if (errorData?.error) {
+            errorMessage = errorData.error;
+          }
+
+          if (errorData?.message) {
+            errorMessage = errorData.message;
+          }
+        } catch {}
+
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -142,17 +280,24 @@ const Payment = () => {
 
       setPaymentId(Number(data.id));
       setQrCode(data.qrCodeBase64);
-    } catch {
-      setPaymentMessage(
-        "Não foi possível gerar o PIX. Tente novamente."
-      );
+      setPaymentMessage("");
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Não foi possível gerar o PIX.";
+
+      setPaymentMessage(message);
     } finally {
       setLoadingPix(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if (!paymentId || paymentFinished) {
+    if (
+      !paymentId ||
+      paymentFinished
+    ) {
       return;
     }
 
@@ -172,27 +317,14 @@ const Payment = () => {
           return;
         }
 
-        if (paymentFinished) {
-          return;
-        }
-
-        setPaymentFinished(true);
-
         clearInterval(interval);
 
         setPaymentMessage(
-          "Pagamento aprovado! Seu pedido foi confirmado."
+          "Pagamento aprovado. Finalizando seu pedido..."
         );
 
-        await saveOrder("pix");
-
-        setTimeout(() => {
-          clearCart();
-          navigate("/purchase-confirmed");
-        }, 3000);
-      } catch {
-        return;
-      }
+        await finishPurchase("pix");
+      } catch {}
     }, 5000);
 
     return () => {
@@ -201,14 +333,38 @@ const Payment = () => {
   }, [
     paymentId,
     paymentFinished,
-    clearCart,
-    navigate,
   ]);
 
-  async function handlePayment(formData: any) {
+  const handlePayment = async (
+    formData: any
+  ) => {
     try {
       setLoadingPayment(true);
       setPaymentMessage("");
+
+      if (!validateCheckout()) {
+        return;
+      }
+
+      const paymentData = {
+        ...formData,
+        transaction_amount:
+          Number(total.toFixed(2)),
+        payer: {
+          email: customerEmail,
+          first_name: customerName,
+        },
+        address:
+          deliveryMethod === "delivery"
+            ? address
+            : null,
+        items: cartItem,
+        delivery_method: deliveryMethod,
+        pickup_store:
+          deliveryMethod === "pickup"
+            ? selectedStore
+            : null,
+      };
 
       const response = await fetch(
         "http://localhost:3001/payment/process-payment",
@@ -217,82 +373,62 @@ const Payment = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            ...formData,
-
-            transaction_amount:
-              Number(total.toFixed(2)),
-
-            payer: {
-              email: address.email,
-            },
-
-            address:
-              deliveryMethod === "delivery"
-                ? address
-                : null,
-
-            items: cartItem,
-
-            delivery_method: deliveryMethod,
-
-            pickup_store:
-              deliveryMethod === "pickup"
-                ? selectedStore
-                : null,
-          }),
+          body: JSON.stringify(paymentData),
         }
       );
 
       if (!response.ok) {
-        throw new Error(
-          `Erro HTTP: ${response.status}`
-        );
+        let errorMessage =
+          `Erro HTTP: ${response.status}`;
+
+        try {
+          const errorData =
+            await response.json();
+
+          if (errorData?.error) {
+            errorMessage = errorData.error;
+          }
+
+          if (errorData?.message) {
+            errorMessage = errorData.message;
+          }
+        } catch {}
+
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
 
-      if (result.status === "approved") {
+      if (result.status !== "approved") {
         setPaymentMessage(
-          "Pagamento aprovado! Seu pedido foi confirmado."
+          "Pagamento não aprovado. Verifique os dados."
         );
-
-        await saveOrder(
-          "card",
-          formData?.payer?.first_name ||
-            formData?.cardholder?.name ||
-            null
-        );
-
-        setTimeout(() => {
-          clearCart();
-          navigate("/purchase-confirmed");
-        }, 3000);
-
         return;
       }
 
-      setPaymentMessage(
-        "Pagamento não aprovado. Verifique os dados."
+      await finishPurchase(
+        "card",
+        customerName
       );
-    } catch {
-      return;
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Não foi possível processar o pagamento.";
+
+      setPaymentMessage(message);
     } finally {
       setLoadingPayment(false);
     }
-  }
+  };
 
   return (
     <section className="payment">
-
       <div className="payment__container">
-
         <div className="payment__summary">
-
           <h2>Resumo do Pedido</h2>
 
           <div className="payment__card">
-
             <h3>Produtos</h3>
 
             {cartItem.map((item) => (
@@ -313,108 +449,89 @@ const Payment = () => {
                 </strong>
               </div>
             ))}
-
           </div>
 
           <div className="payment__card">
-
             <h3>Total</h3>
 
             <div className="payment__total">
-
-              <span>
-                Total da compra
-              </span>
+              <span>Total da compra</span>
 
               <strong>
                 R$ {total.toFixed(2)}
               </strong>
-
             </div>
-
           </div>
 
           {deliveryMethod === "delivery" ? (
-
             <div className="payment__card">
+              <h3>Endereço de entrega</h3>
 
-              <h3>
-                Endereço de entrega
-              </h3>
+              <p>{customerName}</p>
 
-              <p>
-                {address.name}
-              </p>
+              <p>{customerEmail}</p>
 
               <p>
-                {address.email}
+                {address?.street},{" "}
+                {address?.number}
               </p>
 
-              <p>
-                {address.street},{" "}
-                {address.number}
-              </p>
-
-              {address.complemento && (
-                <p>
-                  {address.complemento}
-                </p>
+              {address?.complemento && (
+                <p>{address.complemento}</p>
               )}
 
               <p>
-                {address.neighborhood}
+                {address?.neighborhood}
               </p>
 
               <p>
-                {address.city} -{" "}
-                {address.state}
+                {address?.city} -{" "}
+                {address?.state}
               </p>
 
               <p>
-                CEP: {address.zipCode}
+                CEP: {address?.zipCode}
               </p>
-
             </div>
-
           ) : (
-
             <div className="payment__card">
-
-              <h3>
-                Retirada na loja
-              </h3>
+              <h3>Retirada na loja</h3>
 
               <div className="payment__pickup">
+                <p>{customerName}</p>
 
-                <strong>
-                  {selectedStore?.name}
-                </strong>
+                <p>{customerEmail}</p>
 
-                <p>
-                  {selectedStore?.adress}
-                </p>
+                {selectedStore ? (
+                  <>
+                    <strong>
+                      {selectedStore.name}
+                    </strong>
 
-                <span>
-                  Você irá retirar seu pedido
-                  nesta loja.
-                </span>
+                    <p>
+                      {selectedStore.address}
+                    </p>
 
+                    <span>
+                      Você irá retirar seu
+                      pedido nesta loja.
+                    </span>
+                  </>
+                ) : (
+                  <p>
+                    Nenhuma loja foi
+                    selecionada.
+                  </p>
+                )}
               </div>
-
             </div>
-
           )}
-
         </div>
 
         <div className="payment__methods">
-
-          <h2>
-            Forma de pagamento
-          </h2>
+          <h2>Forma de pagamento</h2>
 
           <div className="payment__buttons">
-
             <button
               type="button"
               onClick={() => {
@@ -432,44 +549,38 @@ const Payment = () => {
               type="button"
               onClick={() => {
                 setMethod("pix");
+                setQrCode("");
+                setPaymentId(null);
+                setPaymentFinished(false);
                 setPaymentMessage("");
                 gerarPix();
               }}
             >
               PIX
             </button>
-
           </div>
 
           {method === "card" && (
-
             <MercadoPagoPayment
               initialization={{
                 amount: Number(
                   total.toFixed(2)
                 ),
               }}
-
               customization={{
                 paymentMethods: {
                   creditCard: "all",
                   debitCard: "all",
                 },
               }}
-
               onSubmit={handlePayment}
             />
-
           )}
 
           {method === "pix" && (
-
             <div className="payment__pix">
-
               {loadingPix && (
-                <p>
-                  Gerando PIX...
-                </p>
+                <p>Gerando PIX...</p>
               )}
 
               {qrCode && (
@@ -490,35 +601,26 @@ const Payment = () => {
                   </p>
                 </>
               )}
-
             </div>
-
           )}
 
-          {loadingPayment && (
+          {(loadingPayment ||
+            orderSaving) && (
             <p>
-              Processando pagamento...
+              Finalizando pedido...
             </p>
           )}
-
         </div>
-
       </div>
 
       {paymentMessage && (
-
         <div className="payment__message">
-
-          <p>
-            {paymentMessage}
-          </p>
-
+          <p>{paymentMessage}</p>
         </div>
-
       )}
-
     </section>
   );
 };
 
 export default Payment;
+

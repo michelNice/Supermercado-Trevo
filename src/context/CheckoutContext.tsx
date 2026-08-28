@@ -1,97 +1,130 @@
-import {createContext, useContext, useState } from "react"
 
-type   DeliveryMethod = 'delivery' | 'pickup'
+import {
+  createContext,
+  useContext,
+  useState,
+} from "react";
+
+type DeliveryMethod = "delivery" | "pickup";
 
 interface Store {
-    id:string
-    name:string
-    adress:string
+  id: string;
+  name: string;
+  address: string;
 }
+
 interface PaymentData {
-    method: string
-    cardNumber: string
-    cardName: string
-    expiryDate: string
-    cvv: string
-    installments: string
+  method: string;
+  cardNumber: string;
+  cardName: string;
+  expiryDate: string;
+  cvv: string;
+  installments: string;
 }
+
 interface AddressData {
-    name:string,
-    email:string
-    street: string
-    number: string
-    neighborhood: string
-    city: string
-    state: string
-    zipCode: string
-    complemento: string
+  name: string;
+  email: string;
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  complemento: string;
 }
-interface CheckoutContextType{
-    payment: PaymentData
-    setPayment: React.Dispatch<React.SetStateAction<PaymentData>>
-    address: AddressData
-    setAddress: React.Dispatch<React.SetStateAction<AddressData>>
 
+interface CheckoutContextType {
+  payment: PaymentData;
+  setPayment: React.Dispatch<
+    React.SetStateAction<PaymentData>
+  >;
 
-    deliveryMethod:DeliveryMethod;
-    setDeliveryMethod: React.Dispatch<React.SetStateAction<DeliveryMethod>>;
-    selectedStore:Store | null
-    setSelectedStore: React.Dispatch<React.SetStateAction<Store | null>>;
+  address: AddressData;
+  setAddress: React.Dispatch<
+    React.SetStateAction<AddressData>
+  >;
+
+  deliveryMethod: DeliveryMethod;
+
+  setDeliveryMethod: React.Dispatch<
+    React.SetStateAction<DeliveryMethod>
+  >;
+
+  selectedStore: Store | null;
+
+  setSelectedStore: React.Dispatch<
+    React.SetStateAction<Store | null>
+  >;
 }
-const CheckoutContext  = createContext<CheckoutContextType | null>(null)
+
+const CheckoutContext =
+  createContext<CheckoutContextType | null>(null);
 
 export const CheckoutProvider = ({
-children
-}:{
-    children: React.ReactNode
+  children,
+}: {
+  children: React.ReactNode;
 }) => {
-       const [payment, setPayment] = useState<PaymentData>({
-        method: '',
-        cardNumber: '',
-        cardName: '',
-        expiryDate: '',
-        cvv: '',
-        installments: ''
-    })
-    const [address, setAddress] = useState<AddressData>({
-    street: "",
-    number: "",
-    neighborhood: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    complemento: "",
-    name:'',
-    email:''
-})
+  const [payment, setPayment] =
+    useState<PaymentData>({
+      method: "",
+      cardNumber: "",
+      cardName: "",
+      expiryDate: "",
+      cvv: "",
+      installments: "",
+    });
 
-const [deliveryMethod, setDeliveryMethod] =  useState<DeliveryMethod>("delivery");
+  const [address, setAddress] =
+    useState<AddressData>({
+      street: "",
+      number: "",
+      neighborhood: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      complemento: "",
+      name: "",
+      email: "",
+    });
 
-const [selectedStore, setSelectedStore] = useState<Store | null>(null);
-    return (
-        <CheckoutContext.Provider 
-           value={{
-                payment,
-                setPayment,
-                address,
-                setAddress,
-                deliveryMethod,
-                setDeliveryMethod,
-                setSelectedStore
-                ,selectedStore
-            }}
-         >
-            {children}
-        </CheckoutContext.Provider>
-    )
-}
+  const [deliveryMethod, setDeliveryMethod] =
+    useState<DeliveryMethod>("delivery");
+
+  const [selectedStore, setSelectedStore] =
+    useState<Store | null>(null);
+
+  return (
+    <CheckoutContext.Provider
+      value={{
+        payment,
+        setPayment,
+
+        address,
+        setAddress,
+
+        deliveryMethod,
+        setDeliveryMethod,
+
+        selectedStore,
+        setSelectedStore,
+      }}
+    >
+      {children}
+    </CheckoutContext.Provider>
+  );
+};
+
 export const useCheckout = () => {
-    const context = useContext(CheckoutContext)
-    if(!context){
-        throw new Error(
-            'useCheckout deve estar dentro do CheckoutProvider'
-        )
-    }
-    return context
-}
+  const context = useContext(CheckoutContext);
+
+  if (!context) {
+    throw new Error(
+      "useCheckout deve estar dentro do CheckoutProvider"
+    );
+  }
+
+  return context;
+};
 

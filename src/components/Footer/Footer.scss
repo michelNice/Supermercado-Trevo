@@ -1,5 +1,7 @@
 @use '../../Styles/variables' as *;
-
+main {
+  padding-bottom: 2rem;
+}
 .footer {
   background: $text-dark-bg;
   color: $white;

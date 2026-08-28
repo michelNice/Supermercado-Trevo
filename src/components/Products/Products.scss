@@ -8,6 +8,7 @@ h2{padding:1rem 0;}
   gap:32px;
   flex-wrap:wrap;
   margin:3.75rem 0;
+   
 }
 .brand-card{
   width:170px;
@@ -52,12 +53,15 @@ h2{padding:1rem 0;}
   animation: spin 1s linear infinite;
 }
 
+
+
+
 @keyframes spin {
   to {transform: rotate(360deg);}
 }
 
 .products-container{
-   margin: 0 auto;
+   margin: 2rem auto;
    @include container(1200px);
   .hr{
   position: relative;
@@ -99,6 +103,7 @@ h2{padding:1rem 0;}
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 25px;
   padding-top:1.25rem;
+ 
 }
 .product-card {
   position: relative;

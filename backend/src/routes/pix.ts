@@ -1,30 +1,34 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { Payment } from "mercadopago";
-
 import client from "../config/mercadoPago";
 import { sendConfirmationEmail } from "../services/emailService";
 import { createOrder } from "../services/orderService";
 
 const router = Router();
 
+interface Store {
+  id: string;
+  name: string;
+  address: string;
+}
 
-const pendingPayments = new Map<
-  number,
-  {
-    email: string;
-    name: string;
-    items: any[];
-    address: any;
-    total: number;
-  }
->();
+type DeliveryMethod = "delivery" | "pickup";
 
+interface PendingPayment {
+  email: string;
+  name: string;
+  items: any[];
+  address: any | null;
+  total: number;
+  deliveryMethod: DeliveryMethod;
+  selectedStore: Store | null;
+}
+
+const pendingPayments = new Map<number, PendingPayment>();
 
 // Prevent duplicated emails/orders
 const completedPayments = new Set<number>();
-
-
 
 // ===========================
 // CREATE PIX
@@ -33,132 +37,96 @@ const completedPayments = new Set<number>();
 router.post(
   "/create",
   async (req: Request, res: Response) => {
-
     try {
-
       const {
         total,
         email,
         name,
         items,
         address,
+        delivery_method,
+        pickup_store,
       } = req.body || {};
 
-
-
       if (!total || !email) {
-
         return res.status(400).json({
           message: "Total e email são obrigatórios.",
         });
-
       }
 
+      const deliveryMethod: DeliveryMethod =
+        delivery_method === "pickup"
+          ? "pickup"
+          : "delivery";
 
+      const selectedStore: Store | null =
+        deliveryMethod === "pickup"
+          ? pickup_store || null
+          : null;
 
       const payment = new Payment(client);
 
-
-
       const response = await payment.create({
-
         body: {
+          transaction_amount: Number(
+            Number(total).toFixed(2)
+          ),
 
-          transaction_amount:
-            Number(Number(total).toFixed(2)),
+          description: "Compra Trevo Supermercado",
 
-
-          description:
-            "Compra Trevo Supermercado",
-
-
-          payment_method_id:
-            "pix",
-
+          payment_method_id: "pix",
 
           payer: {
             email,
           },
-
         },
-
       });
 
-
-
       if (response.id) {
+        pendingPayments.set(response.id, {
+          email,
 
-        pendingPayments.set(
-          response.id,
-          {
+          name: name || "Cliente",
 
-            email,
+          items: items || [],
 
-            name:
-              name || "Cliente",
+          address:
+            deliveryMethod === "delivery"
+              ? address || null
+              : null,
 
-            items:
-              items || [],
+          total: Number(total),
 
-            address:
-              address || {},
+          deliveryMethod,
 
-            total:
-              Number(total),
-
-          }
-        );
-
+          selectedStore,
+        });
       }
 
-
-
       return res.json({
+        id: response.id,
 
-        id:
-          response.id,
-
-
-        status:
-          response.status,
-
+        status: response.status,
 
         qrCode:
           response.point_of_interaction
             ?.transaction_data
             ?.qr_code,
 
-
         qrCodeBase64:
           response.point_of_interaction
             ?.transaction_data
             ?.qr_code_base64,
-
       });
-
-
-
     } catch (error: any) {
-
-
       return res.status(500).json({
-
         message:
           error?.message ||
           "Erro ao gerar PIX",
-
       });
-
-
     }
-
   }
 );
-
-
-
-
-
 
 // ===========================
 // CHECK PIX STATUS
@@ -167,163 +135,85 @@ router.post(
 router.get(
   "/status/:id",
   async (req: Request, res: Response) => {
-
-
     try {
+      const payment = new Payment(client);
 
+      const paymentId = Number(req.params.id);
 
-      const payment =
-        new Payment(client);
-
-
-
-      const paymentId =
-        Number(req.params.id);
-
-
-
-      const response =
-        await payment.get({
-
-          id: paymentId,
-
-        });
-
-
-
+      const response = await payment.get({
+        id: paymentId,
+      });
 
       if (response.status === "approved") {
-
-
-
         // Already completed
-        if (
-          completedPayments.has(paymentId)
-        ) {
-
+        if (completedPayments.has(paymentId)) {
           return res.json({
-
-            status:
-              response.status,
-
+            status: response.status,
           });
-
         }
-
-
-
-
 
         const customer =
           pendingPayments.get(paymentId);
 
-
-
-
-
         if (!customer) {
-
           return res.json({
-
-            status:
-              response.status,
-
-            message:
-              "Customer data not found",
-
+            status: response.status,
+            message: "Customer data not found",
           });
-
         }
-
-
-
 
         // Lock immediately
         completedPayments.add(paymentId);
 
+        // ===========================
+        // SEND CONFIRMATION EMAIL
+        // ===========================
 
-
-
-
-        // SEND EMAIL FIRST
         await sendConfirmationEmail(
-
           customer.email,
-
           customer.name,
-
           customer.items,
-
           customer.address,
-
-          customer.total
-
+          customer.total,
+          customer.deliveryMethod,
+          customer.selectedStore
         );
 
+        // ===========================
+        // SAVE ORDER
+        // ===========================
 
-
-
-
-        // SAVE ORDER AFTER EMAIL
         await createOrder({
-
           paymentId,
 
-          total:
-            customer.total,
+          total: customer.total,
 
-          status:
-            response.status,
+          status: response.status,
 
-          items:
-            customer.items,
+          items: customer.items,
 
-          address:
-            customer.address,
+          address: customer.address,
 
+          deliveryMethod:
+            customer.deliveryMethod,
+
+          selectedStore:
+            customer.selectedStore,
         });
 
-
-
-
-
         pendingPayments.delete(paymentId);
-
-
-
       }
 
-
-
-
       return res.json({
-
-        status:
-          response.status,
-
+        status: response.status,
       });
-
-
-
-
-
     } catch (error) {
-
-
       return res.status(500).json({
-
         message:
           "Erro ao consultar pagamento PIX",
-
       });
-
-
     }
-
-
   }
 );
-
-
 
 export default router;
