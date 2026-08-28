@@ -193,188 +193,162 @@ const Address = () => {
   // CARREGAR ENDEREÇO SALVO
   // =====================================================
 
-  useEffect(() => {
-    const loadSavedAddress = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
 
-        // =================================================
-        // USUÁRIO LOGADO
-        // =================================================
+// =====================================================
+// CARREGAR ENDEREÇO SALVO
+// =====================================================
 
-        if (session?.user) {
-          const user = session.user;
+useEffect(() => {
+  const loadSavedAddress = async () => {
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-          console.log(
-            "USUÁRIO LOGADO:",
-            user.id
-          );
+      // =================================================
+      // USUÁRIO NÃO LOGADO
+      // =================================================
 
-          const { data, error } =
-            await supabase
-              .from("addresses")
-              .select("*")
-              .eq("user_id", user.id)
-              .order("created_at", {
-                ascending: false,
-              })
-              .limit(1)
-              .maybeSingle();
+      if (!session?.user) {
+        console.log("USUÁRIO NÃO LOGADO");
 
-          console.log(
-            "ENDEREÇO ENCONTRADO:",
-            data
-          );
-
-          console.log(
-            "ERRO ADDRESS:",
-            error
-          );
-
-          if (error) {
-            console.error(
-              "ERRO AO BUSCAR ENDEREÇO:",
-              error
-            );
-
-            setAddress({
-              ...emptyAddress,
-              email: user.email || "",
-            });
-
-            setSavedAddress(false);
-            setEditingAddress(false);
-            setSavedAddressId(null);
-
-            return;
-          }
-
-          // ===============================================
-          // ENDEREÇO ENCONTRADO
-          // ===============================================
-
-          if (data) {
-            const loadedAddress = {
-              name: data.name || "",
-              email: user.email || "",
-              zipCode: data.zip_code || "",
-              street: data.street || "",
-              number: data.number || "",
-              complemento:
-                data.complement || "",
-              neighborhood:
-                data.neighborhood || "",
-              city: data.city || "",
-              state: data.state || "",
-            };
-
-            console.log(
-              "ENDEREÇO CARREGADO:",
-              loadedAddress
-            );
-
-            setAddress(loadedAddress);
-
-            setSavedAddressId(data.id);
-
-            setSavedAddress(true);
-
-            setEditingAddress(false);
-
-            await updateMapPosition(
-              loadedAddress.street,
-              loadedAddress.city,
-              loadedAddress.state
-            );
-
-            return;
-          }
-
-          // ===============================================
-          // USUÁRIO LOGADO SEM ENDEREÇO
-          // ===============================================
-
-          console.log(
-            "USUÁRIO LOGADO SEM ENDEREÇO"
-          );
-
-          setAddress({
-            ...emptyAddress,
-            email: user.email || "",
-          });
-
-          setSavedAddress(false);
-
-          setEditingAddress(false);
-
-          setSavedAddressId(null);
-
-          return;
-        }
-
-        // =================================================
-        // USUÁRIO NÃO LOGADO
-        // =================================================
-
-        const savedGuestAddress =
-          localStorage.getItem(
-            "guest_address"
-          );
-
-        if (savedGuestAddress) {
-          try {
-            const parsedAddress =
-              JSON.parse(savedGuestAddress);
-
-            setAddress(parsedAddress);
-
-            setSavedAddress(true);
-
-            setEditingAddress(false);
-
-            setSavedAddressId(null);
-
-            await updateMapPosition(
-              parsedAddress.street,
-              parsedAddress.city,
-              parsedAddress.state
-            );
-
-            return;
-          } catch {
-            localStorage.removeItem(
-              "guest_address"
-            );
-          }
-        }
-
+        // Sempre começa com formulário vazio
         setAddress(emptyAddress);
 
         setSavedAddress(false);
-
         setEditingAddress(false);
-
         setSavedAddressId(null);
-      } catch (error) {
+
+        return;
+      }
+
+      // =================================================
+      // USUÁRIO LOGADO
+      // =================================================
+
+      const user = session.user;
+
+      console.log(
+        "USUÁRIO LOGADO:",
+        user.id
+      );
+
+      const { data, error } = await supabase
+        .from("addresses")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", {
+          ascending: false,
+        })
+        .limit(1)
+        .maybeSingle();
+
+      console.log(
+        "ENDEREÇO ENCONTRADO:",
+        data
+      );
+
+      console.log(
+        "ERRO ADDRESS:",
+        error
+      );
+
+      // =================================================
+      // ERRO AO BUSCAR
+      // =================================================
+
+      if (error) {
         console.error(
-          "ERRO AO CARREGAR ENDEREÇO:",
+          "ERRO AO BUSCAR ENDEREÇO:",
           error
         );
 
-        setAddress(emptyAddress);
+        setAddress({
+          ...emptyAddress,
+          email: user.email || "",
+        });
 
         setSavedAddress(false);
+        setEditingAddress(false);
+        setSavedAddressId(null);
+
+        return;
+      }
+
+      // =================================================
+      // ENDEREÇO ENCONTRADO
+      // =================================================
+
+      if (data) {
+        const loadedAddress = {
+          name: data.name || "",
+          email: user.email || "",
+          zipCode: data.zip_code || "",
+          street: data.street || "",
+          number: data.number || "",
+          complemento: data.complement || "",
+          neighborhood: data.neighborhood || "",
+          city: data.city || "",
+          state: data.state || "",
+        };
+
+        console.log(
+          "ENDEREÇO CARREGADO:",
+          loadedAddress
+        );
+
+        setAddress(loadedAddress);
+
+        setSavedAddressId(data.id);
+
+        setSavedAddress(true);
 
         setEditingAddress(false);
 
-        setSavedAddressId(null);
-      }
-    };
+        await updateMapPosition(
+          loadedAddress.street,
+          loadedAddress.city,
+          loadedAddress.state
+        );
 
-    loadSavedAddress();
-  }, [setAddress]);
+        return;
+      }
+
+      // =================================================
+      // USUÁRIO LOGADO SEM ENDEREÇO
+      // =================================================
+
+      console.log(
+        "USUÁRIO LOGADO SEM ENDEREÇO"
+      );
+
+      setAddress({
+        ...emptyAddress,
+        email: user.email || "",
+      });
+
+      setSavedAddress(false);
+      setEditingAddress(false);
+      setSavedAddressId(null);
+
+    } catch (error) {
+      console.error(
+        "ERRO AO CARREGAR ENDEREÇO:",
+        error
+      );
+
+      setAddress(emptyAddress);
+
+      setSavedAddress(false);
+      setEditingAddress(false);
+      setSavedAddressId(null);
+    }
+  };
+
+  loadSavedAddress();
+}, [setAddress]);
+
+
 
   // =====================================================
   // BUSCAR CEP
