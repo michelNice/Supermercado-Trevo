@@ -2,26 +2,14 @@
 @use "../../Styles/mixins" as *;
 @use "../../Styles/variables" as *;
 
-/******************************************************/
-/* ROW                                                */
-/******************************************************/
 
-.row {
-  @include container(84.5rem);
-}
-
-/******************************************************/
-/* PROMO BAR                                          */
-/******************************************************/
+.row {@include container(84.5rem);}
 
 .promo__bar {
   @include flex-center;
-
   background: $brand-main;
   color: $brand-accent;
-
   height: 25px;
-
   overflow: hidden;
   white-space: nowrap;
 
@@ -30,11 +18,8 @@
 
   .promo__track {
     display: inline-block;
-
     white-space: nowrap;
-
     animation: ticker 20s linear infinite;
-
     span {
       display: inline-block;
 
@@ -56,9 +41,6 @@
   }
 }
 
-/******************************************************/
-/* NAVBAR                                             */
-/******************************************************/
 
 .navbar {
   @include flex-center;
@@ -93,11 +75,6 @@
     color: $text-dark-bg;
   }
 }
-
-/******************************************************/
-/* NAV DOWN (BOTTOM NAV)                              */
-/******************************************************/
-
 .nav__down {
   background: $primary;
 
@@ -117,15 +94,10 @@
       @include flex-center;
 
       gap: 0.375rem;
-
       list-style: none;
-
       font-weight: 500;
-
       color: $bg-light;
-
       cursor: pointer;
-
       a {
         text-decoration: none;
 
