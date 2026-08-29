@@ -21,7 +21,7 @@ import ResetPassword from "./components/ResetPassword/ResetPassword";
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [cep, setCep] = useState("");
-  const [selectedProduct, setSelectedProduct] =useState<productApi | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<productApi | null>(null);
   const [products, setProducts] = useState<productApi[]>([]);
 
   const handleCepSubmit = () => {
@@ -52,7 +52,6 @@ function App() {
 
         <Route path="/login" element={<Subscription />} />
 
-        {/* NOVA ROTA */}
         <Route path="/minha-conta" element={<UserAccount />} />
 
         <Route
