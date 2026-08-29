@@ -71,18 +71,9 @@ const CartProvider = ({
                 .eq("user_id", user.id);
 
             if (cartError) {
-                console.error(
-                    "ERRO AO CARREGAR CARRINHO:",
-                    cartError
-                );
 
                 return;
             }
-
-            console.log(
-                "CARRINHO DO BANCO:",
-                cartData
-            );
 
             if (!cartData || cartData.length === 0) {
                 setCartItems([]);
@@ -103,10 +94,6 @@ const CartProvider = ({
                 .in("id", productIds);
 
             if (productsError) {
-                console.error(
-                    "ERRO AO CARREGAR PRODUTOS:",
-                    productsError
-                );
                 return;
             }
             const cartFromDatabase: CartItem[] =
@@ -139,10 +126,6 @@ const CartProvider = ({
                             item !== null
                     );
 
-            console.log(
-                "CARRINHO FINAL:",
-                cartFromDatabase
-            );
             setCartItems(
                 cartFromDatabase
             );
@@ -283,10 +266,6 @@ const CartProvider = ({
                 );
 
         if (error) {
-            console.error(
-                "ERRO AO REMOVER CARRINHO:",
-                error
-            );
         }
     };
     const decreaseQuantity = async (
@@ -400,10 +379,6 @@ const CartProvider = ({
                     user.id
                 );
         if (error) {
-            console.error(
-                "ERRO AO LIMPAR CARRINHO:",
-                error
-            );
         }
     };
 
