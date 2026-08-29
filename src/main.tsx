@@ -16,21 +16,13 @@ if (!rootElement) {
 createRoot(rootElement).render(
   <StrictMode>
     <BrowserRouter>
-
       <AuthProvider>
-
         <CartProvider>
-
           <CheckoutProvider>
-
             <App />
-
           </CheckoutProvider>
-
         </CartProvider>
-
       </AuthProvider>
-
     </BrowserRouter>
   </StrictMode>
 )

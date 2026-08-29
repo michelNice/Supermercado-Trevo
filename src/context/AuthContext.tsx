@@ -28,8 +28,6 @@ export function AuthProvider({ children }: AuthProviderProp) {
                 data: { session },
             } = await supabase.auth.getSession();
 
-            console.log("AUTH PROVIDER SESSION:", session);
-
             setUser(session?.user ?? null);
         };
 
@@ -39,12 +37,6 @@ export function AuthProvider({ children }: AuthProviderProp) {
             data: { subscription },
         } = supabase.auth.onAuthStateChange(
             (_event, session) => {
-                console.log(
-                    "AUTH STATE:",
-                    _event,
-                    session?.user?.id
-                );
-
                 setUser(session?.user ?? null);
             }
         );
