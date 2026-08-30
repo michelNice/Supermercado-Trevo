@@ -1,4 +1,3 @@
-
 import "./Payment.scss";
 
 import { useEffect, useState } from "react";
@@ -142,7 +141,7 @@ const Payment = () => {
   const sendConfirmationEmail = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3001/email/confirmation",
+        "https://supermercado-trevo-h8zn.onrender.com/email/confirmation",
         {
           method: "POST",
           headers: {
@@ -234,7 +233,7 @@ const Payment = () => {
       };
 
       const response = await fetch(
-        "http://localhost:3001/pix/create",
+        "https://supermercado-trevo-h8zn.onrender.com/pix/create",
         {
           method: "POST",
           headers: {
@@ -304,7 +303,7 @@ const Payment = () => {
     const interval = setInterval(async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/pix/status/${paymentId}`
+          `https://supermercado-trevo-h8zn.onrender.com/pix/status/${paymentId}`
         );
 
         if (!response.ok) {
@@ -367,7 +366,7 @@ const Payment = () => {
       };
 
       const response = await fetch(
-        "http://localhost:3001/payment/process-payment",
+        "https://supermercado-trevo-h8zn.onrender.com/payment/process-payment",
         {
           method: "POST",
           headers: {
@@ -623,4 +622,3 @@ const Payment = () => {
 };
 
 export default Payment;
-

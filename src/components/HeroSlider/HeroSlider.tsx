@@ -69,7 +69,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ products }) => {
               }}
               style={{ cursor: "pointer" }}
             />
-</SwiperSlide>
+       </SwiperSlide>
       ))}
     </Swiper>
       <div className="custom-pagination mt-2 flex justify-center gap-2"></div>

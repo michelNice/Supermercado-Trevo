@@ -634,23 +634,12 @@ const Address = () => {
     }
   };
 
-  // =====================================================
-  // ALTERAR PARA ENTREGA
-  // =====================================================
+
 
   const handleDelivery = () => {
     setDeliveryMethod("delivery");
 
-    /*
-      Não recuperamos mais guest_address.
-
-      Se o usuário estiver como convidado,
-      o formulário continuará vazio.
-
-      Se estiver logado, o useEffect poderá
-      carregar o endereço do Supabase.
-    */
-
+  
     setAddress((prev) => ({
       ...emptyAddress,
       name: prev.name || "",
@@ -661,10 +650,6 @@ const Address = () => {
     setEditingAddress(false);
     setSavedAddressId(null);
   };
-
-  // =====================================================
-  // IR PARA PAGAMENTO
-  // =====================================================
 
   const handleContinuePayment = () => {
     if (!address.name.trim()) {

@@ -1,34 +1,24 @@
-
 import type React from "react";
 import { useState, useEffect } from "react";
-
 import { trevoAddress } from "./AdressDelivery";
-
 import CepModal from "../../modals/CepModal/CepModal";
-
 import {
   useLockBodyScroll,
   useModal,
 } from "../../modals/CepModal/CepModalUtils";
-
 import "./DeliveryOptions.scss";
-
 import { useCheckout } from "../../context/CheckoutContext";
-
 import {
   getSelectedStore,
   getSelectedAddress,
   setSelectedStore as saveSelectedStore,
   setSelectedAddress,
 } from "../../utils/storage.ts";
-
 import UnavailableModal from "../../modals/UnavailableModal/UnavailableModal";
-
 type Props = {
   onSelectStore: (address: string) => void;
   onClose: () => void;
 };
-
 const DeliveryOptions: React.FC<Props> = ({
   onSelectStore,
   onClose,
