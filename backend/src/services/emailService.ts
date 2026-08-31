@@ -1,9 +1,5 @@
 import { Resend } from "resend";
 
-const resendApiKey = process.env.RESEND_API_KEY;
-
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
-
 interface Store {
   id: string;
   name: string;
@@ -33,13 +29,13 @@ export async function sendConfirmationEmail(
   deliveryMethod: DeliveryMethod,
   selectedStore: Store | null
 ) {
-  if (!resend) {
-    console.warn(
-      "RESEND_API_KEY não configurada. O pedido continuará funcionando, mas o e-mail não será enviado."
-    );
+  const resendApiKey = process.env.RESEND_API_KEY;
 
+  if (!resendApiKey) {
     return null;
   }
+
+  const resend = new Resend(resendApiKey);
 
   const itemsHtml = items
     .map(
