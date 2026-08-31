@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface Store {
   id: string;
@@ -31,6 +33,14 @@ export async function sendConfirmationEmail(
   deliveryMethod: DeliveryMethod,
   selectedStore: Store | null
 ) {
+  if (!resend) {
+    console.warn(
+      "RESEND_API_KEY não configurada. O pedido continuará funcionando, mas o e-mail não será enviado."
+    );
+
+    return null;
+  }
+
   const itemsHtml = items
     .map(
       (item) => `
@@ -98,9 +108,6 @@ export async function sendConfirmationEmail(
     </div>
   `;
 
-  /*
-   * RETIRADA NA LOJA
-   */
   const pickupHtml =
     deliveryMethod === "pickup"
       ? `
@@ -145,9 +152,6 @@ export async function sendConfirmationEmail(
       `
       : "";
 
-  /*
-   * ENDEREÇO DE ENTREGA
-   */
   const deliveryHtml =
     deliveryMethod === "delivery"
       ? `
@@ -205,9 +209,6 @@ export async function sendConfirmationEmail(
       `
       : "";
 
-  /*
-   * MENSAGEM
-   */
   const deliveryMessage =
     deliveryMethod === "pickup"
       ? `
@@ -217,28 +218,23 @@ export async function sendConfirmationEmail(
       `
       : `
         Seu pedido já está sendo preparado.
+
         Entrega prevista:
+
         <strong style="color:#ee7104;">
           1 a 2 dias úteis
         </strong>
       `;
 
-  /*
-   * ASSUNTO DO EMAIL
-   */
   const subject =
     deliveryMethod === "pickup"
       ? "Pedido confirmado - Retirada na loja 🏪"
       : "Compra confirmada! 🎉";
 
-  /*
-   * ENVIO
-   */
   const result = await resend.emails.send({
     from: "Trevo Supermercado <onboarding@resend.dev>",
     to: email,
     subject,
-
     html: `
       <div style="
         max-width:600px;
@@ -248,7 +244,6 @@ export async function sendConfirmationEmail(
         font-family:Arial, Helvetica, sans-serif;
         color:#333;
       ">
-
         <div style="
           background:#004d26;
           padding:25px;
@@ -352,17 +347,16 @@ export async function sendConfirmationEmail(
           color:#004d26;
         ">
           Atenciosamente,
+
           <br>
 
           <strong>
             Trevo Supermercado
           </strong>
         </p>
-
       </div>
     `,
   });
 
   return result;
 }
-
