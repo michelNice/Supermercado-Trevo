@@ -28,6 +28,14 @@ status: "online",
 });
 });
 
+app.get("/pix/test", (_req: Request, res: Response) => {
+res.status(200).json({
+status: "online",
+route: "/pix",
+message: "Rota PIX funcionando",
+});
+});
+
 app.use("/payment", paymentRouter);
 app.use("/pix", pixRoutes);
 
@@ -61,5 +69,5 @@ message: "Captcha verification failed",
 const PORT = Number(process.env.PORT) || 3001;
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+console.log(`Servidor rodando na porta ${PORT}`);
 });
