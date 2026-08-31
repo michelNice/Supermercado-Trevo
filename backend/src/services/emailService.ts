@@ -1,3 +1,4 @@
+
 import { Resend } from "resend";
 
 interface Store {
@@ -32,7 +33,7 @@ export async function sendConfirmationEmail(
   const resendApiKey = process.env.RESEND_API_KEY;
 
   if (!resendApiKey) {
-    return null;
+    throw new Error("RESEND_API_KEY não está configurada no ambiente.");
   }
 
   const resend = new Resend(resendApiKey);
@@ -139,10 +140,7 @@ export async function sendConfirmationEmail(
 
             <br>
 
-            ${
-              selectedStore?.address ||
-              "Endereço da loja não informado"
-            }
+            ${selectedStore?.address || "Endereço da loja não informado"}
           </p>
         </div>
       `
@@ -214,9 +212,7 @@ export async function sendConfirmationEmail(
       `
       : `
         Seu pedido já está sendo preparado.
-
         Entrega prevista:
-
         <strong style="color:#ee7104;">
           1 a 2 dias úteis
         </strong>
@@ -343,9 +339,7 @@ export async function sendConfirmationEmail(
           color:#004d26;
         ">
           Atenciosamente,
-
           <br>
-
           <strong>
             Trevo Supermercado
           </strong>
@@ -356,3 +350,4 @@ export async function sendConfirmationEmail(
 
   return result;
 }
+

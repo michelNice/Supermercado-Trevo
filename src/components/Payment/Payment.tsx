@@ -1,14 +1,40 @@
+
 import "./Payment.scss";
 
 import { useEffect, useState } from "react";
+
 import {
   initMercadoPago,
   Payment as MercadoPagoPayment,
 } from "@mercadopago/sdk-react";
+
 import { useCart } from "../../context/CartContext";
 import { useCheckout } from "../../context/CheckoutContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/Supabase/supabaseClient";
+
+const API_URL = "https://supermercado-trevo-h8zn.onrender.com";
+
+interface Store {
+  id: string;
+  name: string;
+  address: string;
+}
+
+interface Address {
+  name?: string;
+  email?: string;
+  street: string;
+  number: string;
+  complemento?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+type DeliveryMethod = "delivery" | "pickup";
+type PaymentMethod = "card" | "pix";
 
 const Payment = () => {
   const { cartItem, clearCart } = useCart();
@@ -21,19 +47,35 @@ const Payment = () => {
 
   const navigate = useNavigate();
 
-  const [method, setMethod] = useState<"card" | "pix">("card");
+  const [method, setMethod] =
+    useState<PaymentMethod>("card");
+
   const [qrCode, setQrCode] = useState("");
-  const [paymentId, setPaymentId] = useState<number | null>(null);
-  const [paymentMessage, setPaymentMessage] = useState("");
-  const [loadingPix, setLoadingPix] = useState(false);
-  const [loadingPayment, setLoadingPayment] = useState(false);
-  const [paymentFinished, setPaymentFinished] = useState(false);
-  const [orderSaving, setOrderSaving] = useState(false);
+  const [paymentId, setPaymentId] =
+    useState<number | null>(null);
+
+  const [paymentMessage, setPaymentMessage] =
+    useState("");
+
+  const [loadingPix, setLoadingPix] =
+    useState(false);
+
+  const [loadingPayment, setLoadingPayment] =
+    useState(false);
+
+  const [paymentFinished, setPaymentFinished] =
+    useState(false);
+
+  const [orderSaving, setOrderSaving] =
+    useState(false);
 
   useEffect(() => {
-    initMercadoPago(
-      import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY
-    );
+    const publicKey =
+      import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY;
+
+    if (publicKey) {
+      initMercadoPago(publicKey);
+    }
   }, []);
 
   const total = cartItem.reduce(
@@ -141,7 +183,7 @@ const Payment = () => {
   const sendConfirmationEmail = async () => {
     try {
       const response = await fetch(
-        "https://supermercado-trevo-h8zn.onrender.com/email/confirmation",
+        `${API_URL}/email/confirmation`,
         {
           method: "POST",
           headers: {
@@ -165,11 +207,7 @@ const Payment = () => {
         }
       );
 
-      if (!response.ok) {
-        return false;
-      }
-
-      return true;
+      return response.ok;
     } catch {
       return false;
     }
@@ -233,7 +271,7 @@ const Payment = () => {
       };
 
       const response = await fetch(
-        "https://supermercado-trevo-h8zn.onrender.com/pix/create",
+        `${API_URL}/pix/create`,
         {
           method: "POST",
           headers: {
@@ -243,27 +281,15 @@ const Payment = () => {
         }
       );
 
-      if (!response.ok) {
-        let errorMessage =
-          `Erro HTTP: ${response.status}`;
-
-        try {
-          const errorData =
-            await response.json();
-
-          if (errorData?.error) {
-            errorMessage = errorData.error;
-          }
-
-          if (errorData?.message) {
-            errorMessage = errorData.message;
-          }
-        } catch {}
-
-        throw new Error(errorMessage);
-      }
-
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data?.error ||
+            data?.message ||
+            `Erro HTTP: ${response.status}`
+        );
+      }
 
       if (!data.id) {
         throw new Error(
@@ -300,39 +326,41 @@ const Payment = () => {
       return;
     }
 
-    const interval = setInterval(async () => {
-      try {
-        const response = await fetch(
-          `https://supermercado-trevo-h8zn.onrender.com/pix/status/${paymentId}`
-        );
+    const interval = setInterval(
+      async () => {
+        try {
+          const response = await fetch(
+            `${API_URL}/pix/status/${paymentId}`
+          );
 
-        if (!response.ok) {
+          if (!response.ok) {
+            return;
+          }
+
+          const data = await response.json();
+
+          if (data.status !== "approved") {
+            return;
+          }
+
+          clearInterval(interval);
+
+          setPaymentMessage(
+            "Pagamento aprovado. Finalizando seu pedido..."
+          );
+
+          await finishPurchase("pix");
+        } catch {
           return;
         }
-
-        const data = await response.json();
-
-        if (data.status !== "approved") {
-          return;
-        }
-
-        clearInterval(interval);
-
-        setPaymentMessage(
-          "Pagamento aprovado. Finalizando seu pedido..."
-        );
-
-        await finishPurchase("pix");
-      } catch {}
-    }, 5000);
+      },
+      5000
+    );
 
     return () => {
       clearInterval(interval);
     };
-  }, [
-    paymentId,
-    paymentFinished,
-  ]);
+  }, [paymentId, paymentFinished]);
 
   const handlePayment = async (
     formData: any
@@ -347,18 +375,24 @@ const Payment = () => {
 
       const paymentData = {
         ...formData,
+
         transaction_amount:
           Number(total.toFixed(2)),
+
         payer: {
           email: customerEmail,
           first_name: customerName,
         },
+
         address:
           deliveryMethod === "delivery"
             ? address
             : null,
+
         items: cartItem,
+
         delivery_method: deliveryMethod,
+
         pickup_store:
           deliveryMethod === "pickup"
             ? selectedStore
@@ -366,7 +400,7 @@ const Payment = () => {
       };
 
       const response = await fetch(
-        "https://supermercado-trevo-h8zn.onrender.com/payment/process-payment",
+        `${API_URL}/payment/process-payment`,
         {
           method: "POST",
           headers: {
@@ -376,32 +410,21 @@ const Payment = () => {
         }
       );
 
-      if (!response.ok) {
-        let errorMessage =
-          `Erro HTTP: ${response.status}`;
-
-        try {
-          const errorData =
-            await response.json();
-
-          if (errorData?.error) {
-            errorMessage = errorData.error;
-          }
-
-          if (errorData?.message) {
-            errorMessage = errorData.message;
-          }
-        } catch {}
-
-        throw new Error(errorMessage);
-      }
-
       const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result?.error ||
+            result?.message ||
+            `Erro HTTP: ${response.status}`
+        );
+      }
 
       if (result.status !== "approved") {
         setPaymentMessage(
           "Pagamento não aprovado. Verifique os dados."
         );
+
         return;
       }
 
@@ -418,6 +441,22 @@ const Payment = () => {
       setPaymentMessage(message);
     } finally {
       setLoadingPayment(false);
+    }
+  };
+
+  const selectPaymentMethod = (
+    selectedMethod: PaymentMethod
+  ) => {
+    setMethod(selectedMethod);
+    setQrCode("");
+    setPaymentId(null);
+    setPaymentFinished(false);
+    setPaymentMessage("");
+
+    if (selectedMethod === "pix") {
+      setTimeout(() => {
+        gerarPix();
+      }, 0);
     }
   };
 
@@ -467,7 +506,6 @@ const Payment = () => {
               <h3>Endereço de entrega</h3>
 
               <p>{customerName}</p>
-
               <p>{customerEmail}</p>
 
               <p>
@@ -476,7 +514,9 @@ const Payment = () => {
               </p>
 
               {address?.complemento && (
-                <p>{address.complemento}</p>
+                <p>
+                  {address.complemento}
+                </p>
               )}
 
               <p>
@@ -498,7 +538,6 @@ const Payment = () => {
 
               <div className="payment__pickup">
                 <p>{customerName}</p>
-
                 <p>{customerEmail}</p>
 
                 {selectedStore ? (
@@ -533,27 +572,18 @@ const Payment = () => {
           <div className="payment__buttons">
             <button
               type="button"
-              onClick={() => {
-                setMethod("card");
-                setQrCode("");
-                setPaymentId(null);
-                setPaymentFinished(false);
-                setPaymentMessage("");
-              }}
+              onClick={() =>
+                selectPaymentMethod("card")
+              }
             >
               Cartão
             </button>
 
             <button
               type="button"
-              onClick={() => {
-                setMethod("pix");
-                setQrCode("");
-                setPaymentId(null);
-                setPaymentFinished(false);
-                setPaymentMessage("");
-                gerarPix();
-              }}
+              onClick={() =>
+                selectPaymentMethod("pix")
+              }
             >
               PIX
             </button>
@@ -622,3 +652,4 @@ const Payment = () => {
 };
 
 export default Payment;
+
