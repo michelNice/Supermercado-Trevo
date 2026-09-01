@@ -198,17 +198,12 @@ setOrderSaving(true);
         : null,
   };
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("orders")
-    .insert(orderData)
-    .select()
-    .single();
+    .insert(orderData);
 
   if (error) {
-    console.error(
-      "Erro ao salvar pedido:",
-      error
-    );
+    console.error("Erro ao salvar pedido:", error);
 
     setPaymentMessage(
       "O pagamento foi aprovado, mas não foi possível salvar o pedido."
@@ -217,7 +212,10 @@ setOrderSaving(true);
     return null;
   }
 
-  return data;
+  // O pedido já foi salvo no Supabase.
+  // Não fazemos .select() depois do INSERT, então
+  // não dependemos de uma policy de SELECT para finalizar a compra.
+  return orderData;
 } catch (error) {
   console.error(
     "Erro inesperado ao salvar pedido:",
