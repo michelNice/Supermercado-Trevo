@@ -1,7 +1,13 @@
+
 import { FaCheckCircle, FaHome, FaShoppingBasket } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./PurchaseConfirmed.scss";
+
 const PurchaseConfirmed = () => {
+  const deliveryMethod = localStorage.getItem("deliveryMethod");
+
+  const isPickup = deliveryMethod === "pickup";
+
   return (
     <section className="purchase-confirmed">
       <div className="confirmation-card">
@@ -25,18 +31,27 @@ const PurchaseConfirmed = () => {
         <div className="info">
           <div className="info-item">
             <strong>Confirmação por E-mail</strong>
+
             <span>
               Enviamos um e-mail de confirmação com os detalhes do seu pedido.
             </span>
           </div>
 
           <div className="info-item">
-            <strong>Prazo de Entrega</strong>
-            <span>1 a 2 dias úteis</span>
+            <strong>
+              {isPickup ? "Retirada na Loja" : "Receber em Casa"}
+            </strong>
+
+            <span>
+              {isPickup
+                ? "Seu pedido está sendo preparado. Aguarde a confirmação de que ele está pronto para retirada."
+                : "Seu pedido está sendo preparado e será entregue em breve."}
+            </span>
           </div>
 
           <div className="info-item">
             <strong>Status do Pagamento</strong>
+
             <span className="approved">Aprovado</span>
           </div>
         </div>
@@ -60,3 +75,4 @@ const PurchaseConfirmed = () => {
 };
 
 export default PurchaseConfirmed;
+

@@ -33,7 +33,9 @@ export async function sendConfirmationEmail(
   const resendApiKey = process.env.RESEND_API_KEY;
 
   if (!resendApiKey) {
-    throw new Error("RESEND_API_KEY não está configurada no ambiente.");
+    throw new Error(
+      "RESEND_API_KEY não está configurada no ambiente."
+    );
   }
 
   const resend = new Resend(resendApiKey);
@@ -115,10 +117,7 @@ export async function sendConfirmationEmail(
           border-radius:10px;
           margin-top:25px;
         ">
-          <h2 style="
-            color:#004d26;
-            margin-top:0;
-          ">
+          <h2 style="color:#004d26;margin-top:0;">
             Retirada na loja 🏪
           </h2>
 
@@ -126,7 +125,8 @@ export async function sendConfirmationEmail(
             font-size:16px;
             line-height:1.6;
           ">
-            Seu pedido estará disponível para retirada na seguinte loja:
+            Seu pedido estará disponível para retirada
+            na seguinte loja:
           </p>
 
           <p style="
@@ -137,9 +137,7 @@ export async function sendConfirmationEmail(
             <strong>
               ${selectedStore?.name || "Loja não informada"}
             </strong>
-
             <br>
-
             ${selectedStore?.address || "Endereço da loja não informado"}
           </p>
         </div>
@@ -156,10 +154,7 @@ export async function sendConfirmationEmail(
           border-radius:10px;
           margin-top:25px;
         ">
-          <h2 style="
-            color:#004d26;
-            margin-top:0;
-          ">
+          <h2 style="color:#004d26;margin-top:0;">
             Endereço de entrega 🏠
           </h2>
 
@@ -169,7 +164,6 @@ export async function sendConfirmationEmail(
           ">
             <strong>Nome:</strong>
             ${address?.name || name}
-
             <br>
 
             <strong>E-mail:</strong>
@@ -193,6 +187,7 @@ export async function sendConfirmationEmail(
             <br>
 
             ${address?.city || ""}
+
             ${address?.state ? ` - ${address.state}` : ""}
 
             <br>
@@ -227,126 +222,200 @@ export async function sendConfirmationEmail(
     from: "Trevo Supermercado <onboarding@resend.dev>",
     to: email,
     subject,
+
     html: `
-      <div style="
-        max-width:600px;
-        margin:auto;
-        background:#ffffff;
-        padding:30px;
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+
+      <head>
+        <meta charset="UTF-8">
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        >
+
+        <title>${subject}</title>
+      </head>
+
+      <body style="
+        margin:0;
+        padding:0;
+        background:#eeeeee;
         font-family:Arial, Helvetica, sans-serif;
-        color:#333;
       ">
+
         <div style="
-          background:#004d26;
-          padding:25px;
-          border-radius:10px;
-          text-align:center;
+          max-width:700px;
+          margin:30px auto;
+          background:#ffffff;
+          border-radius:12px;
+          overflow:hidden;
         ">
-          <h1 style="
+
+          <div style="
+            background:#004d26;
+            padding:30px;
+            text-align:center;
             color:#ffffff;
-            margin:0;
-            font-size:28px;
           ">
-            Compra Confirmada! 🎉
-          </h1>
-        </div>
-
-        <p style="
-          font-size:16px;
-          margin-top:25px;
-        ">
-          Olá, <strong>${name}</strong>!
-        </p>
-
-        <p style="
-          font-size:16px;
-          line-height:1.5;
-        ">
-          Obrigado pela sua compra no
-          <strong>Trevo Supermercado</strong>.
-          Recebemos o seu pagamento com sucesso.
-        </p>
-
-        ${customerHtml}
-
-        <h2 style="
-          color:#004d26;
-          margin-top:30px;
-        ">
-          Resumo do pedido
-        </h2>
-
-        <table style="
-          width:100%;
-          border-collapse:collapse;
-          margin-top:15px;
-        ">
-          <tr style="
-            background:#ee7104;
-            color:white;
-          ">
-            <th style="
-              padding:12px;
-              text-align:left;
+            <h1 style="
+              margin:0;
+              font-size:28px;
             ">
-              Produto
-            </th>
+              Compra Confirmada! 🎉
+            </h1>
 
-            <th style="
-              padding:12px;
+            <p style="
+              margin:10px 0 0;
+              font-size:16px;
             ">
-              Quantidade
-            </th>
+              Obrigado pela sua compra no Trevo Supermercado.
+            </p>
+          </div>
 
-            <th style="
-              padding:12px;
+          <div style="padding:30px;">
+
+            <p style="
+              font-size:17px;
+              color:#333;
+            ">
+              Olá, <strong>${name}</strong>!
+            </p>
+
+            <p style="
+              font-size:16px;
+              line-height:1.6;
+              color:#555;
+            ">
+              Recebemos o seu pagamento com sucesso.
+              Confira abaixo os detalhes do seu pedido.
+            </p>
+
+            ${customerHtml}
+
+            <div style="margin-top:30px;">
+
+              <h2 style="color:#004d26;">
+                Itens do pedido
+              </h2>
+
+              <table style="
+                width:100%;
+                border-collapse:collapse;
+                font-size:15px;
+              ">
+
+                <thead>
+                  <tr style="background:#f5f5f5;">
+
+                    <th style="
+                      padding:12px;
+                      text-align:left;
+                    ">
+                      Produto
+                    </th>
+
+                    <th style="
+                      padding:12px;
+                      text-align:center;
+                    ">
+                      Quantidade
+                    </th>
+
+                    <th style="
+                      padding:12px;
+                      text-align:right;
+                    ">
+                      Valor
+                    </th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+                  ${itemsHtml}
+                </tbody>
+
+              </table>
+
+            </div>
+
+            <div style="
+              margin-top:25px;
+              padding:20px;
+              background:#f5f5f5;
+              border-radius:10px;
               text-align:right;
             ">
-              Preço
-            </th>
-          </tr>
+              <strong style="
+                font-size:20px;
+                color:#004d26;
+              ">
+                Total: R$ ${Number(total).toFixed(2)}
+              </strong>
+            </div>
 
-          ${itemsHtml}
-        </table>
+            ${pickupHtml}
 
-        <h2 style="
-          color:#ee7104;
-          margin-top:25px;
-        ">
-          Total: R$ ${Number(total).toFixed(2)}
-        </h2>
+            ${deliveryHtml}
 
-        ${pickupHtml}
+            <div style="
+              margin-top:25px;
+              padding:20px;
+              background:#fff7ed;
+              border-radius:10px;
+              color:#555;
+              line-height:1.6;
+            ">
+              ${deliveryMessage}
+            </div>
 
-        ${deliveryHtml}
+          </div>
 
-        <p style="
-          margin-top:25px;
-          font-size:16px;
-          line-height:1.6;
-        ">
-          ${deliveryMessage}
-        </p>
+          <div style="
+            background:#004d26;
+            padding:25px;
+            text-align:center;
+            color:#ffffff;
+          ">
+            <p style="
+              margin:0;
+              font-size:14px;
+            ">
+              Atenciosamente,<br>
+              <strong>Trevo Supermercado</strong>
+            </p>
+          </div>
 
-        <hr style="
-          border:none;
-          border-top:1px solid #ddd;
-          margin:30px 0;
-        ">
+        </div>
 
-        <p style="
-          text-align:center;
-          color:#004d26;
-        ">
-          Atenciosamente,
-          <br>
-          <strong>
-            Trevo Supermercado
-          </strong>
-        </p>
-      </div>
+      </body>
+      </html>
     `,
   });
+
+  // IMPORTANTE:
+  // O Resend pode retornar "error" sem lançar uma exceção.
+  if (result.error) {
+    console.error(
+      "❌ ERRO REAL DO RESEND:",
+      result.error
+    );
+
+    throw new Error(
+      result.error.message ||
+        "Erro retornado pelo Resend."
+    );
+  }
+
+  // Só consideramos enviado quando o Resend devolveu um ID.
+  console.log(
+    "✅ RESEND ACEITOU O E-MAIL:",
+    {
+      id: result.data?.id,
+      email,
+    }
+  );
 
   return result;
 }

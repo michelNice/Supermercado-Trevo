@@ -1,9 +1,11 @@
+
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { Payment } from "mercadopago";
 import client from "../config/mercadoPago";
 import { sendConfirmationEmail } from "../services/emailService";
 import { createOrder } from "../services/orderService";
+
 const router = Router();
 
 router.post(
@@ -65,7 +67,7 @@ router.post(
             ? pickup_store
             : null;
 
-        const order = await createOrder({
+        await createOrder({
           paymentId: response.id,
           total: Number(transaction_amount),
           status: response.status,
@@ -74,12 +76,16 @@ router.post(
             deliveryMethod === "delivery"
               ? address
               : null,
+          deliveryMethod,
+          selectedStore,
         });
 
         try {
           await sendConfirmationEmail(
             payer.email,
-            address?.name || payer?.first_name || "Cliente",
+            address?.name ||
+              payer?.first_name ||
+              "Cliente",
             items || [],
             deliveryMethod === "delivery"
               ? address
@@ -88,9 +94,7 @@ router.post(
             deliveryMethod,
             selectedStore
           );
-        } catch (error) {
-          console.error("Email error:", error);
-        }
+        } catch (error) {}
       }
 
       return res.json({

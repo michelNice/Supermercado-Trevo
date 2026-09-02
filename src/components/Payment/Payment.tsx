@@ -12,7 +12,7 @@ import { useCheckout } from "../../context/CheckoutContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/Supabase/supabaseClient";
 
-const API_URL = "https://supermercado-trevo-h8zn.onrender.com";
+const API_URL = "https://supermercado-trevo.onrender.com";
 
 interface Store {
 id: string;
