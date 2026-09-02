@@ -37,9 +37,7 @@ export async function sendConfirmationEmail(
       "RESEND_API_KEY não está configurada no ambiente."
     );
   }
-
   const resend = new Resend(resendApiKey);
-
   const itemsHtml = items
     .map(
       (item) => `

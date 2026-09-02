@@ -70,9 +70,6 @@ app.post("/email/confirmation", async (req: Request, res: Response) => {
       deliveryMethod,
       selectedStore
     );
-
-    console.log("E-MAIL DE CONFIRMAÇÃO ENVIADO:", email);
-
     return res.status(200).json({
       success: true,
       message: "E-mail de confirmação enviado com sucesso.",
@@ -118,5 +115,4 @@ app.post("/verify-captcha", async (req: Request, res: Response) => {
 const PORT = Number(process.env.PORT) || 3001;
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
 });

@@ -30,10 +30,6 @@ const pendingPayments = new Map<number, PendingPayment>();
 // Prevent duplicated emails/orders
 const completedPayments = new Set<number>();
 
-// ===========================
-// CREATE PIX
-// ===========================
-
 router.post(
   "/create",
   async (req: Request, res: Response) => {
@@ -128,10 +124,6 @@ router.post(
   }
 );
 
-// ===========================
-// CHECK PIX STATUS
-// ===========================
-
 router.get(
   "/status/:id",
   async (req: Request, res: Response) => {
@@ -165,10 +157,6 @@ router.get(
         // Lock immediately
         completedPayments.add(paymentId);
 
-        // ===========================
-        // SEND CONFIRMATION EMAIL
-        // ===========================
-
         await sendConfirmationEmail(
           customer.email,
           customer.name,
@@ -179,10 +167,7 @@ router.get(
           customer.selectedStore
         );
 
-        // ===========================
-        // SAVE ORDER
-        // ===========================
-
+  
         await createOrder({
           paymentId,
 

@@ -46,12 +46,6 @@ const DeliveryOptions: React.FC<Props> = ({
     setSelectedStore: setCheckoutStore,
   } = useCheckout();
 
-  /*
-   * ============================================================
-   * RECUPERA DADOS SALVOS
-   * ============================================================
-   */
-
   useEffect(() => {
     const savedStore = getSelectedStore();
     const savedAddress = getSelectedAddress();
@@ -66,11 +60,6 @@ const DeliveryOptions: React.FC<Props> = ({
     }
   }, []);
 
-  /*
-   * ============================================================
-   * SALVA A LOJA SELECIONADA
-   * ============================================================
-   */
 
   useEffect(() => {
     if (selectedStore !== null) {
@@ -78,44 +67,20 @@ const DeliveryOptions: React.FC<Props> = ({
     }
   }, [selectedStore]);
 
-  /*
-   * ============================================================
-   * CEP
-   * ============================================================
-   */
-
   const handleCepSubmit = () => {
     closeModal();
     setShowUnavailable(true);
   };
-
-  /*
-   * ============================================================
-   * SELECIONAR RECEBER EM CASA
-   * ============================================================
-   */
 
   const handleHomeDelivery = () => {
     setSelected("home");
     setDeliveryMethod("delivery");
   };
 
-  /*
-   * ============================================================
-   * SELECIONAR RETIRADA
-   * ============================================================
-   */
-
   const handleStorePickup = () => {
     setSelected("store");
     setDeliveryMethod("pickup");
   };
-
-  /*
-   * ============================================================
-   * SELECIONAR UMA LOJA
-   * ============================================================
-   */
 
   const handleSelectStore = (
     store: (typeof trevoAddress)[number]
@@ -150,11 +115,6 @@ const DeliveryOptions: React.FC<Props> = ({
   return (
     <>
       <div className="delivery">
-
-        {/* =====================================================
-            TIPO DE ENTREGA
-        ===================================================== */}
-
         <div className="delivery__container">
 
           <h2 className="delivery__title">
@@ -201,11 +161,6 @@ const DeliveryOptions: React.FC<Props> = ({
 
           </div>
         </div>
-
-        {/* =====================================================
-            RECEBER EM CASA
-        ===================================================== */}
-
         {selected === "home" && (
           <div className="delivery__home">
 
@@ -222,11 +177,6 @@ const DeliveryOptions: React.FC<Props> = ({
 
           </div>
         )}
-
-        {/* =====================================================
-            RETIRAR NA LOJA
-        ===================================================== */}
-
         {selected === "store" && (
           <div className="store__conteiner">
 
@@ -253,11 +203,9 @@ const DeliveryOptions: React.FC<Props> = ({
                       handleSelectStore(store)
                     }
                   >
-
                     <i className="fas fa-map-marker-alt store-icon"></i>
 
                     <div className="store-info">
-
                       <strong>
                         {store.name}
                       </strong>
@@ -267,7 +215,6 @@ const DeliveryOptions: React.FC<Props> = ({
                       </p>
 
                     </div>
-
                     <i
                       className={`fas fa-check check-icon ${
                         isSelected

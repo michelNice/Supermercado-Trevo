@@ -1,4 +1,3 @@
-
 import { FaCheckCircle, FaHome, FaShoppingBasket } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./PurchaseConfirmed.scss";
@@ -29,6 +28,7 @@ const PurchaseConfirmed = () => {
         </div>
 
         <div className="info">
+          {/* E-MAIL */}
           <div className="info-item">
             <strong>Confirmação por E-mail</strong>
 
@@ -37,6 +37,7 @@ const PurchaseConfirmed = () => {
             </span>
           </div>
 
+          {/* ENTREGA OU RETIRADA */}
           <div className="info-item">
             <strong>
               {isPickup ? "Retirada na Loja" : "Receber em Casa"}
@@ -49,10 +50,13 @@ const PurchaseConfirmed = () => {
             </span>
           </div>
 
+          {/* PAGAMENTO */}
           <div className="info-item">
             <strong>Status do Pagamento</strong>
 
-            <span className="approved">Aprovado</span>
+            <span className="approved">
+              Aprovado
+            </span>
           </div>
         </div>
 
@@ -75,4 +79,3 @@ const PurchaseConfirmed = () => {
 };
 
 export default PurchaseConfirmed;
-
