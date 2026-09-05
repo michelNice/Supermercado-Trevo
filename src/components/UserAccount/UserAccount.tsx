@@ -4,6 +4,7 @@ import { supabase } from "../../services/Supabase/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./UserAccount.scss";
+import Subscription from "../Subscription/Subscription";
 interface Address {
     id: string;
     user_id: string;
@@ -50,11 +51,7 @@ async function handleLogout() {
 }
     if (!user) {
 
-        return (
-            <p>
-                Você precisa fazer login.
-            </p>
-        );
+        return <Subscription />
 
     }
     return (
