@@ -1,11 +1,10 @@
-
 import "./Payment.scss";
 
 import { useEffect, useState } from "react";
 
 import {
-  initMercadoPago,
-  Payment as MercadoPagoPayment,
+initMercadoPago,
+Payment as MercadoPagoPayment,
 } from "@mercadopago/sdk-react";
 
 import { useCart } from "../../context/CartContext";
@@ -13,869 +12,977 @@ import { useCheckout } from "../../context/CheckoutContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/Supabase/supabaseClient";
 
-const API_URL = "https://supermercado-trevo.onrender.com";
+const API_URL =
+"https://supermercado-trevo.onrender.com";
 
 interface Store {
-  id: string;
-  name: string;
-  address: string;
+id: string;
+name: string;
+address: string;
 }
 
 interface Address {
-  name?: string;
-  email?: string;
-  street: string;
-  number: string;
-  complemento?: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zipCode: string;
+name?: string;
+email?: string;
+street: string;
+number: string;
+complemento?: string;
+neighborhood: string;
+city: string;
+state: string;
+zipCode: string;
 }
 
-type DeliveryMethod = "delivery" | "pickup";
 type PaymentMethod = "card" | "pix";
 
 const Payment = () => {
-  const { cartItem, clearCart } = useCart();
+const { cartItem, clearCart } = useCart();
+
+const {
+address,
+deliveryMethod,
+selectedStore,
+} = useCheckout();
+
+const navigate = useNavigate();
+
+const [method, setMethod] =
+useState<PaymentMethod>("card");
+
+const [savedAddress, setSavedAddress] =
+useState<Address | null>(null);
+
+const [qrCode, setQrCode] =
+useState("");
+
+const [paymentId, setPaymentId] =
+useState<number | null>(null);
+
+const [paymentMessage, setPaymentMessage] =
+useState("");
+
+const [loadingPix, setLoadingPix] =
+useState(false);
+
+const [loadingPayment, setLoadingPayment] =
+useState(false);
+
+const [paymentFinished, setPaymentFinished] =
+useState(false);
+
+const [orderSaving, setOrderSaving] =
+useState(false);
+
+const total = cartItem.reduce(
+(acc, item) =>
+acc +
+Number(item.price) * item.quantity,
+0
+);
+
+useEffect(() => {
+const publicKey =
+import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY;
+
+
+if (publicKey) {
+  initMercadoPago(publicKey);
+}
+
+
+}, []);
+
+useEffect(() => {
+if (address) {
+localStorage.setItem(
+"trevo_customer_address",
+JSON.stringify(address)
+);
+
+
+  setSavedAddress(address);
+}
+
+}, [address]);
+
+useEffect(() => {
+const loadCustomerData = async () => {
+const localData =
+localStorage.getItem(
+"trevo_customer_address"
+);
+
+
+  if (localData) {
+    try {
+      const parsed =
+        JSON.parse(localData);
+
+      if (
+        parsed &&
+        parsed.street &&
+        parsed.number &&
+        parsed.zipCode
+      ) {
+        setSavedAddress(parsed);
+        return;
+      }
+    } catch {
+      localStorage.removeItem(
+        "trevo_customer_address"
+      );
+    }
+  }
 
   const {
-    address,
-    deliveryMethod,
-    selectedStore,
-  } = useCheckout();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  const navigate = useNavigate();
+  if (!session?.user) {
+    return;
+  }
 
-  const [method, setMethod] =
-    useState<PaymentMethod>("card");
+  const { data } =
+    await supabase
+      .from("addresses")
+      .select(
+        "name,email,street,number,complement,neighborhood,city,state,zip_code"
+      )
+      .eq(
+        "user_id",
+        session.user.id
+      )
+      .order("is_default", {
+        ascending: false,
+      })
+      .limit(1)
+      .maybeSingle();
 
-  const [qrCode, setQrCode] = useState("");
-
-  const [paymentId, setPaymentId] =
-    useState<number | null>(null);
-
-  const [paymentMessage, setPaymentMessage] =
-    useState("");
-
-  const [loadingPix, setLoadingPix] =
-    useState(false);
-
-  const [loadingPayment, setLoadingPayment] =
-    useState(false);
-
-  const [paymentFinished, setPaymentFinished] =
-    useState(false);
-
-  const [orderSaving, setOrderSaving] =
-    useState(false);
-
-  // Inicializa o Mercado Pago
-  useEffect(() => {
-    const publicKey =
-      import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY;
-
-    if (!publicKey) {
-      setPaymentMessage(
-        "Chave pública do Mercado Pago não configurada."
-      );
-      return;
-    }
-
-    initMercadoPago(publicKey);
-  }, []);
-
-  // Salva o tipo de entrega para a página de confirmação
-  useEffect(() => {
-    if (deliveryMethod) {
-      localStorage.setItem(
-        "deliveryMethod",
-        deliveryMethod
-      );
-    }
-  }, [deliveryMethod]);
-
-  const total = cartItem.reduce(
-    (acc, item) =>
-      acc + Number(item.price) * item.quantity,
-    0
-  );
-
-  const getCustomerData = async () => {
-    let name = address?.name?.trim() || "";
-    let email = address?.email?.trim() || "";
-
-    if (!name || !email) {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (session?.user) {
-        if (!name) {
-          name =
-            session.user.user_metadata?.full_name?.trim() ||
-            session.user.user_metadata?.name?.trim() ||
-            "";
-        }
-
-        if (!email) {
-          email =
-            session.user.email?.trim() || "";
-        }
-      }
-    }
-
-    return {
-      name,
-      email,
+  if (data) {
+    const customerAddress: Address = {
+      name:
+        data.name ||
+        session.user.user_metadata
+          ?.full_name ||
+        "",
+      email:
+        data.email ||
+        session.user.email ||
+        "",
+      street:
+        data.street || "",
+      number:
+        data.number || "",
+      complemento:
+        data.complement || "",
+      neighborhood:
+        data.neighborhood || "",
+      city:
+        data.city || "",
+      state:
+        data.state || "",
+      zipCode:
+        data.zip_code || "",
     };
-  };
 
-  const validateCheckout = async () => {
-    const customer =
-      await getCustomerData();
-
-    if (!customer.name) {
-      setPaymentMessage(
-        "Não foi possível identificar o nome do cliente."
-      );
-      return false;
-    }
-
-    if (!customer.email) {
-      setPaymentMessage(
-        "Não foi possível identificar o e-mail do cliente."
-      );
-      return false;
-    }
-
-    if (
-      deliveryMethod === "pickup" &&
-      !selectedStore
-    ) {
-      setPaymentMessage(
-        "Selecione uma loja para retirar o pedido."
-      );
-      return false;
-    }
-
-    if (
-      deliveryMethod === "delivery" &&
-      !address
-    ) {
-      setPaymentMessage(
-        "Não foi possível identificar o endereço de entrega."
-      );
-      return false;
-    }
-
-    return true;
-  };
-
-  const saveOrder = async (
-    paymentMethod: string,
-    cardName: string | null = null
-  ) => {
-    try {
-      setOrderSaving(true);
-
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      const userId =
-        session?.user?.id ?? null;
-
-      const orderData = {
-        user_id: userId,
-        items: cartItem,
-        total: Number(total.toFixed(2)),
-        address:
-          deliveryMethod === "delivery"
-            ? address
-            : null,
-        payment_method: paymentMethod,
-        card_name: cardName,
-        delivery_method: deliveryMethod,
-        pickup_store:
-          deliveryMethod === "pickup"
-            ? selectedStore
-            : null,
-      };
-
-      const { error } = await supabase
-        .from("orders")
-        .insert(orderData);
-
-      if (error) {
-        console.error(
-          "Erro ao salvar pedido:",
-          error
-        );
-
-        setPaymentMessage(
-          "O pagamento foi aprovado, mas não foi possível salvar o pedido."
-        );
-
-        return null;
-      }
-
-      // O pedido já foi salvo no Supabase.
-      // Não fazemos .select() depois do INSERT,
-      // então não dependemos de uma policy de SELECT.
-
-      return orderData;
-    } catch (error) {
-      console.error(
-        "Erro inesperado ao salvar pedido:",
-        error
-      );
-
-      setPaymentMessage(
-        "O pagamento foi aprovado, mas não foi possível salvar o pedido."
-      );
-
-      return null;
-    } finally {
-      setOrderSaving(false);
-    }
-  };
-
-  const sendConfirmationEmail = async () => {
-    try {
-      const customer =
-        await getCustomerData();
-
-      const response = await fetch(
-        `${API_URL}/email/confirmation`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: customer.email,
-            name: customer.name,
-            items: cartItem,
-            address:
-              deliveryMethod === "delivery"
-                ? address
-                : null,
-            total: Number(
-              total.toFixed(2)
-            ),
-            deliveryMethod,
-            selectedStore:
-              deliveryMethod === "pickup"
-                ? selectedStore
-                : null,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        console.error(
-          "Erro ao enviar e-mail:",
-          response.status
-        );
-
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error(
-        "Erro ao enviar e-mail:",
-        error
-      );
-
-      return false;
-    }
-  };
-
-  const finishPurchase = async (
-    paymentMethod: string,
-    cardName: string | null = null
-  ) => {
-    if (paymentFinished) {
-      return;
-    }
-
-    setPaymentFinished(true);
-    setPaymentMessage("");
-
-    const order = await saveOrder(
-      paymentMethod,
-      cardName
+    setSavedAddress(
+      customerAddress
     );
 
-    if (!order) {
-      setPaymentFinished(false);
-      return;
-    }
+    localStorage.setItem(
+      "trevo_customer_address",
+      JSON.stringify(
+        customerAddress
+      )
+    );
+  }
+};
 
-    await sendConfirmationEmail();
+loadCustomerData();
 
-    clearCart();
 
-    navigate("/purchase-confirmed");
+}, []);
+
+const customerAddress =
+address || savedAddress;
+
+const getCustomerData = async () => {
+const {
+data: { session },
+} = await supabase.auth.getSession();
+
+const name =
+  customerAddress?.name?.trim() ||
+  session?.user?.user_metadata
+    ?.full_name ||
+  session?.user?.user_metadata
+    ?.name ||
+  "";
+
+const email =
+  customerAddress?.email?.trim() ||
+  session?.user?.email ||
+  "";
+
+return {
+  name,
+  email,
+};
+
+
+};
+
+const validateCheckout = async () => {
+const customer =
+await getCustomerData();
+
+
+if (!customer.name) {
+  setPaymentMessage(
+    "Não foi possível identificar o nome do cliente."
+  );
+  return false;
+}
+
+if (!customer.email) {
+  setPaymentMessage(
+    "Não foi possível identificar o e-mail do cliente."
+  );
+  return false;
+}
+
+if (
+  deliveryMethod === "delivery" &&
+  !customerAddress
+) {
+  setPaymentMessage(
+    "Não foi possível identificar o endereço de entrega."
+  );
+  return false;
+}
+
+if (
+  deliveryMethod === "pickup" &&
+  !selectedStore
+) {
+  setPaymentMessage(
+    "Selecione uma loja para retirar o pedido."
+  );
+  return false;
+}
+
+return true;
+
+
+};
+
+const saveOrder = async (
+paymentMethod: string,
+cardName: string | null = null
+) => {
+try {
+setOrderSaving(true);
+
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const orderData = {
+    user_id:
+      session?.user?.id || null,
+
+    items: cartItem,
+
+    total: Number(
+      total.toFixed(2)
+    ),
+
+    address:
+      deliveryMethod === "delivery"
+        ? customerAddress
+        : null,
+
+    payment_method:
+      paymentMethod,
+
+    card_name:
+      cardName,
+
+    delivery_method:
+      deliveryMethod,
+
+    pickup_store:
+      deliveryMethod === "pickup"
+        ? selectedStore
+        : null,
   };
 
-  const gerarPix = async () => {
-    if (qrCode || loadingPix) {
-      return;
-    }
+  const { error } =
+    await supabase
+      .from("orders")
+      .insert(orderData);
 
-    const valid =
-      await validateCheckout();
+  if (error) {
+    setPaymentMessage(
+      "O pagamento foi aprovado, mas não foi possível salvar o pedido."
+    );
 
-    if (!valid) {
-      return;
-    }
+    return null;
+  }
 
-    try {
-      setLoadingPix(true);
-      setPaymentMessage("");
+  return orderData;
+} finally {
+  setOrderSaving(false);
+}
 
-      const customer =
-        await getCustomerData();
 
-      const paymentData = {
-        total: Number(
-          total.toFixed(2)
-        ),
+};
 
-        email: customer.email,
+const sendConfirmationEmail = async () => {
+try {
+const customer =
+await getCustomerData();
 
-        name: customer.name,
 
-        address:
-          deliveryMethod === "delivery"
-            ? address
-            : null,
+  const response =
+    await fetch(
+      `${API_URL}/email/confirmation`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          email:
+            customer.email,
 
-        items: cartItem,
+          name:
+            customer.name,
 
-        delivery_method:
+          items:
+            cartItem,
+
+          address:
+            deliveryMethod ===
+            "delivery"
+              ? customerAddress
+              : null,
+
+          total:
+            Number(
+              total.toFixed(2)
+            ),
+
           deliveryMethod,
 
-        pickup_store:
-          deliveryMethod === "pickup"
-            ? selectedStore
-            : null,
-      };
+          selectedStore:
+            deliveryMethod ===
+            "pickup"
+              ? selectedStore
+              : null,
+        }),
+      }
+    );
 
-      const response = await fetch(
-        `${API_URL}/pix/create`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(
-            paymentData
-          ),
-        }
-      );
+  return response.ok;
+} catch {
+  return false;
+}
+
+
+};
+
+const finishPurchase = async (
+paymentMethod: string,
+cardName: string | null = null
+) => {
+if (paymentFinished) {
+return;
+}
+
+
+setPaymentFinished(true);
+
+setPaymentMessage("");
+
+const order =
+  await saveOrder(
+    paymentMethod,
+    cardName
+  );
+
+if (!order) {
+  setPaymentFinished(false);
+  return;
+}
+
+await sendConfirmationEmail();
+
+clearCart();
+
+navigate(
+  "/purchase-confirmed"
+);
+
+
+};
+
+const gerarPix = async () => {
+if (loadingPix || qrCode) {
+return;
+}
+
+
+const valid =
+  await validateCheckout();
+
+if (!valid) {
+  return;
+}
+
+try {
+  setLoadingPix(true);
+  setPaymentMessage("");
+
+  const customer =
+    await getCustomerData();
+
+  const response =
+    await fetch(
+      `${API_URL}/pix/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          total:
+            Number(
+              total.toFixed(2)
+            ),
+
+          email:
+            customer.email,
+
+          name:
+            customer.name,
+
+          address:
+            deliveryMethod ===
+            "delivery"
+              ? customerAddress
+              : null,
+
+          items:
+            cartItem,
+
+          delivery_method:
+            deliveryMethod,
+
+          pickup_store:
+            deliveryMethod ===
+            "pickup"
+              ? selectedStore
+              : null,
+        }),
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data?.message ||
+        data?.error ||
+        `Erro HTTP: ${response.status}`
+    );
+  }
+
+  if (!data.id) {
+    throw new Error(
+      "O backend não retornou o ID do pagamento."
+    );
+  }
+
+  if (!data.qrCodeBase64) {
+    throw new Error(
+      "O backend não retornou o QR Code."
+    );
+  }
+
+  setPaymentId(
+    Number(data.id)
+  );
+
+  setQrCode(
+    data.qrCodeBase64
+  );
+} catch (error) {
+  setPaymentMessage(
+    error instanceof Error
+      ? error.message
+      : "Não foi possível gerar o PIX."
+  );
+} finally {
+  setLoadingPix(false);
+}
+
+
+};
+
+useEffect(() => {
+if (
+method !== "pix" ||
+qrCode ||
+loadingPix ||
+paymentFinished
+) {
+return;
+}
+
+
+gerarPix();
+
+
+}, [method, customerAddress]);
+
+useEffect(() => {
+if (
+!paymentId ||
+paymentFinished
+) {
+return;
+}
+
+
+const interval =
+  setInterval(async () => {
+    try {
+      const response =
+        await fetch(
+          `${API_URL}/pix/status/${paymentId}`
+        );
+
+      if (!response.ok) {
+        return;
+      }
 
       const data =
         await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data?.error ||
-            data?.message ||
-            `Erro HTTP: ${response.status}`
-        );
-      }
-
-      if (!data.id) {
-        throw new Error(
-          "O backend não retornou o ID do pagamento."
-        );
-      }
-
-      if (!data.qrCodeBase64) {
-        throw new Error(
-          "O backend não retornou o QR Code."
-        );
-      }
-
-      setPaymentId(
-        Number(data.id)
-      );
-
-      setQrCode(
-        data.qrCodeBase64
-      );
-
-      setPaymentMessage("");
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Não foi possível gerar o PIX.";
-
-      setPaymentMessage(message);
-    } finally {
-      setLoadingPix(false);
-    }
-  };
-
-  useEffect(() => {
-    if (
-      !paymentId ||
-      paymentFinished
-    ) {
-      return;
-    }
-
-    const interval =
-      setInterval(
-        async () => {
-          try {
-            const response =
-              await fetch(
-                `${API_URL}/pix/status/${paymentId}`
-              );
-
-            if (!response.ok) {
-              return;
-            }
-
-            const data =
-              await response.json();
-
-            if (
-              data.status !==
-              "approved"
-            ) {
-              return;
-            }
-
-            clearInterval(interval);
-
-            setPaymentMessage(
-              "Pagamento aprovado. Finalizando seu pedido..."
-            );
-
-            await finishPurchase(
-              "pix"
-            );
-          } catch {
-            return;
-          }
-        },
-        5000
-      );
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [
-    paymentId,
-    paymentFinished,
-  ]);
-
-  const handlePayment = async (
-    formData: any
-  ) => {
-    try {
-      setLoadingPayment(true);
-      setPaymentMessage("");
-
-      const valid =
-        await validateCheckout();
-
-      if (!valid) {
-        return;
-      }
-
-      const customer =
-        await getCustomerData();
-
-      const paymentData = {
-        ...formData,
-
-        transaction_amount:
-          Number(
-            total.toFixed(2)
-          ),
-
-        payer: {
-          email: customer.email,
-          first_name: customer.name,
-        },
-
-        address:
-          deliveryMethod === "delivery"
-            ? address
-            : null,
-
-        items: cartItem,
-
-        delivery_method:
-          deliveryMethod,
-
-        pickup_store:
-          deliveryMethod === "pickup"
-            ? selectedStore
-            : null,
-      };
-
-      const response = await fetch(
-        `${API_URL}/payment/process-payment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(
-            paymentData
-          ),
-        }
-      );
-
-      const result =
-        await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result?.error ||
-            result?.message ||
-            `Erro HTTP: ${response.status}`
-        );
-      }
-
       if (
-        result.status !==
+        data.status !==
         "approved"
       ) {
-        setPaymentMessage(
-          result?.status_detail ||
-            "Pagamento não aprovado. Verifique os dados."
-        );
-
         return;
       }
 
-      await finishPurchase(
-        "card",
-        customer.name
+      clearInterval(interval);
+
+      setPaymentMessage(
+        "Pagamento aprovado. Finalizando seu pedido..."
       );
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Não foi possível processar o pagamento.";
 
-      setPaymentMessage(message);
-    } finally {
-      setLoadingPayment(false);
+      await finishPurchase(
+        "pix"
+      );
+    } catch {
+      return;
     }
-  };
+  }, 5000);
 
-  const selectPaymentMethod = (
-    selectedMethod: PaymentMethod
-  ) => {
-    setMethod(selectedMethod);
+return () => {
+  clearInterval(interval);
+};
 
-    setQrCode("");
 
-    setPaymentId(null);
+}, [
+paymentId,
+paymentFinished,
+]);
 
-    setPaymentFinished(false);
+const handlePayment = async (
+formData: any
+) => {
+try {
+setLoadingPayment(true);
 
-    setPaymentMessage("");
 
-    if (
-      selectedMethod === "pix"
-    ) {
-      setTimeout(() => {
-        gerarPix();
-      }, 100);
-    }
-  };
+  setPaymentMessage("");
 
-  return (
-    <section className="payment">
-      <div className="payment__container">
+  const valid =
+    await validateCheckout();
 
-        <div className="payment__summary">
+  if (!valid) {
+    return;
+  }
 
-          <h2>
-            Resumo do Pedido
-          </h2>
+  const customer =
+    await getCustomerData();
 
-          <div className="payment__card">
+  const response =
+    await fetch(
+      `${API_URL}/payment/process-payment`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
 
-            <h3>
-              Produtos
-            </h3>
+          transaction_amount:
+            Number(
+              total.toFixed(2)
+            ),
 
-            {cartItem.map(
-              (item) => (
-                <div
-                  key={item.id}
-                  className="payment__product"
-                >
-                  <span>
-                    {item.quantity}x{" "}
-                    {item.name}
-                  </span>
+          payer: {
+            email:
+              customer.email,
 
-                  <strong>
-                    R${" "}
-                    {(
-                      Number(
-                        item.price
-                      ) *
-                      item.quantity
-                    ).toFixed(2)}
-                  </strong>
-                </div>
-              )
-            )}
+            first_name:
+              customer.name,
+          },
 
-          </div>
+          address:
+            deliveryMethod ===
+            "delivery"
+              ? customerAddress
+              : null,
 
-          <div className="payment__card">
+          items:
+            cartItem,
 
-            <h3>
-              Total
-            </h3>
+          delivery_method:
+            deliveryMethod,
 
-            <div className="payment__total">
+          pickup_store:
+            deliveryMethod ===
+            "pickup"
+              ? selectedStore
+              : null,
+        }),
+      }
+    );
 
+  const result =
+    await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result?.error ||
+        result?.message ||
+        `Erro HTTP: ${response.status}`
+    );
+  }
+
+  if (
+    result.status !==
+    "approved"
+  ) {
+    setPaymentMessage(
+      result?.status_detail ||
+        "Pagamento não aprovado. Verifique os dados."
+    );
+
+    return;
+  }
+
+  await finishPurchase(
+    "card",
+    customer.name
+  );
+} catch (error) {
+  setPaymentMessage(
+    error instanceof Error
+      ? error.message
+      : "Não foi possível processar o pagamento."
+  );
+} finally {
+  setLoadingPayment(false);
+}
+
+
+};
+
+const selectPaymentMethod = (
+selectedMethod: PaymentMethod
+) => {
+if (
+selectedMethod === method
+) {
+return;
+}
+
+setQrCode("");
+
+setPaymentId(null);
+
+setPaymentFinished(false);
+
+setPaymentMessage("");
+
+setMethod(
+  selectedMethod
+);
+
+};
+return ( <section className="payment"> <div className="payment__container"> <div className="payment__summary"> <h2>
+Resumo do Pedido </h2>
+
+
+      <div className="payment__card">
+        <h3>
+          Produtos
+        </h3>
+
+        {cartItem.map(
+          (item) => (
+            <div
+              key={item.id}
+              className="payment__product"
+            >
               <span>
-                Total da compra
+                {item.quantity}x{" "}
+                {item.name}
               </span>
 
               <strong>
-                R$ {total.toFixed(2)}
+                R${" "}
+                {(
+                  Number(
+                    item.price
+                  ) *
+                  item.quantity
+                ).toFixed(2)}
               </strong>
-
             </div>
+          )
+        )}
+      </div>
 
-          </div>
+      <div className="payment__card">
+        <h3>
+          Total
+        </h3>
 
-          {deliveryMethod ===
-          "delivery" ? (
+        <div className="payment__total">
+          <span>
+            Total da compra
+          </span>
 
-            <div className="payment__card">
+          <strong>
+            R$ {total.toFixed(2)}
+          </strong>
+        </div>
+      </div>
 
-              <h3>
-                Endereço de entrega
-              </h3>
+      {deliveryMethod ===
+      "delivery" ? (
+        <div className="payment__card">
+          <h3>
+            Endereço de entrega
+          </h3>
 
+          {customerAddress ? (
+            <>
               <p>
-                {address?.name}
+                {
+                  customerAddress.name
+                }
               </p>
 
               <p>
-                {address?.email}
+                {
+                  customerAddress.email
+                }
               </p>
 
               <p>
-                {address?.street},{" "}
-                {address?.number}
+                {
+                  customerAddress.street
+                }
+                ,{" "}
+                {
+                  customerAddress.number
+                }
               </p>
 
-              {address?.complemento && (
+              {customerAddress.complemento && (
                 <p>
-                  {address.complemento}
+                  {
+                    customerAddress.complemento
+                  }
                 </p>
               )}
 
               <p>
-                {address?.neighborhood}
+                {
+                  customerAddress.neighborhood
+                }
               </p>
 
               <p>
-                {address?.city} -{" "}
-                {address?.state}
+                {
+                  customerAddress.city
+                }{" "}
+                -{" "}
+                {
+                  customerAddress.state
+                }
               </p>
 
               <p>
                 CEP:{" "}
-                {address?.zipCode}
+                {
+                  customerAddress.zipCode
+                }
               </p>
-
-            </div>
-
+            </>
           ) : (
-
-            <div className="payment__card">
-
-              <h3>
-                Retirada na loja
-              </h3>
-
-              <div className="payment__pickup">
-
-                <p>
-                  Cliente:{" "}
-                  {selectedStore
-                    ? "Pedido para retirada"
-                    : ""}
-                </p>
-
-                {selectedStore ? (
-                  <>
-                    <strong>
-                      {selectedStore.name}
-                    </strong>
-
-                    <p>
-                      {selectedStore.address}
-                    </p>
-
-                    <span>
-                      Você irá retirar
-                      seu pedido nesta
-                      loja.
-                    </span>
-                  </>
-                ) : (
-
-                  <p>
-                    Nenhuma loja foi
-                    selecionada.
-                  </p>
-
-                )}
-
-              </div>
-
-            </div>
-
-          )}
-
-        </div>
-
-        <div className="payment__methods">
-
-          <h2>
-            Forma de pagamento
-          </h2>
-
-          <div className="payment__buttons">
-
-            <button
-              type="button"
-              onClick={() =>
-                selectPaymentMethod(
-                  "card"
-                )
-              }
-              disabled={
-                loadingPayment ||
-                orderSaving
-              }
-            >
-              Cartão
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                selectPaymentMethod(
-                  "pix"
-                )
-              }
-              disabled={
-                loadingPix ||
-                orderSaving
-              }
-            >
-              PIX
-            </button>
-
-          </div>
-
-          {method === "card" && (
-
-            <MercadoPagoPayment
-              initialization={{
-                amount: Number(
-                  total.toFixed(2)
-                ),
-              }}
-              customization={{
-                paymentMethods: {
-                  creditCard: "all",
-                  debitCard: "all",
-                },
-              }}
-              onSubmit={
-                handlePayment
-              }
-            />
-
-          )}
-
-          {method === "pix" && (
-
-            <div className="payment__pix">
-
-              {loadingPix && (
-                <p>
-                  Gerando PIX...
-                </p>
-              )}
-
-              {qrCode && (
-                <>
-                  <h3>
-                    Escaneie o QR Code
-                  </h3>
-
-                  <img
-                    src={`data:image/png;base64,${qrCode}`}
-                    alt="PIX"
-                    className="payment__qrcode"
-                  />
-
-                  <p>
-                    Aguardando
-                    confirmação do
-                    pagamento...
-                  </p>
-                </>
-              )}
-
-            </div>
-
-          )}
-
-          {(loadingPayment ||
-            orderSaving) && (
-
             <p>
-              Finalizando pedido...
+              Carregando endereço...
             </p>
-
           )}
-
         </div>
+      ) : (
+        <div className="payment__card">
+          <h3>
+            Retirada na loja
+          </h3>
 
+          {selectedStore && (
+            <>
+              <strong>
+                {
+                  selectedStore.name
+                }
+              </strong>
+
+              <p>
+                {
+                  selectedStore.address
+                }
+              </p>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+
+    <div className="payment__methods">
+      <h2>
+        Forma de pagamento
+      </h2>
+
+      <div className="payment__buttons">
+        <button
+          type="button"
+          onClick={() =>
+            selectPaymentMethod(
+              "card"
+            )
+          }
+          disabled={
+            loadingPayment ||
+            loadingPix ||
+            orderSaving
+          }
+        >
+          Cartão
+        </button>
+
+        <button
+          type="button"
+          onClick={() =>
+            selectPaymentMethod(
+              "pix"
+            )
+          }
+          disabled={
+            loadingPayment ||
+            loadingPix ||
+            orderSaving
+          }
+        >
+          PIX
+        </button>
       </div>
 
-      {paymentMessage && (
-
-        <div className="payment__message">
-
-          <p>
-            {paymentMessage}
-          </p>
-
-        </div>
-
+      {method === "card" && (
+        <MercadoPagoPayment
+          initialization={{
+            amount: Number(
+              total.toFixed(2)
+            ),
+          }}
+          customization={{
+            paymentMethods: {
+              creditCard: "all",
+              debitCard: "all",
+            },
+          }}
+          onSubmit={
+            handlePayment
+          }
+        />
       )}
 
-    </section>
-  );
+      {method === "pix" && (
+        <div className="payment__pix">
+          {loadingPix && (
+            <p>
+              Gerando PIX...
+            </p>
+          )}
+
+          {qrCode && (
+            <>
+              <h3>
+                Escaneie o QR Code
+              </h3>
+
+              <img
+                src={`data:image/png;base64,${qrCode}`}
+                alt="PIX"
+                className="payment__qrcode"
+              />
+
+              <p>
+                Aguardando
+                confirmação do
+                pagamento...
+              </p>
+            </>
+          )}
+        </div>
+      )}
+
+      {(loadingPayment ||
+        orderSaving) && (
+        <p>
+          Finalizando pedido...
+        </p>
+      )}
+    </div>
+  </div>
+
+  {paymentMessage && (
+    <div className="payment__message">
+      <p>
+        {paymentMessage}
+      </p>
+    </div>
+  )}
+</section>
+
+
+);
 };
 
 export default Payment;
-
