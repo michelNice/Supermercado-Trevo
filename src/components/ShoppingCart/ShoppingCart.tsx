@@ -1,6 +1,7 @@
 import { useCart } from "../../context/useCart";
 import "./ShoppingCart.scss";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 export default function ShoppingCart() {
   const navigate = useNavigate();
   const {
@@ -11,80 +12,90 @@ export default function ShoppingCart() {
     increaseQuantity,
   } = useCart();
   return (
-    <div className="shopping-cart">
-      <h2 className="shopping-cart__title">
-        Meu Carrinho
-      </h2>
+  <div className="shopping-cart">
 
-      {cartItem.length === 0 && (
-        <p className="shopping-cart__empty">
-          Seu carrinho está vazio.
-        </p>
-      )}
-      {cartItem.map((item) => (
-        <div
-          className="shopping-cart__item"
-          key={item.id}
-        >
-          <img
-            className="shopping-cart__image"
-            src={item.image}
-            alt={item.name}
-             
-          />
+    <button
+      className="shopping-cart__back"
+      onClick={() => navigate("/")}
+      aria-label="Voltar para as compras"
+    >
+      <FaArrowLeft />
+    </button>
 
-          <div className="shopping-cart__info">
-            <h3>{item.name}</h3>
+    <h2 className="shopping-cart__title">
+      Meu Carrinho
+    </h2>
 
-            <span className="shopping-cart__price">
-              R$ {item.price.toFixed(2)}
-            </span>
-          </div>
+    {cartItem.length === 0 && (
+      <p className="shopping-cart__empty">
+        Seu carrinho está vazio.
+      </p>
+    )}
 
-          <div className="shopping-cart__quantity">
+    {cartItem.map((item) => (
+      <div
+        className="shopping-cart__item"
+        key={item.id}
+      >
+        <img
+          className="shopping-cart__image"
+          src={item.image}
+          alt={item.name}
+        />
 
-            <button
-              onClick={() => decreaseQuantity(item.id)}
-            >
-              -
-            </button>
+        <div className="shopping-cart__info">
+          <h3>{item.name}</h3>
 
-            <button onClick={()=> increaseQuantity(item.id)}>
-              +
-            </button>
+          <span className="shopping-cart__price">
+            R$ {item.price.toFixed(2)}
+          </span>
+        </div>
 
-      <span>
-        {item.quantity}
-        {item.unit === "KG" ? " kg" : " un"}
-         
-      </span>
-          </div>
-
-          <div className="shopping-cart__subtotal">
-
-            R$
-            {(item.price * item.quantity).toFixed(2)}
-
-          </div>
+        <div className="shopping-cart__quantity">
+          <button
+            onClick={() => decreaseQuantity(item.id)}
+          >
+            -
+          </button>
 
           <button
-            className="shopping-cart__remove"
-            onClick={() => removeFromCart(item.id)}
+            onClick={() => increaseQuantity(item.id)}
           >
-            Remover
+            +
           </button>
+
+          <span>
+            {item.quantity}
+            {item.unit === "KG" ? " kg" : " un"}
+          </span>
         </div>
-      ))}
-      <div className="shopping-cart__footer">
-        <h2>
-          Total: R$ {cartTotal.toFixed(2)}
-        </h2>
 
-        <button className="shopping-cart__finish" onClick={()=>navigate('/endereço')}>
-          Continuar
+        <div className="shopping-cart__subtotal">
+          R$ {(item.price * item.quantity).toFixed(2)}
+        </div>
+
+        <button
+          className="shopping-cart__remove"
+          onClick={() => removeFromCart(item.id)}
+        >
+          Remover
         </button>
-
       </div>
+    ))}
+
+    <div className="shopping-cart__footer">
+      <h2>
+        Total: R$ {cartTotal.toFixed(2)}
+      </h2>
+
+      <button
+        className="shopping-cart__finish"
+        onClick={() => navigate("/endereço")}
+      >
+        Continuar
+      </button>
     </div>
-  );
+
+  </div>
+);
 }

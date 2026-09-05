@@ -209,3 +209,38 @@
 
     .productDetails__container .btn__addCarrinho{ width: 100%;}
 }
+
+
+
+
+.product-details {
+  position: relative;
+}
+
+.product-details__back {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  width: 2.8125rem;
+  height: 2.8125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: $primary;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &:hover {
+    transform: translateX(-0.25rem);
+  }
+}
