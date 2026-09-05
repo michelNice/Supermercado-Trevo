@@ -1,26 +1,16 @@
 import type React from "react";
 import { useState, useEffect } from "react";
-
 import { trevoAddress, getNearestStoreByCep } from "./AdressDelivery";
-
-import CepModal from "../../modals/CepModal/CepModal";
-
-import {
-  useLockBodyScroll,
-  useModal,
-} from "../../modals/CepModal/CepModalUtils";
-
+import CepModal from "../../modals/CepModal/CepModal"
+import {useLockBodyScroll,useModal,} from "../../modals/CepModal/CepModalUtils";
 import "./DeliveryOptions.scss";
-
 import { useCheckout } from "../../context/CheckoutContext";
-
 import {
   getSelectedStore,
   getSelectedAddress,
   setSelectedStore as saveSelectedStore,
   setSelectedAddress,
 } from "../../utils/storage.ts";
-
 import UnavailableModal from "../../modals/UnavailableModal/UnavailableModal";
 
 type Props = {
@@ -128,7 +118,6 @@ const DeliveryOptions: React.FC<Props> = ({
   useLockBodyScroll(
     showModal || showUnavailable
   );
-
   return (
     <>
       <div className="delivery">

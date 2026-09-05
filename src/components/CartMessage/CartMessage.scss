@@ -1,3 +1,5 @@
+@use "../../Styles/variables" as *;
+
 .cart-message {
   position: fixed;
 
@@ -7,20 +9,13 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-
   max-width: 25rem;
-
   padding: 1rem 1.2rem;
-
-  background: #ffffff;
-
-  border-left: 0.35rem solid #ee7104;
+  background:$white;
+  border-left: 0.35rem solid $primary;
   border-radius: 0.6rem;
-
   box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.15);
-
   z-index: 9999;
-
   animation: cart-message-enter 0.3s ease;
 }
 
@@ -30,9 +25,7 @@
 
 .cart-message__text {
   margin: 0;
-
   color: #333;
-
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.4;

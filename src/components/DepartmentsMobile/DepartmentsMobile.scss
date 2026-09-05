@@ -1,16 +1,18 @@
+@use "../../Styles/variables" as *;
+
 .DepartmentMobile {
   display: none;
   width: 100%;
   background: #f5f5f5;
 
   h3 {
-    background: #ffffff;
+    background:$white;
     text-align: center;
     margin: 2rem 0;
     padding: 12px;
     font-size: 16px;
     font-weight: 600;
-    color:#ee7104;
+    color:$primary;
     border-bottom: 1px solid #e5e7eb;
   }
 
@@ -38,8 +40,8 @@
     font-weight: 500;
 
     svg {
-      color: #ee7104;
-      font-size: 18px;
+      color:$primary;
+      font-size:1.3rem;
     }
   }
 }

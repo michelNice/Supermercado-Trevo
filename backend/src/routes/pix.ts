@@ -26,8 +26,6 @@ interface PendingPayment {
 }
 
 const pendingPayments = new Map<number, PendingPayment>();
-
-// Prevent duplicated emails/orders
 const completedPayments = new Set<number>();
 
 router.post(

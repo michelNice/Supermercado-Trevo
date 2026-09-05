@@ -1,6 +1,5 @@
 @use "../../Styles/variables" as *;
 @use "../../Styles/mixins" as *;
-
 .account {
   max-width: 1200px;
   margin: 2.5rem auto;
@@ -42,9 +41,6 @@
   }
   &:active { transform: scale(0.97);}
 }
-
-
-
   h2 {
     margin: 0 0 1.5rem;
     font-size: 1.6rem;
@@ -53,7 +49,6 @@
     padding-bottom: .75rem;
     border-bottom: 2px solid #f1f5f9;
   }
-
   p {
     margin: .8rem 0;
     font-size: .98rem;
@@ -66,27 +61,19 @@
       margin-right: .25rem;
     }
   }
-
-
-
-
   &__product {
     padding: 1rem 1.2rem;
     margin-bottom: 1rem;
-
     border: 1px solid #edf2f7;
     border-radius: 10px;
     background: #fafafa;
-
     transition: .2s ease;
-
     &:hover {
       background: #f8fafc;
       border-color:$primary;
     }
     &:last-child {margin-bottom: 0;}
   }
-
   &__empty {
     text-align: center;
     padding: 2rem;
@@ -95,27 +82,20 @@
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 62rem) {
   .account {
     grid-template-columns: repeat(2, 1fr);
-
     &__profile {grid-column: span 2;}
-
     &__address {grid-column: span 2;}
   }
 }
-
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .account {
     padding: 1rem;
     gap: 1rem;
-
     &__profile,
     &__cart,
-    &__address {
-      padding: 1.2rem;
-    }
-
+    &__address {padding: 1.2rem;}
     h2 {font-size: 1.35rem;}
     p {font-size: .92rem;}
   }
