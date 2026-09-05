@@ -2,11 +2,13 @@ import "./Address.scss";
 
 import { useEffect, useState } from "react";
 import { formatCep } from "../../modals/CepModal/CepModalUtils";
+import { getNearestStoreByCep } from "../DeliveryOptions/AdressDelivery";
+import UnavailableModal from "../../modals/UnavailableModal/UnavailableModal";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../../context/CheckoutContext";
 import { supabase } from "../../services/Supabase/supabaseClient";
-
+import { useLockBodyScroll } from '../../modals/CepModal/CepModalUtils';
 import {
   MapContainer,
   TileLayer,
@@ -119,17 +121,15 @@ const Address = () => {
   const [savedAddress, setSavedAddress] = useState(false);
   const [editingAddress, setEditingAddress] = useState(false);
   const [savedAddressId, setSavedAddressId] = useState<string | null>(null);
-
+  const [showUnavailable, setShowUnavailable] = useState(false);
+  const [deliveryAvailable, setDeliveryAvailable] = useState(false);
   const [position, setPosition] = useState<[number, number]>([
     -8.0476,
     -34.877,
   ]);
+  useLockBodyScroll(showUnavailable)
 
   const navigate = useNavigate();
-
-  // =====================================================
-  // BUSCAR ENDEREÇO NO OPENSTREETMAP
-  // =====================================================
 
   const handleSearchLocation = async (addressValue: string) => {
     const response = await fetch(
@@ -144,10 +144,6 @@ const Address = () => {
 
     return response.json();
   };
-
-  // =====================================================
-  // ATUALIZAR POSIÇÃO DO MAPA
-  // =====================================================
 
   const updateMapPosition = async (
     street: string,
@@ -169,14 +165,10 @@ const Address = () => {
           Number(location[0].lon),
         ]);
       }
-    } catch (error) {
-      console.error("Erro ao localizar endereço:", error);
+    } catch {
+      return;
     }
   };
-
-  // =====================================================
-  // CARREGAR ENDEREÇO
-  // =====================================================
 
   useEffect(() => {
     const loadSavedAddress = async () => {
@@ -185,34 +177,15 @@ const Address = () => {
           data: { session },
         } = await supabase.auth.getSession();
 
-        // =================================================
-        // USUÁRIO NÃO LOGADO
-        // =================================================
-
         if (!session?.user) {
-          console.log(
-            "USUÁRIO NÃO LOGADO - FORMULÁRIO VAZIO"
-          );
-
-          // IMPORTANTE:
-          // Não buscamos mais guest_address no localStorage.
-          // Usuário convidado NÃO possui endereço salvo.
-
           setAddress(emptyAddress);
           setSavedAddress(false);
           setEditingAddress(false);
           setSavedAddressId(null);
-
           return;
         }
 
-        // =================================================
-        // USUÁRIO LOGADO
-        // =================================================
-
         const user = session.user;
-
-        console.log("USUÁRIO LOGADO:", user.id);
 
         const { data, error } = await supabase
           .from("addresses")
@@ -223,15 +196,7 @@ const Address = () => {
           })
           .limit(1);
 
-        console.log("ENDEREÇO ENCONTRADO:", data);
-        console.log("ERRO ADDRESS:", error);
-
         if (error) {
-          console.error(
-            "ERRO AO BUSCAR ENDEREÇO:",
-            error
-          );
-
           setAddress({
             ...emptyAddress,
             email: user.email || "",
@@ -243,10 +208,6 @@ const Address = () => {
 
           return;
         }
-
-        // =================================================
-        // ENDEREÇO ENCONTRADO
-        // =================================================
 
         if (data && data.length > 0) {
           const saved = data[0];
@@ -263,11 +224,6 @@ const Address = () => {
             state: saved.state || "",
           };
 
-          console.log(
-            "ENDEREÇO CARREGADO:",
-            loadedAddress
-          );
-
           setAddress(loadedAddress);
 
           setSavedAddressId(saved.id);
@@ -283,14 +239,6 @@ const Address = () => {
           return;
         }
 
-        // =================================================
-        // USUÁRIO LOGADO SEM ENDEREÇO
-        // =================================================
-
-        console.log(
-          "USUÁRIO LOGADO SEM ENDEREÇO"
-        );
-
         setAddress({
           ...emptyAddress,
           email: user.email || "",
@@ -299,12 +247,7 @@ const Address = () => {
         setSavedAddress(false);
         setEditingAddress(false);
         setSavedAddressId(null);
-      } catch (error) {
-        console.error(
-          "ERRO AO CARREGAR ENDEREÇO:",
-          error
-        );
-
+      } catch {
         setAddress(emptyAddress);
         setSavedAddress(false);
         setEditingAddress(false);
@@ -314,10 +257,6 @@ const Address = () => {
 
     loadSavedAddress();
   }, [setAddress]);
-
-  // =====================================================
-  // BUSCAR CEP
-  // =====================================================
 
   const handleSearchCep = async (cep: string) => {
     const cleanCep = cep.replace(/\D/g, "");
@@ -344,7 +283,7 @@ const Address = () => {
       const data = await handleSearchCep(cleanCep);
 
       if (!data || data.erro) {
-        alert("CEP não encontrado");
+        setShowUnavailable(true);
         return;
       }
 
@@ -361,18 +300,10 @@ const Address = () => {
         data.localidade,
         data.uf
       );
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        "Não foi possível buscar o CEP."
-      );
+    } catch {
+      setShowUnavailable(true);
     }
   };
-
-  // =====================================================
-  // ALTERAR CAMPOS
-  // =====================================================
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -388,10 +319,6 @@ const Address = () => {
     }));
   };
 
-  // =====================================================
-  // RETIRADA NA LOJA
-  // =====================================================
-
   const handlePickupSubmit = (
     event: React.FormEvent<HTMLFormElement>
   ) => {
@@ -400,18 +327,9 @@ const Address = () => {
     const name = address.name.trim();
     const email = address.email.trim();
 
-    if (!name) {
-      alert("Digite seu nome completo.");
+    if (!name || !email) {
       return;
     }
-
-    if (!email) {
-      alert("Digite seu e-mail.");
-      return;
-    }
-
-    // Apenas mantém os dados no CheckoutContext.
-    // NÃO salva no localStorage.
 
     setAddress((prev) => ({
       ...prev,
@@ -419,61 +337,73 @@ const Address = () => {
       email,
     }));
 
-    console.log("DADOS DA RETIRADA:", {
-      name,
-      email,
-      store: selectedStore,
-    });
-
     navigate("/pagamento");
   };
 
-  // =====================================================
-  // SALVAR / ATUALIZAR ENDEREÇO
-  // =====================================================
+  const validateDelivery = async () => {
+    const cleanCep = address.zipCode.replace(/\D/g, "");
+
+    if (cleanCep.length !== 8) {
+      setDeliveryAvailable(false);
+      setShowUnavailable(true);
+      return false;
+    }
+
+    try {
+      const result = await getNearestStoreByCep(cleanCep);
+
+      const distanceKm = result?.nearestStore?.distanceKm;
+
+      if (
+        !result?.nearestStore ||
+        distanceKm === undefined ||
+        distanceKm > 3
+      ) {
+        setDeliveryAvailable(false);
+        setShowUnavailable(true);
+        return false;
+      }
+
+      setDeliveryAvailable(true);
+      return true;
+    } catch {
+      setDeliveryAvailable(false);
+      setShowUnavailable(true);
+      return false;
+    }
+  };
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
 
-    if (!address.name.trim()) {
-      alert("Digite seu nome completo.");
+    const name = address.name.trim();
+    const email = address.email.trim();
+    const zipCode = address.zipCode.trim();
+    const street = address.street.trim();
+    const number = address.number.trim();
+    const complemento = address.complemento.trim();
+    const neighborhood = address.neighborhood.trim();
+    const city = address.city.trim();
+    const state = address.state.trim();
+
+    if (
+      !name ||
+      !email ||
+      !zipCode ||
+      !street ||
+      !number ||
+      !neighborhood ||
+      !city ||
+      !state
+    ) {
       return;
     }
 
-    if (!address.email.trim()) {
-      alert("Digite seu e-mail.");
-      return;
-    }
+    const deliveryIsAvailable = await validateDelivery();
 
-    if (!address.zipCode.trim()) {
-      alert("Digite seu CEP.");
-      return;
-    }
-
-    if (!address.street.trim()) {
-      alert("Digite sua rua.");
-      return;
-    }
-
-    if (!address.number.trim()) {
-      alert("Digite o número.");
-      return;
-    }
-
-    if (!address.neighborhood.trim()) {
-      alert("Digite seu bairro.");
-      return;
-    }
-
-    if (!address.city.trim()) {
-      alert("Digite sua cidade.");
-      return;
-    }
-
-    if (!address.state.trim()) {
-      alert("Digite seu estado.");
+    if (!deliveryIsAvailable) {
       return;
     }
 
@@ -482,72 +412,41 @@ const Address = () => {
         data: { session },
       } = await supabase.auth.getSession();
 
-      // =================================================
-      // USUÁRIO NÃO LOGADO
-      // =================================================
-
       if (!session?.user) {
-        console.log(
-          "USUÁRIO CONVIDADO - NÃO SALVAR ENDEREÇO"
-        );
-
-        // Mantém apenas no CheckoutContext durante o checkout.
         setAddress((prev) => ({
           ...prev,
-          name: prev.name.trim(),
-          email: prev.email.trim(),
-          zipCode: prev.zipCode.trim(),
-          street: prev.street.trim(),
-          number: prev.number.trim(),
-          complemento: prev.complemento.trim(),
-          neighborhood: prev.neighborhood.trim(),
-          city: prev.city.trim(),
-          state: prev.state.trim(),
+          name,
+          email,
+          zipCode,
+          street,
+          number,
+          complemento,
+          neighborhood,
+          city,
+          state,
         }));
-
-        // IMPORTANTE:
-        // NÃO usar localStorage aqui.
-        // O endereço de convidado não será persistido.
 
         navigate("/pagamento");
 
         return;
       }
 
-      // =================================================
-      // USUÁRIO LOGADO
-      // =================================================
-
       const user = session.user;
 
       const addressData = {
         user_id: user.id,
-        name: address.name.trim(),
-        street: address.street.trim(),
-        number: address.number.trim(),
-        neighborhood: address.neighborhood.trim(),
-        city: address.city.trim(),
-        state: address.state.trim(),
-        zip_code: address.zipCode.trim(),
-        complement: address.complemento.trim(),
+        name,
+        street,
+        number,
+        neighborhood,
+        city,
+        state,
+        zip_code: zipCode,
+        complement: complemento,
         is_default: true,
       };
 
-      console.log(
-        "ENDEREÇO QUE SERÁ SALVO:",
-        addressData
-      );
-
-      // =================================================
-      // ATUALIZAR ENDEREÇO EXISTENTE
-      // =================================================
-
       if (savedAddressId) {
-        console.log(
-          "ATUALIZANDO ENDEREÇO:",
-          savedAddressId
-        );
-
         const { error } = await supabase
           .from("addresses")
           .update(addressData)
@@ -555,21 +454,9 @@ const Address = () => {
           .eq("user_id", user.id);
 
         if (error) {
-          console.error(
-            "ERRO AO ATUALIZAR:",
-            error
-          );
-
-          alert(
-            `Não foi possível atualizar o endereço: ${error.message}`
-          );
-
+          setShowUnavailable(true);
           return;
         }
-
-        console.log(
-          "ENDEREÇO ATUALIZADO COM SUCESSO!"
-        );
 
         setSavedAddress(true);
         setEditingAddress(false);
@@ -578,14 +465,6 @@ const Address = () => {
 
         return;
       }
-
-      // =================================================
-      // CRIAR PRIMEIRO ENDEREÇO
-      // =================================================
-
-      console.log(
-        "CRIANDO PRIMEIRO ENDEREÇO"
-      );
 
       const {
         data,
@@ -597,22 +476,9 @@ const Address = () => {
         .single();
 
       if (error) {
-        console.error(
-          "ERRO AO CRIAR ENDEREÇO:",
-          error
-        );
-
-        alert(
-          `Não foi possível salvar o endereço: ${error.message}`
-        );
-
+        setShowUnavailable(true);
         return;
       }
-
-      console.log(
-        "ENDEREÇO CRIADO:",
-        data
-      );
 
       if (data) {
         setSavedAddressId(data.id);
@@ -622,24 +488,14 @@ const Address = () => {
       setEditingAddress(false);
 
       navigate("/pagamento");
-    } catch (error) {
-      console.error(
-        "ERRO AO SALVAR ENDEREÇO:",
-        error
-      );
-
-      alert(
-        "Não foi possível salvar o endereço."
-      );
+    } catch {
+      setShowUnavailable(true);
     }
   };
-
-
 
   const handleDelivery = () => {
     setDeliveryMethod("delivery");
 
-  
     setAddress((prev) => ({
       ...emptyAddress,
       name: prev.name || "",
@@ -649,56 +505,39 @@ const Address = () => {
     setSavedAddress(false);
     setEditingAddress(false);
     setSavedAddressId(null);
+    setDeliveryAvailable(false);
   };
 
-  const handleContinuePayment = () => {
-    if (!address.name.trim()) {
-      alert("Digite seu nome.");
+  const handleContinuePayment = async () => {
+    if (!address.name.trim() || !address.email.trim()) {
       return;
     }
 
-    if (!address.email.trim()) {
-      alert("Digite seu e-mail.");
+    const deliveryIsAvailable = await validateDelivery();
+
+    if (!deliveryIsAvailable) {
       return;
     }
 
     navigate("/pagamento");
   };
 
-  // =====================================================
-  // JSX
-  // =====================================================
-
   return (
     <section className="address">
-
-      {/* =================================================
-          RETIRADA NA LOJA
-      ================================================= */}
-
       {deliveryMethod === "pickup" ? (
         <div className="address-content">
-
           <div className="pickup-store">
-
             <h2>Retirada na loja</h2>
 
             {selectedStore ? (
               <>
                 <div className="pickup-store__card">
+                  <h3>{selectedStore.name}</h3>
 
-                  <h3>
-                    {selectedStore.name}
-                  </h3>
-
-                  <p>
-                    {selectedStore.address}
-                  </p>
-
+                  <p>{selectedStore.address}</p>
                 </div>
 
                 <div className="pickup-store__info">
-
                   <p>
                     Para retirar seu pedido,
                     informe seu nome e e-mail.
@@ -708,20 +547,15 @@ const Address = () => {
                     Enviaremos a confirmação do
                     pedido para esse e-mail.
                   </p>
-
                 </div>
 
                 <form
                   className="address-form"
                   onSubmit={handlePickupSubmit}
                 >
-
-                  <h2>
-                    Dados para retirada
-                  </h2>
+                  <h2>Dados para retirada</h2>
 
                   <div className="address-form__group">
-
                     <label htmlFor="pickup-name">
                       Nome completo
                     </label>
@@ -736,11 +570,9 @@ const Address = () => {
                       autoComplete="name"
                       required
                     />
-
                   </div>
 
                   <div className="address-form__group">
-
                     <label htmlFor="pickup-email">
                       E-mail
                     </label>
@@ -755,7 +587,6 @@ const Address = () => {
                       autoComplete="email"
                       required
                     />
-
                   </div>
 
                   <button
@@ -764,7 +595,6 @@ const Address = () => {
                   >
                     Continuar para pagamento
                   </button>
-
                 </form>
 
                 <button
@@ -774,42 +604,25 @@ const Address = () => {
                 >
                   Receber em casa
                 </button>
-
               </>
             ) : (
               <p>
                 Nenhuma loja foi selecionada.
               </p>
             )}
-
           </div>
-
         </div>
       ) : (
         <>
-          {/* =================================================
-              ENDEREÇO
-          ================================================= */}
-
           <div className="address-content">
-
             {savedAddress && !editingAddress ? (
-
               <div className="saved-address">
-
-                <h2>
-                  Endereço de entrega
-                </h2>
+                <h2>Endereço de entrega</h2>
 
                 <div className="saved-address__card">
+                  <h3>{address.name}</h3>
 
-                  <h3>
-                    {address.name}
-                  </h3>
-
-                  <p>
-                    {address.email}
-                  </p>
+                  <p>{address.email}</p>
 
                   <p>
                     {address.street},{" "}
@@ -834,7 +647,6 @@ const Address = () => {
                   <p>
                     CEP: {address.zipCode}
                   </p>
-
                 </div>
 
                 <button
@@ -854,27 +666,19 @@ const Address = () => {
                 >
                   Continuar para pagamento
                 </button>
-
               </div>
-
             ) : (
-
               <form
                 className="address-form"
                 onSubmit={handleSubmit}
               >
-
-                <h2>
-                  Endereço de entrega
-                </h2>
+                <h2>Endereço de entrega</h2>
 
                 {fields.map((field) => (
-
                   <div
                     className="address-form__group"
                     key={field.name}
                   >
-
                     <label htmlFor={field.name}>
                       {field.label}
                     </label>
@@ -900,9 +704,7 @@ const Address = () => {
                           : undefined
                       }
                     />
-
                   </div>
-
                 ))}
 
                 <button
@@ -911,16 +713,11 @@ const Address = () => {
                 >
                   Salvar endereço e continuar
                 </button>
-
               </form>
-
             )}
-
           </div>
 
-        
           <div className="address-map">
-
             <MapContainer
               center={position}
               zoom={16}
@@ -930,10 +727,7 @@ const Address = () => {
                 height: "100%",
               }}
             >
-
-              <ChangeView
-                center={position}
-              />
+              <ChangeView center={position} />
 
               <TileLayer
                 attribution="© OpenStreetMap"
@@ -941,20 +735,20 @@ const Address = () => {
               />
 
               <Marker position={position}>
-
                 <Popup>
                   Local da entrega
                 </Popup>
-
               </Marker>
-
             </MapContainer>
-
           </div>
-
         </>
       )}
 
+      <UnavailableModal
+        show={showUnavailable}
+        onClose={() => setShowUnavailable(false)}
+         deliveryAvailable={deliveryAvailable}
+      />
     </section>
   );
 };

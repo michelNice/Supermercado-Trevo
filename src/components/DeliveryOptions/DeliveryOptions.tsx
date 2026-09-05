@@ -1,31 +1,38 @@
 import type React from "react";
 import { useState, useEffect } from "react";
-import { trevoAddress } from "./AdressDelivery";
+
+import { trevoAddress, getNearestStoreByCep } from "./AdressDelivery";
+
 import CepModal from "../../modals/CepModal/CepModal";
+
 import {
   useLockBodyScroll,
   useModal,
 } from "../../modals/CepModal/CepModalUtils";
+
 import "./DeliveryOptions.scss";
+
 import { useCheckout } from "../../context/CheckoutContext";
+
 import {
   getSelectedStore,
   getSelectedAddress,
   setSelectedStore as saveSelectedStore,
   setSelectedAddress,
 } from "../../utils/storage.ts";
+
 import UnavailableModal from "../../modals/UnavailableModal/UnavailableModal";
+
 type Props = {
   onSelectStore: (address: string) => void;
   onClose: () => void;
 };
+
 const DeliveryOptions: React.FC<Props> = ({
   onSelectStore,
   onClose,
 }) => {
-  const [selected, setSelected] = useState<
-    "home" | "store"
-  >("home");
+  const [selected, setSelected] = useState<"home" | "store">("home");
 
   const {
     openModal,
@@ -37,6 +44,9 @@ const DeliveryOptions: React.FC<Props> = ({
     useState<number | null>(null);
 
   const [showUnavailable, setShowUnavailable] =
+    useState(false);
+
+  const [deliveryAvailable, setDeliveryAvailable] =
     useState(false);
 
   const [cep, setCep] = useState("");
@@ -60,16 +70,31 @@ const DeliveryOptions: React.FC<Props> = ({
     }
   }, []);
 
-
   useEffect(() => {
     if (selectedStore !== null) {
       saveSelectedStore(selectedStore);
     }
   }, [selectedStore]);
 
-  const handleCepSubmit = () => {
-    closeModal();
-    setShowUnavailable(true);
+  const handleCepSubmit = async () => {
+    try {
+      const result = await getNearestStoreByCep(cep);
+
+      closeModal();
+
+      if (
+        result.nearestStore &&
+        result.nearestStore.distanceKm > 3
+      ) {
+        setDeliveryAvailable(false);
+        setShowUnavailable(true);
+      } else {
+        setDeliveryAvailable(true);
+        setShowUnavailable(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleHomeDelivery = () => {
@@ -85,26 +110,18 @@ const DeliveryOptions: React.FC<Props> = ({
   const handleSelectStore = (
     store: (typeof trevoAddress)[number]
   ) => {
-    // Seleciona visualmente a loja
     setSelectedStore(store.id);
-
-    // Define retirada na loja
     setDeliveryMethod("pickup");
 
-    // Salva endereço
     setSelectedAddress(store.address);
 
-    // Salva loja no CheckoutContext
     setCheckoutStore({
       id: String(store.id),
       name: store.name,
       address: store.address,
     });
 
-    // Atualiza o Navbar
     onSelectStore(store.address);
-
-    // Fecha o dropdown
     onClose();
   };
 
@@ -116,21 +133,15 @@ const DeliveryOptions: React.FC<Props> = ({
     <>
       <div className="delivery">
         <div className="delivery__container">
-
           <h2 className="delivery__title">
             Você deseja:
           </h2>
 
           <div className="delivery__options">
-
-            {/* RECEBER EM CASA */}
-
             <button
               type="button"
               className={`delivery__option ${
-                selected === "home"
-                  ? "active"
-                  : ""
+                selected === "home" ? "active" : ""
               }`}
               onClick={handleHomeDelivery}
             >
@@ -141,14 +152,10 @@ const DeliveryOptions: React.FC<Props> = ({
               </span>
             </button>
 
-            {/* RETIRAR NA LOJA */}
-
             <button
               type="button"
               className={`delivery__option ${
-                selected === "store"
-                  ? "active"
-                  : ""
+                selected === "store" ? "active" : ""
               }`}
               onClick={handleStorePickup}
             >
@@ -158,12 +165,11 @@ const DeliveryOptions: React.FC<Props> = ({
                 Retirar na Loja
               </span>
             </button>
-
           </div>
         </div>
+
         {selected === "home" && (
           <div className="delivery__home">
-
             <h3>
               Em qual endereço deseja receber?
             </h3>
@@ -174,20 +180,17 @@ const DeliveryOptions: React.FC<Props> = ({
             >
               Informar um CEP
             </button>
-
           </div>
         )}
+
         {selected === "store" && (
           <div className="store__conteiner">
-
             <h4>
               Em qual loja deseja retirar sua compra?
             </h4>
 
             <ul className="store__list">
-
               {trevoAddress.map((store) => {
-
                 const isSelected =
                   selectedStore === store.id;
 
@@ -195,9 +198,7 @@ const DeliveryOptions: React.FC<Props> = ({
                   <li
                     key={store.id}
                     className={`store__item ${
-                      isSelected
-                        ? "selected"
-                        : ""
+                      isSelected ? "selected" : ""
                     }`}
                     onClick={() =>
                       handleSelectStore(store)
@@ -213,30 +214,20 @@ const DeliveryOptions: React.FC<Props> = ({
                       <p>
                         {store.address}
                       </p>
-
                     </div>
+
                     <i
                       className={`fas fa-check check-icon ${
-                        isSelected
-                          ? "visible"
-                          : ""
+                        isSelected ? "visible" : ""
                       }`}
                     ></i>
-
                   </li>
                 );
               })}
-
             </ul>
-
           </div>
         )}
-
       </div>
-
-      {/* =====================================================
-          MODAL CEP
-      ===================================================== */}
 
       <CepModal
         show={showModal}
@@ -246,19 +237,15 @@ const DeliveryOptions: React.FC<Props> = ({
         onSubmit={handleCepSubmit}
       />
 
-      {/* =====================================================
-          SERVIÇO INDISPONÍVEL
-      ===================================================== */}
-
       <UnavailableModal
         show={showUnavailable}
         onClose={() =>
           setShowUnavailable(false)
         }
+        deliveryAvailable={deliveryAvailable}
       />
     </>
   );
 };
 
 export default DeliveryOptions;
-
