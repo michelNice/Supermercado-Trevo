@@ -1,11 +1,8 @@
 @use "../../Styles/variables" as *;
-
 .cart-message {
   position: fixed;
-
   top: 7rem;
   right: 2rem;
-
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -19,9 +16,7 @@
   animation: cart-message-enter 0.3s ease;
 }
 
-.cart-message__icon {
-  font-size: 1.4rem;
-}
+.cart-message__icon {font-size: 1.4rem;}
 
 .cart-message__text {
   margin: 0;

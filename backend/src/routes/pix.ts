@@ -4,17 +4,13 @@ import { Payment } from "mercadopago";
 import client from "../config/mercadoPago";
 import { sendConfirmationEmail } from "../services/emailService";
 import { createOrder } from "../services/orderService";
-
 const router = Router();
-
 interface Store {
   id: string;
   name: string;
   address: string;
 }
-
 type DeliveryMethod = "delivery" | "pickup";
-
 interface PendingPayment {
   email: string;
   name: string;
@@ -24,7 +20,6 @@ interface PendingPayment {
   deliveryMethod: DeliveryMethod;
   selectedStore: Store | null;
 }
-
 const pendingPayments = new Map<number, PendingPayment>();
 const completedPayments = new Set<number>();
 
@@ -47,7 +42,6 @@ router.post(
           message: "Total e email são obrigatórios.",
         });
       }
-
       const deliveryMethod: DeliveryMethod =
         delivery_method === "pickup"
           ? "pickup"
@@ -121,7 +115,6 @@ router.post(
     }
   }
 );
-
 router.get(
   "/status/:id",
   async (req: Request, res: Response) => {
@@ -135,7 +128,6 @@ router.get(
       });
 
       if (response.status === "approved") {
-        // Already completed
         if (completedPayments.has(paymentId)) {
           return res.json({
             status: response.status,

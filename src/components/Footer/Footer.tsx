@@ -3,13 +3,10 @@ import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { FiMail, FiPhone } from "react-icons/fi";
 import { FaXTwitter } from "react-icons/fa6";
 function Footer() {
-
   return (
     <footer className="footer">
-
       <div className="footer__column">
         <h3>Quem somos</h3>
-
         <ul>
           <li>
             A Rede Trevo Supermercado faz parte de uma família genuinamente

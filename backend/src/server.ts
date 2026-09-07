@@ -1,16 +1,12 @@
 import "dotenv/config";
-
 import express from "express";
 import type { Request, Response } from "express";
 import axios from "axios";
 import cors from "cors";
-
 import paymentRouter from "./routes/payment";
 import pixRoutes from "./routes/pix";
 import { sendConfirmationEmail } from "./services/emailService";
-
 const app = express();
-
 app.use(
   cors({
     origin: [
@@ -21,7 +17,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => {
@@ -29,7 +24,6 @@ app.get("/", (_req: Request, res: Response) => {
     status: "online",
   });
 });
-
 app.get("/pix/test", (_req: Request, res: Response) => {
   res.status(200).json({
     status: "online",
@@ -53,14 +47,12 @@ app.post("/email/confirmation", async (req: Request, res: Response) => {
       deliveryMethod,
       selectedStore,
     } = req.body;
-
     if (!email) {
       return res.status(400).json({
         success: false,
         message: "E-mail do cliente não informado.",
       });
     }
-
     const result = await sendConfirmationEmail(
       email,
       name,

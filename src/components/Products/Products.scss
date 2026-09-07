@@ -1,8 +1,6 @@
 @use '../../Styles/variables' as *;
 @use '../../Styles/mixins' as *;
-
 h2{padding:1rem 0;}
-
 .brands-container{
   @include flex-center;
   gap:32px;
@@ -52,9 +50,6 @@ h2{padding:1rem 0;}
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
-
-
-
 
 @keyframes spin {
   to {transform: rotate(360deg);}

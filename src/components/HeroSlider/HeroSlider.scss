@@ -1,6 +1,5 @@
 /* PAGINAÇÃO */
 @use '../../Styles/variables' as *;
-
 .custom-pagination{
   display: flex;
   align-items: center;
@@ -23,11 +22,8 @@
   height: 40vh;              
   display: block;            
 }
-
 /* SWIPER */
-.mySwiper {
-  z-index: 1;
-}
+.mySwiper {z-index: 1;}
 
 /* PAGINAÇÃO */
 .custom-pagination .swiper-pagination-bullet {
