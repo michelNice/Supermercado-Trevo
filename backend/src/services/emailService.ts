@@ -1,12 +1,9 @@
-
 import { Resend } from "resend";
-
 interface Store {
   id: string;
   name: string;
   address: string;
 }
-
 interface Address {
   name?: string;
   email?: string;
@@ -18,9 +15,7 @@ interface Address {
   state: string;
   zipCode: string;
 }
-
 type DeliveryMethod = "delivery" | "pickup";
-
 export async function sendConfirmationEmail(
   email: string,
   name: string,

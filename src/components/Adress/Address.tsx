@@ -559,7 +559,6 @@ const Address = () => {
                     <label htmlFor="pickup-name">
                       Nome completo
                     </label>
-
                     <input
                       id="pickup-name"
                       name="name"
@@ -571,7 +570,6 @@ const Address = () => {
                       required
                     />
                   </div>
-
                   <div className="address-form__group">
                     <label htmlFor="pickup-email">
                       E-mail
