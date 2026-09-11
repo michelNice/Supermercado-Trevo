@@ -20,7 +20,6 @@ type Props = {
   >;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
 const ProductDetails: React.FC<Props> = ({
   product,
   showModal,
@@ -168,5 +167,4 @@ const ProductDetails: React.FC<Props> = ({
     </>
   );
 };
-
 export default ProductDetails;

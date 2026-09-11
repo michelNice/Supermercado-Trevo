@@ -5,10 +5,8 @@ type  Department = {
   name:string;
   sub:string[]
 }
-
 const DepartmentsDropdown: React.FC = ()=> {
      const [activeIndex, setActiveIndex] = useState<number | null>(null)
-
 const departmentos:Department[] = [
      {
       name:"Limpeza",
