@@ -143,13 +143,11 @@ const ProductDetails: React.FC<Props> = ({
           </div>
         </div>
       </div>
-
       <div className="products-container">
         <div className="related__products">
           <h2 className="products-container h2">
             Produtos Relacionados
           </h2>
-
           <ProductSwiper>
             {relatedProducts.map((item) => (
               <SwiperSlide key={item.id}>
