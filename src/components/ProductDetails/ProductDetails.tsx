@@ -32,9 +32,7 @@ const ProductDetails: React.FC<Props> = ({
   const { AddToCart } = useCart();
   const navigate = useNavigate();
   useLockBodyScroll(showModal);
-
   if (!product) return null;
-
   const relatedProducts = (products ?? []).filter(
     (p) =>
       p.category === product.category &&
