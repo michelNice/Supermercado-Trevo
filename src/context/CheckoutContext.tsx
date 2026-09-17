@@ -7,13 +7,11 @@ import {
 } from "react";
 
 type DeliveryMethod = "delivery" | "pickup";
-
 interface Store {
   id: string;
   name: string;
   address: string;
 }
-
 interface PaymentData {
   method: string;
   cardNumber: string;
@@ -46,9 +44,7 @@ interface CheckoutContextType {
   selectedStore: Store | null;
   setSelectedStore: React.Dispatch<React.SetStateAction<Store | null>>;
 }
-
 const CheckoutContext = createContext<CheckoutContextType | null>(null);
-
 const STORAGE_KEY = "checkout_address_data";
 
 export const CheckoutProvider = ({ children }: { children: React.ReactNode }) => {
@@ -60,8 +56,6 @@ export const CheckoutProvider = ({ children }: { children: React.ReactNode }) =>
     cvv: "",
     installments: "",
   });
-
-  // 1. Lê do localStorage no momento que a aplicação inicia
   const [address, setAddress] = useState<AddressData>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -124,7 +118,6 @@ export const CheckoutProvider = ({ children }: { children: React.ReactNode }) =>
     </CheckoutContext.Provider>
   );
 };
-
 export const useCheckout = () => {
   const context = useContext(CheckoutContext);
   if (!context) {
