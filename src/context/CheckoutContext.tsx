@@ -78,8 +78,6 @@ export const CheckoutProvider = ({ children }: { children: React.ReactNode }) =>
       email: "",
     };
   });
-
-  // 2. Garante gravação imediata sempre que 'address' mudar
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(address));
@@ -88,7 +86,6 @@ export const CheckoutProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }, [address]);
 
-  // 3. Helper para alterar apenas 1 campo (ex: CEP) sem apagar os outros
   const updateAddressField = useCallback((field: keyof AddressData, value: string) => {
     setAddress((prev) => {
       const updated = { ...prev, [field]: value };
