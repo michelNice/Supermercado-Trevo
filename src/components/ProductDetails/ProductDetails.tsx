@@ -39,6 +39,14 @@ const ProductDetails: React.FC<Props> = ({
       p.id !== product.id
   );
 
+  const handleShare = async () => {
+  await navigator.share({
+    title: product.name,
+    text: `Olha esse produto: ${product.name}`,
+    url: `https://supermercado-trevo.vercel.app/detalhesProduto/${product.id}`,
+  });
+};
+
   return (
     <>
       <div className="product-details">
@@ -74,7 +82,7 @@ const ProductDetails: React.FC<Props> = ({
             </div>
 
             <div className="buttons-infor">
-              <button className="btn__share">
+              <button className="btn__share" onClick={handleShare}>
                 <FiShare2 />
                 Compartilhar
               </button>
